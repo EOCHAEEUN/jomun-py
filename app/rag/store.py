@@ -8,7 +8,7 @@ from app.config import COLLECTION_NAME, EMBEDDING_PROVIDER, VECTORSTORE_DIR
 from app.rag.embeddings import get_embedding_function
 
 log = logging.getLogger(__name__)
-META_KEYS = ["ref_label", "title", "chapter", "article", "paragraph", "page", "tagged",
+META_KEYS = ["doc", "doc_short", "kind", "ref_label", "title", "chapter", "article", "paragraph", "page", "tagged",
              "addressee", "obligation", "external", "flags", "status_rule", "penalty_type"]
 
 
@@ -27,7 +27,9 @@ def build_collection(chunks: list[dict]) -> int:
     col = client.create_collection(
         name=COLLECTION_NAME,
         embedding_function=get_embedding_function(),
-        metadata={"hnsw:space": "cosine", "embedding_provider": EMBEDDING_PROVIDER},
+        # 청크가 2천 개 이하라 탐색 폭(ef)을 넉넉히 잡아 사실상 전수 검색 → 다시 적재해도 결과가 같다
+        configuration={"hnsw": {"space": "cosine", "ef_construction": 400, "ef_search": 400, "max_neighbors": 32}},
+        metadata={"embedding_provider": EMBEDDING_PROVIDER},
     )
     metadatas = []
     for c in chunks:
@@ -37,7 +39,7 @@ def build_collection(chunks: list[dict]) -> int:
     col.add(
         ids=[c["id"] for c in chunks],
         # 제목·조문 번호를 같이 넣으면 검색이 조금 더 안정적이다
-        documents=[f"[{c['ref_label']} {c['title']}] {c['text']}" for c in chunks],
+        documents=[f"[{c['doc_short']} {c['ref_label']} {c['title']}] {c['text']}" for c in chunks],
         metadatas=metadatas,
     )
     get_collection.cache_clear()
@@ -65,6 +67,8 @@ def search(query: str, k: int = 5, where: dict | None = None) -> list[dict]:
         meta = res["metadatas"][0][i]
         hits.append({
             "id": cid,
+            "doc": meta.get("doc"),
+            "doc_short": meta.get("doc_short"),
             "ref_label": meta.get("ref_label"),
             "title": meta.get("title"),
             "addressee": meta.get("addressee"),

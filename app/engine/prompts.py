@@ -15,7 +15,8 @@ FEATURE_SYSTEM_PROMPT = """너는 AI 서비스 설명에서 '사실 특성'만 �
    - AI 결과가 그대로 결정·평가로 쓰이면 AUTOMATED
    - AI가 추천·보조만 하면 RECOMMEND
    - 사람이 최종 결정한다고 명시되어 있으면 HUMAN_FINAL
-5. overseas는 '국내에 주소 또는 영업소가 없는 사업자'일 때만 true다. 언급이 없으면 null.
+5. overseas는 '국내에 주소 또는 영업소가 없다'고 명시된 경우에만 true다.
+   '해외 기업', '글로벌 서비스'처럼 해외라는 언급만 있으면 국내 법인·영업소가 있을 수 있으므로 null.
 6. business_type은 외부 모델·API를 쓰면 USER_BUSINESS, 모델을 직접 개발·학습하면 DEVELOPER.
 7. evidence에는 각 특성을 판단한 근거가 된 설명문 속 표현을 "필드 ← '표현'" 형식으로 적는다.
 """

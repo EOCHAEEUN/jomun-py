@@ -1,12 +1,12 @@
-# 제36조① 국내대리인
-LIMIT = EXTERNAL('대통령령: 이용자·매출')
-
-def comply(biz):
+# 제36조① + 시행령 제29조 국내대리인
+def must_designate(biz):
     if biz.has_domestic_office:
-        return
-    if biz.users_or_revenue >= LIMIT:
-        designate(agent)  # MUST, 서면
-        report_to(MSIT)   # MUST
+        return False
+    return any([
+        biz.revenue >= 1_000_000_000_000,
+        biz.ai_revenue >= 10_000_000_000,
+        biz.daily_kr_users >= 1_000_000,
+        biz.fined_under_43_1_3,
+    ])  # 매출은 전년도 평균환율로 환산
 
 # 미지정 → DIRECT (제43조①2)
-# ③ 대리인 위반 → TREAT_AS(사업자)

@@ -9,8 +9,10 @@ load_dotenv()
 # ── 경로 ─────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
-RAW_PDF = DATA_DIR / "raw" / "ai_basic_act_20260122.pdf"
+RAW_DIR = DATA_DIR / "raw"                                # 원본 PDF 6종
+SOURCES_PATH = DATA_DIR / "sources.json"                  # 데이터 목록 (문서별 종류·파서·역할)
 TAGGED_PATH = DATA_DIR / "tagged" / "articles.json"      # 조문 clause 태깅 (핵심 데이터)
+EN_ARTICLES_PATH = DATA_DIR / "tagged" / "en_articles.json"  # 영문 조문 매핑 (ingest가 갱신)
 DECOMPILED_DIR = DATA_DIR / "tagged" / "decompiled"       # 디컴파일 코드 스니펫
 CHUNKS_PATH = DATA_DIR / "processed" / "chunks.json"      # 전처리 결과 (ingest가 생성)
 VECTORSTORE_DIR = DATA_DIR / "vectorstore"                # Chroma 저장 위치 (ingest가 생성)

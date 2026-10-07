@@ -1,4 +1,4 @@
-# 제34조① 고영향 AI 사업자 책무
+# 제34조① + 시행령 제27조
 class HighImpactAIProvider(ABC):
     @abstractmethod
     def risk_management(self): ...  # 1
@@ -8,11 +8,10 @@ class HighImpactAIProvider(ABC):
     def protect_users(self): ...    # 3
     @abstractmethod
     def human_oversight(self): ...  # 4
-    @abstractmethod
-    def keep_documents(self): ...   # 5
 
-    item6 = EXTERNAL('위원회 의결')
-    detail = EXTERNAL('② 장관 고시')
+    def comply(self):
+        publish(1, 2, 3, self.overseer)
+        keep_documents(years=5)     # 5
 
-# ③ 타 법령상 준하는 조치 이행
-#   → TREAT_AS(SATISFIED)
+# 시행령 ②③: 이용사업자는 개발사가 1~3호
+# 이행 + 기능 변경 없으면 TREAT_AS(이행)

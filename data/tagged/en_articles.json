@@ -1,0 +1,902 @@
+{
+  "ARTICLE_1": {
+    "ref": "Article 1",
+    "title": "Purpose",
+    "text": "The purpose of this Act is to prescribe the basic matters necessary for the sound development of artificial intelligence and the creation of a foundation for trust in artificial intelligence, thereby contributing to the protection of citizens' rights, interests, and dignity, the improvement of their quality of life, and the strengthening of national competitiveness."
+  },
+  "ARTICLE_2": {
+    "ref": "Article 2",
+    "title": "Definitions",
+    "text": "The terms used in this Act are defined as follows: <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_2_1": {
+    "ref": "Article 2 item 1",
+    "title": "Definitions",
+    "text": "1. \"Artificial intelligence\" means the electronic implementation of human intellectual abilities, such as learning, reasoning, perception, judgment, and language comprehension;"
+  },
+  "ARTICLE_2_2": {
+    "ref": "Article 2 item 2",
+    "title": "Definitions",
+    "text": "2. \"Artificial intelligence system\" means an artificial intelligence-based system that infers outputs such as predictions, recommendations, and decisions that affect real and virtual environments for a given goal with various levels of autonomy and adaptability;"
+  },
+  "ARTICLE_2_3": {
+    "ref": "Article 2 item 3",
+    "title": "Definitions",
+    "text": "3. \"Artificial intelligence technology\" means hardware and software technologies, or their application technologies, necessary to implement artificial intelligence;"
+  },
+  "ARTICLE_2_4": {
+    "ref": "Article 2 item 4",
+    "title": "Definitions",
+    "text": "4. \"High-impact artificial intelligence\" means an artificial intelligence system that is likely to have a significant impact on or pause a risk to human life, physical safety, and fundamental rights, and that is utilized in any of the following areas: a. Supply of energy under subparagraph 1 of Article 2 of the Energy Act; b. Production process of drinking water under subparagraph 1 of Article 3 of the Drinking Water Management Act; c. Establishment and operation of a system for providing and using health and medical services under subparagraph 1 of Article 3 of the Framework Act on Health and Medical Care; d. Development and use of medical devices under Article 2(1) of the Medical Devices Act and digital medical devices under subparagraph 2 of Article 2 of the Digital Medical Products Act; e. Safe management and operation of nuclear materials under Article 2(1)1 of the Act on Physical Protection and Radiological Emergency and nuclear facilities under subparagraph 2 of that paragraph; f. Analysis and utilization of biometric information (referring to personal information on physical, physiological, and behavioral characteristics by which an individual can be identified, such as facial, fingerprint, iris, and palm vein patterns) for criminal investigation or arrests; g. Judgments or evaluations that have a significant impact on the rights and obligations of individuals, such as hiring and loan screening; h. Major operation and management of means of transportation, traffic facilities, and traffic systems under subparagraphs 1 through 3 of Article 2 of the Traffic Safety Act; i. Decision-making by the State, local governments, public institutions under Article 4 of the Act on the Management of Public Institutions, and other such entities (hereinafter referred to as \"State agencies, etc.\") that have influence on citizens, such as the verification and determination of qualifications required for the provision of public services or the collection of expenses; j. Evaluation of students in early childhood education, elementary education, and secondary education under Article 9(1) of the Framework Act on Education; k. Other areas prescribed by Presidential Decree, which have a significant impact on the protection of human life, physical safety, and fundamental rights;"
+  },
+  "ARTICLE_2_5": {
+    "ref": "Article 2 item 5",
+    "title": "Definitions",
+    "text": "5. \"Generative artificial intelligence\" means an artificial intelligence system that generates text, sound, images, videos, and other various outputs by imitating the structure and characteristics of input data (referring to data defined in subparagraph 1 of Article 2 of the Framework Act on Promotion of Data Industry and Data Utilization; hereinafter the same shall apply);"
+  },
+  "ARTICLE_2_6": {
+    "ref": "Article 2 item 6",
+    "title": "Definitions",
+    "text": "6. \"Artificial intelligence industry\" means an industry that develops, manufactures, produces, or distributes products utilizing artificial intelligence or artificial intelligence technology (hereinafter referred to as \"artificial intelligence products\") or provides services related thereto (hereinafter referred to as \"artificial intelligence services\");"
+  },
+  "ARTICLE_2_7": {
+    "ref": "Article 2 item 7",
+    "title": "Definitions",
+    "text": "7. \"Artificial intelligence business operator\" means any of the following corporations, organizations, individuals, State agencies, etc. that is engaged in business related to the artificial intelligence industry: a. Artificial intelligence developer: A person that develops and provides artificial intelligence; b. Artificial intelligence-using business operator: A person that provides artificial intelligence products or artificial intelligence services using artificial intelligence provided by a business operator under item a;"
+  },
+  "ARTICLE_2_8": {
+    "ref": "Article 2 item 8",
+    "title": "Definitions",
+    "text": "8. \"User\" means a person that is provided with an artificial intelligence product or artificial intelligence service;"
+  },
+  "ARTICLE_2_9": {
+    "ref": "Article 2 item 9",
+    "title": "Definitions",
+    "text": "9. \"Impacted person\" means a person whose life, physical safety, and fundamental rights are significantly affected by artificial intelligence products or artificial intelligence services;"
+  },
+  "ARTICLE_2_10": {
+    "ref": "Article 2 item 10",
+    "title": "Definitions",
+    "text": "10. \"Artificial intelligence society\" means a society that creates value and leads development in all fields, including industry, economy, society, culture, and administration through artificial intelligence;"
+  },
+  "ARTICLE_2_11": {
+    "ref": "Article 2 item 11",
+    "title": "Definitions",
+    "text": "11. \"Artificial intelligence ethics\" means the ethical standards that all members of society should observe in all areas, including artificial intelligence development, provision, and use, in order to realize a safe and trustworthy artificial intelligence society that can protect citizens' rights, interests, lives, and property based on respect for human dignity; 12.\"Training data\" means data used for the development, utilization, and other related purposes of artificial intelligence."
+  },
+  "ARTICLE_3_1": {
+    "ref": "Article 3(1)",
+    "title": "Basic principles and the State's responsibilities",
+    "text": "Artificial intelligence technology and the artificial intelligence industry shall be developed in a direction that enhances safety and trustworthiness to improve citizens' quality of life."
+  },
+  "ARTICLE_3_2": {
+    "ref": "Article 3(2)",
+    "title": "Basic principles and the State's responsibilities",
+    "text": "An impacted person shall be entitled to be provided with a clear and meaningful explanation of the main criteria, principles, etc. utilized in deriving the final output of artificial intelligence, to the extent technically and reasonably possible."
+  },
+  "ARTICLE_3_3": {
+    "ref": "Article 3(3)",
+    "title": "Basic principles and the State's responsibilities",
+    "text": "The State and local governments shall respect the creative spirit of artificial intelligence business operators and endeavor to create a safe environment for the use of artificial intelligence."
+  },
+  "ARTICLE_3_4": {
+    "ref": "Article 3(4)",
+    "title": "Basic principles and the State's responsibilities",
+    "text": "The State and local governments shall devise policy measures to ensure that all citizens can adapt stably to the changes brought about by artificial intelligence in all areas, including society, economy, culture, and citizens' daily lives."
+  },
+  "ARTICLE_3_5": {
+    "ref": "Article 3(5)",
+    "title": "Basic principles and the State's responsibilities",
+    "text": "The State and local governments shall endeavor to ensure the participation of, and to reflect the opinions of, persons who experience in using artificial intelligence products or artificial intelligence services, including persons with disabilities and the senior citizens, as prescribed by Presidential Decree (hereinafter referred to as \"populations vulnerable to artificial intelligence\"), in the process of developing and establishing policies related to artificial intelligence. <Add on Jan. 20, 2026>"
+  },
+  "ARTICLE_4_1": {
+    "ref": "Article 4(1)",
+    "title": "Scope of application",
+    "text": "This Act shall apply to any conduct performed outside the country if the conduct has an impact on the domestic market or users."
+  },
+  "ARTICLE_4_2": {
+    "ref": "Article 4(2)",
+    "title": "Scope of application",
+    "text": "This Act shall not apply to artificial intelligence prescribed by Presidential Decree, which is developed and used solely for the purpose of national defense or national security."
+  },
+  "ARTICLE_5_1": {
+    "ref": "Article 5(1)",
+    "title": "Relationship to other statutes",
+    "text": "Except as otherwise expressly provided for in other statutes, this Act shall apply to artificial intelligence, artificial intelligence technology, the artificial intelligence industry, and the artificial intelligence society (hereinafter referred to as \"artificial intelligence, etc.\")."
+  },
+  "ARTICLE_5_2": {
+    "ref": "Article 5(2)",
+    "title": "Relationship to other statutes",
+    "text": "The enactment or amendment of other statutes regarding artificial intelligence, etc. shall be made in conformity with the purpose of this Act. INTELLIGENCE AND CREATION OF FOUNDATION FOR TRUST"
+  },
+  "ARTICLE_6_1": {
+    "ref": "Article 6(1)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "The Minister of Science and ICT shall formulate, modify, and implement a master plan for artificial intelligence (hereinafter referred to as \"master plan\"), subject to deliberation and resolution by the Presidential Council on National Artificial Intelligence Strategy under Article 7, for the promotion of artificial intelligence technology and the artificial intelligence industry and the enhancement of national competitiveness every 3 years after hearing the opinions of the heads of relevant central administrative agencies and the heads of local governments; provided, the foregoing shall not apply to any minor modifications prescribed by Presidential Decree in the master plan. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_6_2": {
+    "ref": "Article 6(2)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "The master plans shall include the following: <Amended on Jan. 20, 2026> 1. Matters regarding the basic direction and strategy of policies on artificial intelligence, etc.; 2. Matters regarding the training of professionals for the systematic fostering of the artificial intelligence industry and the creation of a foundation to promote the development and utilization of artificial intelligence; 3. Matters regarding statutes, systems, and culture for the realization of a sound artificial intelligence society, such as the dissemination of artificial intelligence ethics; 4. Matters regarding the securing of financial resources, the direction of investment, etc. for the development of artificial intelligence technology and the promotion of the artificial intelligence industry; 4-2. Matters regarding the scope and standards for the generation of training data using public data, the provision of public data, and other related activities, and the promotion thereof, under the Act on Promotion of the Provision and Use of Public Data; 5. Matters regarding the creation of a foundation for trust, including ensuring fairness, transparency, accountability, safety, and accessibility of artificial intelligence; 6. Matters regarding the direction of development of artificial intelligence technology, and changes and responses in various areas of society, such as education, labor, economy, and culture; 6-2. Matters regarding support for education and public awareness campaigns for understanding and utilizing artificial intelligence technology; 7. Matters to ensure access to and use of artificial intelligence products or artificial intelligence services by populations vulnerable to artificial intelligence; 8. Other matters deemed necessary by the Minister of Science and ICT to strengthen national competitiveness, including promotion of artificial intelligence technology and the artificial intelligence industry and international cooperation."
+  },
+  "ARTICLE_6_3": {
+    "ref": "Article 6(3)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "When the Minister of Science and ICT formulates a master plan, the Minister shall consider the comprehensive plan under Article 6(1) of the Framework Act on Intelligent Informatization and the action plan under Article 7(1) of that Act, and shall determine, in consultation with the Minister of the Interior and Safety, matters regarding the provision of public data as training data under the Act on Promotion of the Provision and Use of Public Data among training data referred to in paragraph (2)4-2. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_6_4": {
+    "ref": "Article 6(4)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "The Minister of Science and ICT may request the heads of relevant central administrative agencies, heads of local governments, and heads of public institutions (referring to public institutions under subparagraph 16 of Article 2 of the Framework Act on Intelligent Informatization (hereinafter referred to as \"public institutions\"; hereinafter the same shall apply) to submit data necessary for the formulation of a master plan. In this case, the head of the organization requested to submit data shall comply with the request unless there is a compelling reason not to do so."
+  },
+  "ARTICLE_6_5": {
+    "ref": "Article 6(5)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "The master plan shall be deemed a sectoral promotion plan for the field of artificial intelligence and the artificial intelligence industry under Article 13(1) of the Framework Act on Intelligent Informatization."
+  },
+  "ARTICLE_6_6": {
+    "ref": "Article 6(6)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "The heads of central administrative agencies and the heads of local governments shall take the master plan into consideration when establishing and executing policies under their jurisdictions."
+  },
+  "ARTICLE_6_7": {
+    "ref": "Article 6(7)",
+    "title": "Formulation of master plans for artificial intelligence",
+    "text": "Other matters necessary for the formulation, modification, and implementation of master plans shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_7_1": {
+    "ref": "Article 7(1)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "A Presidential Council on National Artificial Intelligence Strategy (hereinafter referred to as the \"Council\") shall be established under the President to deliberate and resolve on matters related to major policies, etc. for the development of artificial intelligence and the creation of a foundation for trust. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_7_2": {
+    "ref": "Article 7(2)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The Council shall be composed of up to 60 members, including 1 chairperson and up to 3 vice chairpersons. In this case, the members under paragraph (4)4 shall constitute a majority of all the members, and the Council shall not be composed of a single gender. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_7_3": {
+    "ref": "Article 7(3)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The President shall be the chairperson of the Council, and the vice chairpersons shall be persons designated by the President from among those under paragraph (4)1 or 4. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_7_4": {
+    "ref": "Article 7(4)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "Members of the Committee shall be the following persons: 1. The heads of relevant central administrative agencies prescribed by Presidential Decree; 2. The Deputy Director in charge of artificial intelligence affairs of the Office of National Security; 3. The senior secretary who assists in the artificial intelligence affairs of the Office of the President; 4. Persons with extensive expertise and experience in artificial intelligence who are commissioned by the President."
+  },
+  "ARTICLE_7_5": {
+    "ref": "Article 7(5)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The chairperson shall represent the Committee and have general supervision and control of the affairs of the Committee."
+  },
+  "ARTICLE_7_6": {
+    "ref": "Article 7(6)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The chairperson of the Committee may have the vice chairperson act on their behalf, if necessary."
+  },
+  "ARTICLE_7_7": {
+    "ref": "Article 7(7)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The committee members under paragraph (4)4 shall hold office for a term of 2 years, and may be appointed consecutively for only one further term."
+  },
+  "ARTICLE_7_8": {
+    "ref": "Article 7(8)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The Committee shall have 1 executive secretary, who shall be a member under paragraph (4)3."
+  },
+  "ARTICLE_7_9": {
+    "ref": "Article 7(9)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "A member of the Committee shall not disclose secrets learned in the course of their duties to others or use them for purposes other than those of their duties; provided, this shall not apply if there are special provisions in other statutes."
+  },
+  "ARTICLE_7_10": {
+    "ref": "Article 7(10)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The chairperson of the Committee shall convene and preside over meetings of the Committee."
+  },
+  "ARTICLE_7_11": {
+    "ref": "Article 7(11)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "A majority of the members of the Committee shall constitute a quorum, and any decision thereof shall require the concurring vote of a majority of those present."
+  },
+  "ARTICLE_7_12": {
+    "ref": "Article 7(12)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "A support group shall be established within the Committee to support the work and operations of the Committee."
+  },
+  "ARTICLE_7_13": {
+    "ref": "Article 7(13)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "The Commission shall exist for 5 years from the date this Act enters into force"
+  },
+  "ARTICLE_7_14": {
+    "ref": "Article 7(14)",
+    "title": "Presidential Council on National Artificial Intelligence Strategy",
+    "text": "Other matters necessary for the composition and operation of the Committee and the support group under paragraph (12) shall be prescribed by Presidential Decree. [Title Amended on Jan. 20, 2026]"
+  },
+  "ARTICLE_8_1": {
+    "ref": "Article 8(1)",
+    "title": "Functions of the Committee",
+    "text": "The Council shall deliberate and decide on the following matters: <Amended on Jan. 20, 2026> 1. Matters regarding inspection and analysis of the formulation, modification, and implementation of the master plan; 2. Matters concerning the establishment of national vision and mid-to-long-term strategies related to artificial intelligence, etc.; 2-2. Matters regarding the establishment, coordination, and inter-ministerial coordination of policies and projects related to artificial intelligence; 2.3. Matters regarding implementation monitoring and performance management for policies and projects related to artificial intelligence; 3. Matters regarding the establishment of research and development strategies related to artificial intelligence, etc.; 4. Matters regarding the establishment of investment directions and the formulation of strategies related to artificial intelligence, etc.; 5. Matters regarding the identification and improvement of regulations that hinder the development and competitiveness of the artificial intelligence industry; 5-2. Matters regarding institutional improvements related to technologies, personnel, locations for artificial intelligence, etc.; 5-3. Other matters regarding the fostering and support of professional personnel in artificial intelligence and artificial intelligence technology. 6. Matters regarding plans for expansion of infrastructure such as artificial intelligence data centers (referring to data centers under Article 40(1) of the Framework Act on Intelligent Informatization; hereinafter the same shall apply); 6-2. Matters regarding the promotion of data (including training data) collection, management, and utilization for the advancement of artificial intelligence; 7. Matters regarding the promotion of artificial intelligence utilization in industrial sectors, such as manufacturing and service industries, as well as in the public sector; 8. Matters regarding international cooperation related to artificial intelligence, including the establishment of international norms for artificial intelligence; 9. Matters regarding the expression of recommendations or opinions under paragraph (2); 10. Matters regarding the regulations on high-impact artificial intelligence regulations; 11. Matters regarding social changes and policy responses related to high-impact artificial intelligence; 12. Matters specified by this Act or any other statute requiring deliberation by the Committee; 13. Other matters deemed necessary by the chairperson of the Committee to be submitted to a meeting of the Committee."
+  },
+  "ARTICLE_8_2": {
+    "ref": "Article 8(2)",
+    "title": "Functions of the Committee",
+    "text": "The Committee may make recommendations or express opinions to the heads of State agencies, etc., artificial intelligence business operators, and other such entities regarding the proper use of AI, the practice of artificial intelligence ethics, the safety and trustworthiness of artificial intelligence technology."
+  },
+  "ARTICLE_8_3": {
+    "ref": "Article 8(3)",
+    "title": "Functions of the Committee",
+    "text": "When the Committee makes recommendations or express opinions under paragraph (2) to the heads of the State agencies, etc., on the improvement of statutes and regulations or systems or the formulation of action plans, they shall formulate improvement plans for statutes and regulations, systems, etc., action plans, or other such plans."
+  },
+  "ARTICLE_9_1": {
+    "ref": "Article 9(1)",
+    "title": "Exclusion of, challenge to, and recusal by member",
+    "text": "If any of the following applies to a member of the Committee, he or she shall be excluded from deliberation and resolution on the relevant agenda item to ensure the impartiality in his or her duties: 1. If a member or a corporation or organization to which the member belongs has a direct interest in the relevant agenda item; 2. If a member's family member (referring to any of the family members as defined in Article 779 of the Civil Act) is an interested party."
+  },
+  "ARTICLE_9_2": {
+    "ref": "Article 9(2)",
+    "title": "Exclusion of, challenge to, and recusal by member",
+    "text": "A party to an agenda item subject to deliberation (including its executive officers and employees if the party is a corporation or organization) may file a request for challenge to a member with the Committee if the circumstances indicate that it would be impractical to expect the member to perform their duties impartially, and the Committee shall make a decision to challenge by resolution if it recognizes that the request for challenge is valid."
+  },
+  "ARTICLE_9_3": {
+    "ref": "Article 9(3)",
+    "title": "Exclusion of, challenge to, and recusal by member",
+    "text": "If the ground under paragraph (1) or (2) applies to a member, he or she shall recuse himself or herself from the deliberation on the relevant agenda item."
+  },
+  "ARTICLE_10_1": {
+    "ref": "Article 10(1)",
+    "title": "Sectoral committees",
+    "text": "The Committee may establish sectoral committees, if necessary, to perform its work by specialized area."
+  },
+  "ARTICLE_10_2": {
+    "ref": "Article 10(2)",
+    "title": "Sectoral committees",
+    "text": "The Committee may establish special committees, if necessary, to discuss specific issues related to artificial intelligence, etc."
+  },
+  "ARTICLE_10_3": {
+    "ref": "Article 10(3)",
+    "title": "Sectoral committees",
+    "text": "The Committee may establish an advisory group consisting of relevant experts, etc. to professionally review matters related to artificial intelligence, etc."
+  },
+  "ARTICLE_10_4": {
+    "ref": "Article 10(4)",
+    "title": "Sectoral committees",
+    "text": "The Council may operate a council of chief artificial intelligence officers, composed of chief artificial intelligence officers as prescribed by Presidential Decree, for the purpose of establishing major government- wide artificial intelligence policy measures and promoting the efficient implementation of related programs. <Added on Jan. 20, 2026>"
+  },
+  "ARTICLE_10_5": {
+    "ref": "Article 10(5)",
+    "title": "Sectoral committees",
+    "text": "Other matters necessary for the composition, operation, etc. of sectoral committees, special committees, advisory groups, and the council of chief artificial intelligence officers shall be prescribed by Presidential Decree. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_11_1": {
+    "ref": "Article 11(1)",
+    "title": "Artificial Intelligence Policy Center",
+    "text": "The Minister of Science and ICT may designate an Artificial Intelligence Policy Center (hereinafter referred to as the \"Center\") to comprehensively perform tasks necessary for the development of policies related to artificial intelligence and the establishment and dissemination of international norms."
+  },
+  "ARTICLE_11_2": {
+    "ref": "Article 11(2)",
+    "title": "Artificial Intelligence Policy Center",
+    "text": "The Center shall perform the following projects: 1. Provision of specialized technical support required for the formulation and implementation of master plans; 2. Provision of specialized technical support for the development of policy measures related to artificial intelligence and the planning and implementation of related projects; 3. Investigation and analysis of the impact on society, economy, culture, and citizens' daily lives due to the spread of artificial intelligence utilization; 4. Trend analyses, social and cultural changes and future forecasts, and investigation and research on laws and systems to support the development of policies related to artificial intelligence and artificial intelligence technology; 5. Projects prescribed as the Center's work or entrusted to the Center under other statutes and regulations; 6. Other projects entrusted by the heads of State agencies, etc."
+  },
+  "ARTICLE_11_3": {
+    "ref": "Article 11(3)",
+    "title": "Artificial Intelligence Policy Center",
+    "text": "Other matters necessary for the designation, etc. of the Center shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_12_1": {
+    "ref": "Article 12(1)",
+    "title": "AI Safety Institute",
+    "text": "The Minister of Science and ICT may operate an Artificial Intelligence Safety Institute (hereinafter referred to as the \"Safety Institute\") to professionally and efficiently perform its duties to secure the protection of citizens' lives, bodies, property, etc. from risks associated with artificial intelligence and the maintenance of a foundation for trust in the artificial intelligence society (hereinafter referred to as \"artificial intelligence safety\")."
+  },
+  "ARTICLE_12_2": {
+    "ref": "Article 12(2)",
+    "title": "AI Safety Institute",
+    "text": "The Safety Institute shall perform the following projects: 1. Define and analyze artificial intelligence safety-related risks; 2. Research on artificial intelligence safety policy; 3. Research on artificial intelligence safety evaluation criteria and methods; 4. Research on artificial intelligence safety technology and standardization; 5. International exchange and international cooperation on artificial intelligence safety; 6. Support for securing the safety of artificial intelligence systems under Article 32; 7. Other projects prescribed by Presidential Decree as projects related to artificial intelligence safety."
+  },
+  "ARTICLE_12_3": {
+    "ref": "Article 12(3)",
+    "title": "AI Safety Institute",
+    "text": "The Government may contribute or support the expenses necessary for the operation and project implementation of the Safety Institute within the budget."
+  },
+  "ARTICLE_12_4": {
+    "ref": "Article 12(4)",
+    "title": "AI Safety Institute",
+    "text": "Other matters necessary for the operation, etc. of the Safety Institute shall be prescribed by Presidential Decree. FOSTERING OF THE INDUSTRY SECTION 1 Creation of Foundation for Artificial Intelligence Industry"
+  },
+  "ARTICLE_13_1": {
+    "ref": "Article 13(1)",
+    "title": "Support for development and safe use of artificial intelligence technology",
+    "text": "The Government may support the following projects to promote the development of artificial intelligence technology: 1. Investigation of domestic and overseas trends and levels of artificial intelligence technology and related systems; 2. Research and development, testing and evaluation of artificial intelligence technologies, or utilization of the developed technologies; 3. Support for the practical application and commercialization of artificial intelligence technologies, including the dissemination, cooperation, and transfer of artificial intelligence technologies; 4. Smooth distribution of information and industry-academia cooperation for the implementation of artificial intelligence technology; 5. Other projects prescribed by Presidential Decree related to the development, research, and investigation of artificial intelligence technology."
+  },
+  "ARTICLE_13_2": {
+    "ref": "Article 13(2)",
+    "title": "Support for development and safe use of artificial intelligence technology",
+    "text": "The Government may support the following projects for the safe and convenient use of artificial intelligence technology: 1. Research and development projects that implement the matters under the subparagraphs of Article 60(1) of the Framework Act on Intelligent Informatization with artificial intelligence technology; 2. Projects to support technology research for implementing the emergency shutdown function under Article 60(3) of the Framework Act on Intelligent Informatization in artificial intelligence products or artificial intelligence services and to promote the dissemination of such technology; 3. Projects for research and development and dissemination of design standards and technologies suitable for the protection of privacy, etc. under Article 61(2) of the Framework Act on Intelligent Informatization in the development of artificial intelligence technology; 4. Research and development projects for the implementation and application of social impact assessment under Article 56(1) of the Framework Act on Intelligent Informatization on artificial intelligence technology; 5. Projects for research and development and dissemination of technologies, standards, etc. that enable artificial intelligence to be developed and used in a manner that respects human dignity and fundamental rights; 6. Education and public relations for awareness improvement, proper usage methods, and safe environment creation for the safe development and use of artificial intelligence; 7. Other projects necessary for the protection of citizens' fundamental rights, bodies, and property in the development and use of artificial intelligence."
+  },
+  "ARTICLE_13_3": {
+    "ref": "Article 13(3)",
+    "title": "Support for development and safe use of artificial intelligence technology",
+    "text": "The Government shall disclose and disseminate the results of the projects under paragraph (2) so that anyone can easily use them. In this case, if necessary for the protection of the person that developed the technology, a protection period may be established to allow them to receive a royalty or to be protected in other ways."
+  },
+  "ARTICLE_14_1": {
+    "ref": "Article 14(1)",
+    "title": "Standardization of artificial intelligence technology",
+    "text": "The Government may implement the following projects for standardization related to the artificial intelligence technology, training data, and the safety and trustworthiness of artificial intelligence. <Amended on Jan. 20, 2026> 1. Establishment, revision, abolition and dissemination of artificial intelligence technology-related standards; 2. Investigation and research and development of domestic and overseas artificial intelligence technology- related standards; 3. Other artificial intelligence technology-related standardization projects."
+  },
+  "ARTICLE_14_2": {
+    "ref": "Article 14(2)",
+    "title": "Standardization of artificial intelligence technology",
+    "text": "The Government may publicly notify the standards established under paragraph (1)1 and recommend compliance to relevant business operators."
+  },
+  "ARTICLE_14_3": {
+    "ref": "Article 14(3)",
+    "title": "Standardization of artificial intelligence technology",
+    "text": "The government can provide necessary support for artificial intelligence technology-related standardization projects promoted by the private sector."
+  },
+  "ARTICLE_14_4": {
+    "ref": "Article 14(4)",
+    "title": "Standardization of artificial intelligence technology",
+    "text": "The Government shall maintain and strengthen the cooperation system with international standards organizations or international standards bodies related to artificial intelligence technology standards."
+  },
+  "ARTICLE_14_5": {
+    "ref": "Article 14(5)",
+    "title": "Standardization of artificial intelligence technology",
+    "text": "Other matters necessary for the promotion and support of standardization projects under paragraphs (1) and (3) shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_15": {
+    "ref": "Article 15",
+    "title": "Establishment of policies measures related to artificial intelligence learning data",
+    "text": "(1) The Minister of Science and ICT shall, in consultation with the heads of relevant central administrative agencies, implement necessary policy measures to facilitate the production, collection, management, distribution, and utilization of training data, and to ensure the quality level thereof. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_15_2": {
+    "ref": "Article 15(2)",
+    "title": "Establishment of policies measures related to artificial intelligence learning data",
+    "text": "The Government may select target projects and support them within the budget to efficiently promote policy measures related to the production, collection, management, distribution, and utilization of learning data."
+  },
+  "ARTICLE_15_3": {
+    "ref": "Article 15(3)",
+    "title": "Establishment of policies measures related to artificial intelligence learning data",
+    "text": "The Government may implement a project that produces and provides various learning data (hereinafter referred to as \"learning data construction project\") to activate the production, collection, management, distribution, and utilization of learning data."
+  },
+  "ARTICLE_15_4": {
+    "ref": "Article 15(4)",
+    "title": "Establishment of policies measures related to artificial intelligence learning data",
+    "text": "The Minister of Science and ICT shall establish and manage a system that can integrally provide and manage learning data (hereinafter referred to as the \"integrated provision system\") for the efficient implementation of the learning data construction project and make it freely available to the private sector."
+  },
+  "ARTICLE_15_5": {
+    "ref": "Article 15(5)",
+    "title": "Establishment of policies measures related to artificial intelligence learning data",
+    "text": "The Minister of Science and ICT may collect fees from persons that use the integrated provision system."
+  },
+  "ARTICLE_15_6": {
+    "ref": "Article 15(6)",
+    "title": "Establishment of policies measures related to artificial intelligence learning data",
+    "text": "Matters necessary for selecting and supporting target projects under paragraph (2), the implementation of the learning data construction project, the establishment and management of the integrated provision system, and the collection of fees under paragraph (5) shall be prescribed by Presidential Decree. SECTION 2 Creation of Foundation for the Artificial Intelligence Industry"
+  },
+  "ARTICLE_16": {
+    "ref": "Article 16",
+    "title": "Policy measures for adoption and utilization of artificial intelligence technology",
+    "text": "(1) The State and local governments shall establish and implement policy measures to promote the adoption and widespread utilization of artificial intelligence technology by enterprises and public institutions: <Added on Jan. 20, 2026>"
+  },
+  "ARTICLE_16_2": {
+    "ref": "Article 16(2)",
+    "title": "Policy measures for adoption and utilization of artificial intelligence technology",
+    "text": "The State and local governments may, if necessary, provide the following support to promote the adoption and utilization of artificial intelligence technology by enterprises and public institutions: <Amended on Jan. 20, 2026> 1. Support for the development of artificial intelligence technology, artificial intelligence products, or artificial intelligence services, and the dissemination of research and development outcomes; 2. Consulting support for enterprises and public institutions that intend to introduce and utilize artificial intelligence technology; 2-2. Support necessary for public institutions to generate and provide data they hold and manage as training data, and to ensure an appropriate level of quality. 3. Support for education related to the introduction and utilization of artificial intelligence technology for executive officers and employees of small and medium enterprises under Article 2(1) of the Framework Act on Small and Medium Enterprises, venture businesses under Article 2(1) of the Special Act on the Promotion of Venture Businesses, and small business owners under Article 2(1) of Framework Act on Micro Enterprises (hereinafter referred to as \"small and medium enterprises, etc.\"); 4. Funding for the introduction and utilization of artificial intelligence technology by small and medium enterprises, etc. 5. Other matters prescribed by Presidential Decree to promote the introduction and utilization of artificial intelligence technology by enterprises and public institutions."
+  },
+  "ARTICLE_16_3": {
+    "ref": "Article 16(3)",
+    "title": "Policy measures for adoption and utilization of artificial intelligence technology",
+    "text": "Each State agency or other public entity shall give preferential consideration to artificial intelligence products or artificial intelligence services prescribed by Presidential Decree where intending to procure products or services or award service contracts necessary for the performance of its functions; provided, this shall not apply where the use of artificial intelligence technology is not appropriate due to the nature of the functions. <Added on Jan. 20, 2026>"
+  },
+  "ARTICLE_16_4": {
+    "ref": "Article 16(4)",
+    "title": "Policy measures for adoption and utilization of artificial intelligence technology",
+    "text": "Even where damage occurs to a State agency or other public entity as a result of the purchase or use of an artificial intelligence product or artificial intelligence service under paragraph (3), the person in charge of the purchase or use shall not be liable for compensation for damages to the agency or entity; provided, this shall not apply if the damages resulted from the willful misconduct or gross negligence of that person. <Added on Jan. 20, 2026>"
+  },
+  "ARTICLE_16_5": {
+    "ref": "Article 16(5)",
+    "title": "Policy measures for adoption and utilization of artificial intelligence technology",
+    "text": "Matters necessary for support under paragraph (2) shall be prescribed by Presidential Decree. <Amended on Jan. 20, 2026> [Title Amended on Jan. 20, 2026]"
+  },
+  "ARTICLE_17_1": {
+    "ref": "Article 17(1)",
+    "title": "Special support for small and medium enterprises, etc.",
+    "text": "When implementing various support policy measures related to artificial intelligence technology and the artificial intelligence industry under this Act, priority shall be given to small and medium enterprises, etc."
+  },
+  "ARTICLE_17_2": {
+    "ref": "Article 17(2)",
+    "title": "Special support for small and medium enterprises, etc.",
+    "text": "The Government shall endeavor to activate participation of small and medium enterprises, etc. in the artificial intelligence industry and shall reflect matters related thereto in the master plan."
+  },
+  "ARTICLE_17_3": {
+    "ref": "Article 17(3)",
+    "title": "Special support for small and medium enterprises, etc.",
+    "text": "The Minister of Science and ICT may provide support to small and medium enterprises, etc., in the implementation of measures under Article 34 and the impact assessment under Article 35 to ensure the safety and trustworthiness of artificial intelligence."
+  },
+  "ARTICLE_17-2_1": {
+    "ref": "Article 17-2(1)",
+    "title": "Support for expenses for using artificial intelligence products and artificial intelligence services",
+    "text": "The State and local governments may provide assistance to cover all or part of the costs for individuals who have difficulty accessing artificial intelligence products and artificial intelligence services due to economic circumstances, within the budget."
+  },
+  "ARTICLE_17-2_2": {
+    "ref": "Article 17-2(2)",
+    "title": "Support for expenses for using artificial intelligence products and artificial intelligence services",
+    "text": "The eligibility requirements ,eligible recipients, and other matters necessary for cost assistance under paragraph (1) shall be prescribed by Presidential Decree. [This Article Added on Jan. 20, 2026]"
+  },
+  "ARTICLE_18_1": {
+    "ref": "Article 18(1)",
+    "title": "Promotion of business start-up",
+    "text": "The Government may support the following projects to activate business start-up in the artificial intelligence industry: 1. Projects related to the discovery, fostering, and support of entrepreneurs in the artificial intelligence industry sectors; 2. Projects related to education and training for the promotion of business start-up in the artificial intelligence industry sectors; 3. Support for the commercialization of excellent artificial intelligence technologies of professionals under Article 21; 4. Valuation of artificial intelligence technology and financial support for startup funding; 5. Provision of AI-related research and technology development outcomes; 6. Fostering institutions and organizations that support business start-up in the artificial intelligence industry sectors; 7. Other projects necessary to activate business start-up in the artificial intelligence industry sectors."
+  },
+  "ARTICLE_18_2": {
+    "ref": "Article 18(2)",
+    "title": "Promotion of business start-up",
+    "text": "Local governments may contribute to or invest in public organizations such as public institutions that support business start-up in the artificial intelligence industry sectors."
+  },
+  "ARTICLE_18_3": {
+    "ref": "Article 18(3)",
+    "title": "Promotion of business start-up",
+    "text": "The head of a central administrative agency may, in consultation with the Minister of SMEs and Startups, provide support through the fund of funds for venture investment established under Article 70 of the Venture Investment Promotion Act in order to encourage business start-up in the artificial intelligence industry. <Added on Jan. 20, 2026>"
+  },
+  "ARTICLE_18_4": {
+    "ref": "Article 18(4)",
+    "title": "Promotion of business start-up",
+    "text": "The funds for the support under paragraph (3) shall be created with the following financial resources: <Added on Jan. 20, 2026> 1. Capital contributions made by the State, local governments, or public institutions; 2. Capital contributions made by a person, other than the State, a local government, or a public institution, that wishes to invest in the fund of funds for venture investment in connection with the artificial intelligence industry; 3. Other incidental income."
+  },
+  "ARTICLE_18_5": {
+    "ref": "Article 18(5)",
+    "title": "Promotion of business start-up",
+    "text": "Matters necessary for making capital contributions to the fund of funds for venture investment under paragraph (2) shall be prescribed by Presidential Decree. <Added on Jan. 20, 2026> [Title Amended on Jan. 20, 2026]"
+  },
+  "ARTICLE_19_1": {
+    "ref": "Article 19(1)",
+    "title": "Promotion of artificial intelligence convergence",
+    "text": "The Government shall establish and implement necessary policy measures to promote convergence between the artificial intelligence industry and other industries and to activate the utilization of artificial intelligence across all sectors."
+  },
+  "ARTICLE_19_2": {
+    "ref": "Article 19(2)",
+    "title": "Promotion of artificial intelligence convergence",
+    "text": "The Government may, if necessary, prioritize and promote research and development projects on artificial intelligence convergence products and services in national research and development projects under the National Research and Development Innovation Act to support the development of artificial intelligence convergence products and services."
+  },
+  "ARTICLE_19_3": {
+    "ref": "Article 19(3)",
+    "title": "Promotion of artificial intelligence convergence",
+    "text": "The Government shall actively support the smooth implementation of temporary permission under Article 37 of the Special Act on Information and Communications Promotion and Convergence Activation and regulatory exemptions for demonstration under Article 38-2 of that Act for artificial intelligence convergence products and services developed under paragraph (2)."
+  },
+  "ARTICLE_20_1": {
+    "ref": "Article 20(1)",
+    "title": "System improvement",
+    "text": "The Government shall endeavor to improve related systems, such as the revision of statutes and regulations, in order to develop the artificial intelligence industry and create a foundation for trust."
+  },
+  "ARTICLE_20_2": {
+    "ref": "Article 20(2)",
+    "title": "System improvement",
+    "text": "The Government may provide administrative and financial support necessary for research on related laws and systems and for gathering opinions from various sectors of society in order to promote the improvement of systems under paragraph (1)."
+  },
+  "ARTICLE_21_1": {
+    "ref": "Article 21(1)",
+    "title": "Securing professionals",
+    "text": "The Minister of Science and ICT shall implement the following projects to foster and support professional personnel specializing in artificial intelligence and artificial intelligence technology in accordance with the policy measures under Article 23(1) of the Framework Act on Intelligent Informatization for the development of artificial intelligence technology and the advancement of the artificial intelligence industry. <Amended on Jan. 20, 2026> 1. Development and utilization of education and training programs to enhance the job competencies and career development of professional personnel; 2. Promotion of employment, including by supporting the placement of professional personnel and facilitating the entry of new talent into the workforce; 3. Promotion of diversified career pathways, including the expansion of opportunities for professional personnel to enter public service; 4. Support for domestic and international training of professional personnel and promotion of international exchange; 5. Improvement of the welfare of professional personnel, including the improvement of working conditions and enhancement of benefits; 6. Other projects for fostering and supporting professional personnel in artificial intelligence and artificial intelligence technology."
+  },
+  "ARTICLE_21_2": {
+    "ref": "Article 21(2)",
+    "title": "Securing professionals",
+    "text": "The Government may implement the following policy measures to secure overseas professionals related to artificial intelligence and artificial intelligence technology: 1. Investigation and analysis on professionals in overseas universities, research institutes, enterprises, etc. related to artificial intelligence and artificial intelligence technology; 2. Establishment of an international network to attract excellent overseas professionals; 3. Support for the employment of overseas professionals in the Republic of Korea; 4. Support for overseas expansion of domestic artificial intelligence research institutes and attraction of overseas artificial intelligence research institutes to the Republic of Korea; 5. Support for attracting international organizations and international events related to artificial intelligence and artificial intelligence technology to the Republic of Korea; 6. Other matters necessary to secure overseas professionals."
+  },
+  "ARTICLE_22_1": {
+    "ref": "Article 22(1)",
+    "title": "Support for international cooperation and overseas expansion",
+    "text": "The Government shall identify international trends related to artificial intelligence and promote international cooperation."
+  },
+  "ARTICLE_22_2": {
+    "ref": "Article 22(2)",
+    "title": "Support for international cooperation and overseas expansion",
+    "text": "The Government may provide the following support to individuals, enterprises, or organizations engaged in the artificial intelligence industry in order to strengthen the competitiveness of the artificial intelligence industry and promote expansion into overseas markets: 1. International exchange of information, technology, and personnel related to the artificial intelligence industry; 2. Collection, analysis, and provision of information on overseas expansion related to the artificial intelligence industry; 3. Support for joint research and development and international standardization of artificial intelligence technology, artificial intelligence products, or artificial intelligence services between countries; 4. Attraction of foreign capital investment related to the artificial intelligence industry; 5. Public relations and overseas marketing, including participation in overseas professional academic societies and exhibitions related to artificial intelligence, etc.; 6. Establishment of sales systems, distribution systems, and cooperative systems necessary for the export of artificial intelligence products or artificial intelligence services; 7. Identification of international trends in artificial intelligence ethics, and international cooperation; 8. Other matters necessary to strengthen the competitiveness of the artificial intelligence industry and promote entry into overseas markets."
+  },
+  "ARTICLE_22_3": {
+    "ref": "Article 22(3)",
+    "title": "Support for international cooperation and overseas expansion",
+    "text": "The Government may, as prescribed by Presidential Decree, entrust or delegate the execution of the support under each subparagraph of paragraph (2) to a public institution or other organization in order to efficiently perform the support, and may subsidize the necessary expenses for this purpose."
+  },
+  "ARTICLE_22-2_1": {
+    "ref": "Article 22-2(1)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "Entities prescribed by the Presidential Decree, such as universities or enterprises, may establish and operate research institutes for the development and utilization of artificial intelligence (each hereinafter referred to as an \"Artificial Intelligence Research Institute\"), independently or jointly."
+  },
+  "ARTICLE_22-2_2": {
+    "ref": "Article 22-2(2)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "Where an entity prescribed by the Presidential Decree, such as a university or an enterprise, intends to establish an Artificial Intelligence Research Institute under paragraph (1), it shall obtain permission from the Minister of Science and ICT after meeting the following requirements: 1. It shall have at least 3 promoters; 2. It shall have the capability, including personnel and facilities, to conduct projects under paragraph (5); 3. It shall meet other requirements prescribed by Presidential Decree necessary for the establishment and operation of the Artificial Intelligence Research Institute."
+  },
+  "ARTICLE_22-2_3": {
+    "ref": "Article 22-2(3)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "An Artificial Intelligence Research Institute shall have a head. The head of the Artificial Intelligence Research Institute shall represent the Institute and exercise overall control over its affairs."
+  },
+  "ARTICLE_22-2_4": {
+    "ref": "Article 22-2(4)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "The articles of incorporation of an Artificial Intelligence Research Institute shall include the following matters: 1. Purposes; 2. Name; 3. Location of the principal office; 4. Regulations on assets; 5. Regulations on the qualifications and appointment and dismissal of the head of the Institute; 6. Regulations on the responsibilities and authorities of the head of the Institute."
+  },
+  "ARTICLE_22-2_5": {
+    "ref": "Article 22-2(5)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "An Artificial Intelligence Research Institute shall perform the following projects, according to its specific industry or functional focus: 1. Artificial intelligence technology research and development; 2. Research and development on the convergence of artificial intelligence technologies with other technologies and interdisciplinary fields; 3. Management, transfer, utilization, and commercialization of research and development outcomes in artificial intelligence technology; 4. Fostering of personnel specializing in artificial intelligence technology research and development; 5. International exchange and cooperation related to artificial intelligence technology research and development; 6. Other matters necessary for artificial intelligence technology research and development."
+  },
+  "ARTICLE_22-2_6": {
+    "ref": "Article 22-2(6)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "The Government and local governments may provide financial support within the budget for the expenses necessary for the operation and project implementation of artificial intelligence research institutes."
+  },
+  "ARTICLE_22-2_7": {
+    "ref": "Article 22-2(7)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "Artificial intelligence research institutes may receive subsidies, donations, or other contributions from persons other than the Government or local governments or may engage in revenue-generating activities as stipulated in their articles of incorporation, in order to generate funds necessary for their operation."
+  },
+  "ARTICLE_22-2_8": {
+    "ref": "Article 22-2(8)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "The head of an Artificial Intelligence Research Institute may, where necessary for the research and development of artificial intelligence technology and related activities, consult with entities specified by Presidential Decree, such as universities and enterprises, under paragraph (1), arrange for executive officers or employees to be seconded to, or to serve concurrently at, the artificial intelligence research institute to conduct research or related activities, and may provide necessary support to the institutions to which such executive officers or employees belong. In such cases, the head of the Institute may request support for consultation from the Minister of Science and ICT if necessary."
+  },
+  "ARTICLE_22-2_9": {
+    "ref": "Article 22-2(9)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "Except as provided in this Act, the provisions of the Civil Act governing incorporated foundations shall apply mutatis mutandis to artificial intelligence research institutes."
+  },
+  "ARTICLE_22-2_10": {
+    "ref": "Article 22-2(10)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "The Minister of Science and ICT may order corrective measures or revoke the permission for the establishment of an Artificial Intelligence Research Institute if it falls under any of the following cases; provided, if the institute falls under subparagraph 1 or 2, the permission shall be revoked: 1.Where the Institute has obtained permission for its establishment by fraud or other improper means; 2. Where the Institute becomes impossible to achieve its purposes; 3. Where the Institute fails to meet the requirements for permission under paragraph (2); 4. Where the Institute engages in any business outside the scope of its intended purposes; 5. Where the Institute violates any statute or regulation, articles of incorporation, or order issued under this Act; 6. Where the Institute commits an act harmful to the public interest; 7. Where the Institute fails to commence its intended business within 6 months from the date of permission for its establishment without good cause, or it has no business performance for 1 year or more."
+  },
+  "ARTICLE_22-2_11": {
+    "ref": "Article 22-2(11)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "The Minister of Science and ICT shall hold a hearing if the Minister intends to revoke the permission for the establishment of an Artificial Intelligence Research Institute under paragraph (10)."
+  },
+  "ARTICLE_22-2_12": {
+    "ref": "Article 22-2(12)",
+    "title": "Establishment and support of artificial intelligence research institutes",
+    "text": "Other matters necessary for the procedures for establishment of an Artificial Intelligence Research Institute, and the operation and support thereof shall be prescribed by Presidential Decree. [This Article Added on Jan. 20, 2026]"
+  },
+  "ARTICLE_22-3": {
+    "ref": "Article 22-3",
+    "title": "Establishment and operation of research institutions for securing artificial intelligence technology",
+    "text": "The Minister of Science and ICT may establish and operate institutions that conduct research on the development and utilization of artificial intelligence, as prescribed by Presidential Decree, where necessary to secure innovative artificial intelligence technology. [This Article Added on Jan. 20, 2026]"
+  },
+  "ARTICLE_23_1": {
+    "ref": "Article 23(1)",
+    "title": "Designation of artificial intelligence clusters",
+    "text": "The State and local governments may promote the functional, physical, and regional clustering of enterprises, institutions, or organizations that conduct research and development of artificial intelligence and artificial intelligence technology in order to promote the artificial intelligence industry and strengthen the competitiveness of artificial intelligence development and utilization."
+  },
+  "ARTICLE_23_2": {
+    "ref": "Article 23(2)",
+    "title": "Designation of artificial intelligence clusters",
+    "text": "The State and local governments may, if necessary for the clustering under paragraph (1), designate an artificial intelligence cluster (hereinafter referred to as the \"artificial intelligence cluster\") and provide administrative, financial, and technical support as prescribed by Presidential Decree."
+  },
+  "ARTICLE_23_3": {
+    "ref": "Article 23(3)",
+    "title": "Designation of artificial intelligence clusters",
+    "text": "The Minister of Science and ICT may revoke the designation of an artificial intelligence cluster in any of the following cases; provided, in the case of subparagraph 1, the designation shall be revoked: 1. Where the institution obtains designation by fraud or other improper means; 2. Where the head of the State or local government that designated the artificial intelligence cluster deems that it is difficult for the artificial intelligence cluster to achieve the purpose of its designation."
+  },
+  "ARTICLE_23_4": {
+    "ref": "Article 23(4)",
+    "title": "Designation of artificial intelligence clusters",
+    "text": "The Government may establish or designate a dedicated organization to comprehensively support related tasks in order to effectively settle the clustering in a region in accordance with paragraph (1)."
+  },
+  "ARTICLE_23_5": {
+    "ref": "Article 23(5)",
+    "title": "Designation of artificial intelligence clusters",
+    "text": "The Government may contribute or subsidize all or part of the expenses necessary for the operation and project execution of the dedicated organization under paragraph (4)."
+  },
+  "ARTICLE_23_6": {
+    "ref": "Article 23(6)",
+    "title": "Designation of artificial intelligence clusters",
+    "text": "Other matters necessary for the designation and revocation of the designation of an artificial intelligence cluster and the establishment or designation of a dedicated organization under paragraph (4) shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_24_1": {
+    "ref": "Article 24(1)",
+    "title": "Establishment of artificial intelligence demonstration infrastructure",
+    "text": "The State and local governments may establish and operate facilities, equipment, and installations, etc. necessary for testing and evaluation (hereinafter referred to as \"demonstration infrastructure, etc.\") to support demonstration, performance testing, and verification and certification under Article 30 (hereinafter referred to as \"demonstration testing, etc.\") of technologies developed or acquired by artificial intelligence business operators."
+  },
+  "ARTICLE_24_2": {
+    "ref": "Article 24(2)",
+    "title": "Establishment of artificial intelligence demonstration infrastructure",
+    "text": "The State and local governments may open demonstration infrastructure, etc. held by institutions designated by Presidential Decree to artificial intelligence business operators in order to promote demonstration testing, etc."
+  },
+  "ARTICLE_24_3": {
+    "ref": "Article 24(3)",
+    "title": "Establishment of artificial intelligence demonstration infrastructure",
+    "text": "Other matters necessary for the establishment, operation, opening, etc. of demonstration infrastructure, etc. shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_25_1": {
+    "ref": "Article 25(1)",
+    "title": "Promotion of policy measures related to artificial intelligence data centers",
+    "text": "The Government shall promote necessary policy measures to encourage the establishment and operation of data centers used for the development and utilization of artificial intelligence (hereinafter referred to as \"artificial intelligence data centers\")."
+  },
+  "ARTICLE_25_2": {
+    "ref": "Article 25(2)",
+    "title": "Promotion of policy measures related to artificial intelligence data centers",
+    "text": "The Government may perform the following tasks to implement the policy measures under paragraph (1). 1. Administrative and financial support necessary for the establishment and operation of artificial intelligence data centers 2. Support for the use of artificial intelligence data centers by small and medium enterprises, research institutes, etc.; 3. Support for balanced regional development of artificial intelligence-related infrastructure facilities, including artificial intelligence data centers."
+  },
+  "ARTICLE_26_1": {
+    "ref": "Article 26(1)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "Persons engaged in research and duties related to artificial intelligence, etc. may establish or be designated as the Korea Artificial Intelligence Promotion Association (hereinafter referred to as the \"Association\") with the authorization of the Minister of Science and ICT, as prescribed by Presidential Decree, to promote the development and use of artificial intelligence, to advance the artificial intelligence industry and technology, and to provide education and publicity related to artificial intelligence, etc."
+  },
+  "ARTICLE_26_2": {
+    "ref": "Article 26(2)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "The Association shall be a corporation."
+  },
+  "ARTICLE_26_3": {
+    "ref": "Article 26(3)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "The Association shall perform the following duties: 1. Promotion and dissemination of the use of artificial intelligence technology, artificial intelligence products, or artificial intelligence services; 2. Investigation of the current status of artificial intelligence, etc., and related statistics; 3. Installation and operation of common use facilities for artificial intelligence business operators and provision of training for the development of professionals; 4. Support for the overseas expansion of artificial intelligence business operators and AI-related professionals; 5. Education and publicity for the development and utilization of safe and trustworthy artificial intelligence; 6. Projects entrusted to the Association under this Act or other statutes; 7. Other projects necessary for achieving the objectives of the establishment of the Association, as prescribed by its articles of association."
+  },
+  "ARTICLE_26_4": {
+    "ref": "Article 26(4)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "The State and local governments may support funds necessary for the Association's implementation of its projects or subsidize expenses necessary for its operation within the budget if necessary for the development of the artificial intelligence industry and the creation of a foundation for trust."
+  },
+  "ARTICLE_26_5": {
+    "ref": "Article 26(5)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "The qualifications for members of the Association, its executive officers, its duties, etc. shall be prescribed by the articles of association; and other matters to be included in the articles of association shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_26_6": {
+    "ref": "Article 26(6)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "Where the Minister of Science and ICT grants authorization under paragraph (1), he or she shall publicly announce the fact."
+  },
+  "ARTICLE_26_7": {
+    "ref": "Article 26(7)",
+    "title": "Establishment of Korea Artificial Intelligence Promotion Association",
+    "text": "Except as provided in this Act, the provisions of the Civil Act governing incorporated associations shall apply mutatis mutandis to the Association."
+  },
+  "ARTICLE_27_1": {
+    "ref": "Article 27(1)",
+    "title": "Artificial Intelligence Ethics Principles",
+    "text": "The Government may establish and promulgate the principles of artificial intelligence ethics (hereinafter referred to as the \"Ethics Principles\"), including the following matters, as prescribed by Presidential Decree, to disseminate artificial intelligence ethics: 1. Matters related to safety and trustworthiness to ensure that human life, body, mental health, etc. are not harmed during the process of developing and utilizing AI; 2. Matters related to accessibility that allow all people to freely and conveniently use products, services, etc. to which artificial intelligence technology is applied; 3. Matters related to the development and utilization of artificial intelligence for the contribution to human life and prosperity."
+  },
+  "ARTICLE_27_2": {
+    "ref": "Article 27(2)",
+    "title": "Artificial Intelligence Ethics Principles",
+    "text": "The Minister of Science and ICT shall establish action plans to ensure that the Ethics Principles can be realized by all persons involved in the development and utilization of artificial intelligence after gathering opinions from various sectors of society and shall disclose, publicize, and educate them."
+  },
+  "ARTICLE_27_3": {
+    "ref": "Article 27(3)",
+    "title": "Artificial Intelligence Ethics Principles",
+    "text": "Where the head of a central administrative agency or the head of a local government enacts or amends artificial intelligence ethics standards (referring to artificial intelligence ethics-related statutes or regulations, standards, guidance, or guidelines regardless of their name or form), the Minister of Science and ICT may make recommendations or express opinions on the connectivity and consistency with the Ethics Principles and the action plans under paragraph (2)."
+  },
+  "ARTICLE_28": {
+    "ref": "Article 28",
+    "title": "Establishment of private autonomous artificial intelligence ethics committees",
+    "text": "(1) The following institutions or organizations may establish a private autonomous artificial intelligence ethics committee (hereinafter referred to as \"private autonomous committee\") in order to comply with the Ethical Principles: 1. Educational institutions and research institutes to which persons who conduct artificial intelligence technology research and development belong; 2. Artificial intelligence business operators; 3. Other artificial intelligence technology-related institutions prescribed by Presidential Decree."
+  },
+  "ARTICLE_28_2": {
+    "ref": "Article 28(2)",
+    "title": "Establishment of private autonomous artificial intelligence ethics committees",
+    "text": "Private autonomous committees shall autonomously perform the following duties: 1. Checking compliance with the Ethical Principles in artificial intelligence technology research, development, and utilization; 2. Investigation and research on safety, human rights violations, etc. in artificial intelligence technology research, development, and utilization; 3. Investigation and supervision of the procedures and results of artificial intelligence technology research, development, and utilization; 4. Provision of education on the Ethical Principles to researchers and employees of the relevant institution or organization; 5. Preparation of sector-specific artificial intelligence ethics guidelines suitable for artificial intelligence technology research, development, and utilization; 6. Other duties necessary for the implementation of the Ethical Principles."
+  },
+  "ARTICLE_28_3": {
+    "ref": "Article 28(3)",
+    "title": "Establishment of private autonomous artificial intelligence ethics committees",
+    "text": "The matters necessary for the composition and operation of the private autonomous committee shall be determined autonomously by the relevant institution or organization; provided, the committee shall not be composed of members of a single gender, and shall include persons who have experience and knowledge to evaluate social and ethical validity and persons who are not employed by the relevant institution or organization, respectively."
+  },
+  "ARTICLE_28_4": {
+    "ref": "Article 28(4)",
+    "title": "Establishment of private autonomous artificial intelligence ethics committees",
+    "text": "The Minister of Science and ICT may prepare and disseminate standard guidelines, etc. for the fair and neutral composition and operation of private autonomous committees."
+  },
+  "ARTICLE_29": {
+    "ref": "Article 29",
+    "title": "Preparation of policy measures to create foundation for trust in AI",
+    "text": "The Government shall prepare the following policy measures to minimize the potential risks of artificial intelligence on citizens' lives and to create a foundation of trust for the safe use of AI: 1. Creation of a safe and trustworthy environment for the use of AI; 2. Forecasts and predictions of the impact of the use of artificial intelligence on citizens' daily lives and the reorganization of related statutes and regulations and systems; 3. Support for the development and dissemination of safety technologies and certification technologies to ensure the safety and trustworthiness of artificial intelligence; 4. Provision of education and publicity for the realization of a safe and trustworthy artificial intelligence society and the practice of artificial intelligence ethics; 5. Support for artificial intelligence business operators in the autonomous establishment and implementation of rules related to safety and trustworthiness; 6. Support and dissemination of private activities, such as autonomous cooperation to enhance the safety and trustworthiness of artificial intelligence and the establishment of ethical guidelines by artificial intelligence-related organizations composed of artificial intelligence business operators, users, etc. (hereinafter referred to as \"organizations, etc.\"); 7. Other matters prescribed by Presidential Decree to ensure the safety and trustworthiness of artificial intelligence."
+  },
+  "ARTICLE_30_1": {
+    "ref": "Article 30(1)",
+    "title": "Support for verification and certification of safety and trustworthiness of artificial intelligence",
+    "text": "The Minister of Science and ICT may promote the following projects to support verification and certification activities (hereinafter referred to as \"verification and certification\") autonomously performed by organizations, etc. to ensure the safety and trustworthiness of artificial intelligence: 1. Dissemination of guidelines for the development of artificial intelligence; 2. Support for research on verification and certification; 3. Support for the construction and operation of equipment and systems used for verification and certification; 4. Support for the training of professionals needed for verification and certification; 5. Other matters as prescribed by Presidential Decree to support verification and certification."
+  },
+  "ARTICLE_30_2": {
+    "ref": "Article 30(2)",
+    "title": "Support for verification and certification of safety and trustworthiness of artificial intelligence",
+    "text": "The Minister of Science and ICT may, as prescribed by Presidential Decree, provide related information or administrative and financial support to small and medium enterprises, etc. that intends to obtain verification and certification."
+  },
+  "ARTICLE_30_3": {
+    "ref": "Article 30(3)",
+    "title": "Support for verification and certification of safety and trustworthiness of artificial intelligence",
+    "text": "An artificial intelligence business operator shall endeavor to obtain verification and certification in advance when providing high-impact artificial intelligence."
+  },
+  "ARTICLE_30_4": {
+    "ref": "Article 30(4)",
+    "title": "Support for verification and certification of safety and trustworthiness of artificial intelligence",
+    "text": "When State agencies, etc. intends to use high-impact artificial intelligence, they shall give priority consideration to products or services based on artificial intelligence that have obtained verification and certification."
+  },
+  "ARTICLE_31_1": {
+    "ref": "Article 31(1)",
+    "title": "Obligation to ensure artificial intelligence transparency",
+    "text": "An artificial intelligence business operator that intends to provide a product or service using high-impact artificial intelligence or generative artificial intelligence shall notify the user in advance that the product or service is operated based on the relevant artificial intelligence."
+  },
+  "ARTICLE_31_2": {
+    "ref": "Article 31(2)",
+    "title": "Obligation to ensure artificial intelligence transparency",
+    "text": "An artificial intelligence business operator that provides generative artificial intelligence or a product or service using it shall label that the output was generated by generative artificial intelligence."
+  },
+  "ARTICLE_31_3": {
+    "ref": "Article 31(3)",
+    "title": "Obligation to ensure artificial intelligence transparency",
+    "text": "If an artificial intelligence business operator provides virtual sound, image, or video outputs that are difficult to distinguish from the real ones by using an artificial intelligence system, they shall notify or label in a manner that users can clearly recognize the fact that the outputs are generated by the artificial intelligence system. In this case, if the outputs correspond to an artistic or creative work or constitute a part thereof, the fact may be notified or labeled in a manner that does not hinder the exhibition or enjoyment."
+  },
+  "ARTICLE_31_4": {
+    "ref": "Article 31(4)",
+    "title": "Obligation to ensure artificial intelligence transparency",
+    "text": "Other matters necessary for the prior notification under paragraph (1), the indication under paragraph (2), the method of notification or indication and its exceptions under paragraph (3) shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_32_1": {
+    "ref": "Article 32(1)",
+    "title": "Obligation to ensure artificial intelligence safety",
+    "text": "An artificial intelligence business operator shall implement the following to ensure the safety of an artificial intelligence system in which the cumulative amount of computation for learning is equal to or greater than the standard prescribed by Presidential Decree: 1. Identification, assessment, and mitigation of risks throughout the entire artificial intelligence lifecycle; 2. Establishment of a risk management system that monitors and responds to artificial intelligence-related safety accidents."
+  },
+  "ARTICLE_32_2": {
+    "ref": "Article 32(2)",
+    "title": "Obligation to ensure artificial intelligence safety",
+    "text": "An artificial intelligence business operator shall submit the results of the implementation of the matters in the subparagraphs of paragraph (1) to the Minister of Science and ICT."
+  },
+  "ARTICLE_32_3": {
+    "ref": "Article 32(3)",
+    "title": "Obligation to ensure artificial intelligence safety",
+    "text": "The Minister of Science and ICT shall determine and publicly notify the specific implementation methods for the matters in the subparagraphs of paragraph (1) and the matters necessary for submitting the results under paragraph (2)."
+  },
+  "ARTICLE_33_1": {
+    "ref": "Article 33(1)",
+    "title": "Confirmation of high-impact artificial intelligence",
+    "text": "When providing artificial intelligence or products and services using it, the artificial intelligence business operator shall review in advance whether the artificial intelligence falls under the high-impact artificial intelligence, and if necessary, may request the Minister of Science and ICT to confirm whether it falls under the high-impact artificial intelligence."
+  },
+  "ARTICLE_33_2": {
+    "ref": "Article 33(2)",
+    "title": "Confirmation of high-impact artificial intelligence",
+    "text": "The Minister of Science and ICT shall, upon receipt of the request under paragraph (1), confirm whether the artificial intelligence falls under the high-impact artificial intelligence, and may establish a specialized committee to obtain related advice if necessary."
+  },
+  "ARTICLE_33_3": {
+    "ref": "Article 33(3)",
+    "title": "Confirmation of high-impact artificial intelligence",
+    "text": "The Minister of Science and ICT may establish and disseminate guidelines on standards and examples of high-impact artificial intelligence."
+  },
+  "ARTICLE_33_4": {
+    "ref": "Article 33(4)",
+    "title": "Confirmation of high-impact artificial intelligence",
+    "text": "Other matters necessary for the confirmation procedures under paragraph (1) shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_34_1": {
+    "ref": "Article 34(1)",
+    "title": "Responsibilities of business operators regarding high-impact artificial intelligence",
+    "text": "When providing high-impact artificial intelligence or a product or service using it, the artificial intelligence business operator shall implement measures that include the following in accordance with Presidential Decree to ensure the safety and trustworthiness of artificial intelligence: 1. To formulate and operate a risk management plan; 2. To formulate and implement an explanation plan for the final results derived by the artificial intelligence to the extent technically feasible, the main criteria utilized to derive the final results of the artificial intelligence, and the overview of learning data used in the development and utilization of the artificial intelligence; 3. To formulate and operate user protection plans; 4. To assign human management and oversight of high-impact artificial intelligence; 5. To prepare and retain documents that can verify the content of the measures taken to ensure the safety and trustworthiness; 6. Other matters deliberated and resolved by the Committee to ensure the safety and trustworthiness of high-impact artificial intelligence."
+  },
+  "ARTICLE_34_2": {
+    "ref": "Article 34(2)",
+    "title": "Responsibilities of business operators regarding high-impact artificial intelligence",
+    "text": "The Minister of Science and ICT shall determine and publicly notify the details of the measures in the subparagraphs of paragraph (1) and may recommend that artificial intelligence business operators comply with them."
+  },
+  "ARTICLE_34_3": {
+    "ref": "Article 34(3)",
+    "title": "Responsibilities of business operators regarding high-impact artificial intelligence",
+    "text": "If an artificial intelligence business operator has implemented measures equivalent to those in the subparagraphs of paragraph (1) as prescribed by Presidential Decree, they shall be deemed to have implemented the measures under paragraph (1)."
+  },
+  "ARTICLE_35_1": {
+    "ref": "Article 35(1)",
+    "title": "Impact assessment of high-impact artificial intelligence",
+    "text": "Where an artificial intelligence business operator provides products or services using high-impact artificial intelligence, the operator shall endeavor to assess the impact on the fundamental rights of people in advance (hereinafter referred to as \"impact assessment\"). In such cases, the impact assessment shall be conducted in a manner that reflects the characteristics of populations vulnerable to artificial intelligence, considering the nature of the products or services using high-impact artificial intelligence. <Amended on Jan. 20, 2026>"
+  },
+  "ARTICLE_35_2": {
+    "ref": "Article 35(2)",
+    "title": "Impact assessment of high-impact artificial intelligence",
+    "text": "Where State agencies, etc. intend to use products or services using high-impact artificial intelligence, they shall give priority consideration to products or services that have undergone an impact assessment."
+  },
+  "ARTICLE_35_3": {
+    "ref": "Article 35(3)",
+    "title": "Impact assessment of high-impact artificial intelligence",
+    "text": "Other matters necessary for the specific content and methods of impact assessments shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_36_1": {
+    "ref": "Article 36(1)",
+    "title": "Designation of domestic agent",
+    "text": "An artificial intelligence business operator that does not have an address or business office in the country and meets the standards for the number of users, sales, etc. as prescribed by Presidential Decree shall designate an agent who acts on their behalf in the following matters (hereinafter referred to as a \"domestic agent\") in writing and shall report it to the Minister of Science and ICT: 1. Submission of implementation results under Article 32(2); 2. Request for confirmation of whether it falls under the high-impact artificial intelligence under Article 33(1); 3. Support necessary for implementing the measures to ensure safety and trustworthiness under the subparagraphs of Article 34(1) (including the inspection of the up-to-dateness and accuracy of the documents under subparagraph 5 of that paragraph)."
+  },
+  "ARTICLE_36_2": {
+    "ref": "Article 36(2)",
+    "title": "Designation of domestic agent",
+    "text": "The domestic agent shall be a person that has an address or business office in the country."
+  },
+  "ARTICLE_36_3": {
+    "ref": "Article 36(3)",
+    "title": "Designation of domestic agent",
+    "text": "If a domestic agent has violated this Act in connection with the subparagraphs of paragraph (1), the artificial intelligence business operator that designated the domestic agent shall be deemed to have committed the violation."
+  },
+  "ARTICLE_37_1": {
+    "ref": "Article 37(1)",
+    "title": "Expansion of financial resources for promotion of the artificial intelligence industry",
+    "text": "The State shall prepare a plan to continuously and stably expand the necessary financial resources to effectively promote the master plan and the policy measures, etc. under this Act."
+  },
+  "ARTICLE_37_2": {
+    "ref": "Article 37(2)",
+    "title": "Expansion of financial resources for promotion of the artificial intelligence industry",
+    "text": "The Minister of Science and ICT may, if necessary for the promotion of the artificial intelligence industry, recommend that a public institution provide necessary support for projects, etc. related to the promotion of the artificial intelligence industry."
+  },
+  "ARTICLE_37_3": {
+    "ref": "Article 37(3)",
+    "title": "Expansion of financial resources for promotion of the artificial intelligence industry",
+    "text": "The State and local governments shall take necessary measures to enable the private sector, including enterprises, to actively invest in projects related to the promotion of the artificial intelligence industry."
+  },
+  "ARTICLE_37_4": {
+    "ref": "Article 37(4)",
+    "title": "Expansion of financial resources for promotion of the artificial intelligence industry",
+    "text": "The State and local governments shall endeavor to efficiently execute investment resources, comprehensively considering the development stage, etc. of the artificial intelligence industry."
+  },
+  "ARTICLE_38_1": {
+    "ref": "Article 38(1)",
+    "title": "Compilation of fact-finding surveys, statistics, and indicators",
+    "text": "The Minister of Science and ICT shall, in consultation with the Minister of Data and Statistics, compile, manage, and publish fact-finding surveys, statistics, and indicators on domestic and international artificial intelligence, etc., in conjunction with the statistics under Article 26-2 of the Framework Act on Science and Technology in order to plan, establish, and promote master plans and other policy measures and projects related to artificial intelligence, etc. <Amended on Oct. 1, 2025>"
+  },
+  "ARTICLE_38_2": {
+    "ref": "Article 38(2)",
+    "title": "Compilation of fact-finding surveys, statistics, and indicators",
+    "text": "The Minister of Science and ICT may request cooperation, such as data submission, from the heads of relevant central administrative agencies, heads of local governments, and heads of public institutions for the compilation of the statistics and indicators under paragraph (1). In this case, the head of the organization requested to cooperate shall comply therewith unless there is a compelling reasons not to do so."
+  },
+  "ARTICLE_38_3": {
+    "ref": "Article 38(3)",
+    "title": "Compilation of fact-finding surveys, statistics, and indicators",
+    "text": "Other matters necessary for compiling, managing, and publishing fact-finding surveys, statistics, and indicators under paragraph (1) shall be prescribed by Presidential Decree."
+  },
+  "ARTICLE_39_1": {
+    "ref": "Article 39(1)",
+    "title": "Delegation of authority and entrustment of tasks",
+    "text": "The Minister of Science and ICT or the head of a relevant central administrative agency may delegate part of the authority under this Act to the head of an agency under his or her jurisdiction or the Special Metropolitan City Mayor, a Metropolitan City Mayer, a Special Self-Governing City Mayor, a Do Governor, or a Special Self-Governing Province Governor (hereafter referred to as the \"Mayor/Do Governor\" in this Article) as prescribed by Presidential Decree. In this case, the Mayor/Do Governor may redelegate a part of the delegated authority to the head of a Si (including the head of an administrative Si under Article 11(2) of the Special Act on the Establishment of Jeju Special Self-Governing Province and the Development of Free International Free City)/Gun/Gu (the head of a Gu refers to the head of an autonomous Gu)."
+  },
+  "ARTICLE_39_2": {
+    "ref": "Article 39(2)",
+    "title": "Delegation of authority and entrustment of tasks",
+    "text": "The Government may entrust the following tasks to a relevant institution or organization as prescribed by Presidential Decree: 1. Supporting projects related to the development and utilization of artificial intelligence technology under Article 13; 2. Selecting and supporting target projects regarding the production, collection, management, distribution, and utilization of learning data and promoting learning data construction projects under Article 15(2) and (3); 3. Establishing, operating, and managing the integrated provision system; 4. Other matters deemed necessary by the Minister of Science and ICT for activating business start-up under Article 18; 5. Support related to verification and certification under Article 30(2); 6. Compilation of fact-finding surveys, statistics, and indicators under Article 38; 7. Other tasks prescribed by Presidential Decree for the fostering of the artificial intelligence industry and the dissemination of artificial intelligence ethics."
+  },
+  "ARTICLE_40_1": {
+    "ref": "Article 40(1)",
+    "title": "Fact-finding investigations",
+    "text": "The Minister of Science and ICT may require an artificial intelligence business operator to submit relevant data or have public officials under his or her control conduct necessary investigations in any of the following cases: 1. Where any violation of Article 31(2) or (3), Article 32(1) or (2), or Article 34(1) is discovered or suspected; 2. Where a report is received or a complaint is filed regarding a violation of Article 31(2) or (3), Article 32(1) or (2), or Article 34(1)."
+  },
+  "ARTICLE_40_2": {
+    "ref": "Article 40(2)",
+    "title": "Fact-finding investigations",
+    "text": "Where the Minister of Science and ICT deems it necessary for the investigation under paragraph (1), he or she may authorize public officials of the Ministry to enter the office or place of business of an artificial intelligence business operator to investigate ledgers, documents, and other data or things. In this case, except for matters prescribed in this Act regarding the content, method, and procedures of the investigation, the provisions of the Framework Act on Administrative Investigations shall apply."
+  },
+  "ARTICLE_40_3": {
+    "ref": "Article 40(3)",
+    "title": "Fact-finding investigations",
+    "text": "Where the Minister of Science and ICT recognizes, based on the results of investigations under paragraphs (1) and (2), that an artificial intelligence business entity has violated this Act, the Minister may order the artificial intelligence business operator to take necessary measures to cease or correct the violation."
+  },
+  "ARTICLE_41_1": {
+    "ref": "Article 41(1)",
+    "title": "Legal fiction as public officials for purposes of applying penalty provisions",
+    "text": "A member of the Committee who is not a public official is deemed a public official for purposes of applying penalty provisions under Articles 129 through 132 of the Criminal Act."
+  },
+  "ARTICLE_41_2": {
+    "ref": "Article 41(2)",
+    "title": "Legal fiction as public officials for purposes of applying penalty provisions",
+    "text": "The executive officers and employees of an institution or organization engaged in the tasks entrusted under Article 39(2) shall be deemed public officials for purposes of applying penalty provisions under Articles 127 and 129 through 132 of the Criminal Act."
+  },
+  "ARTICLE_42": {
+    "ref": "Article 42",
+    "title": "Penalty provisions",
+    "text": "A person who, in violation of Article 7(9), divulges confidential information that he or she has learned in the course of duties to other persons or uses it for purposes other than those of duties shall be punished by imprisonment with labor for not more than 3 years or by a fine not exceeding 30 million won."
+  },
+  "ARTICLE_43_1": {
+    "ref": "Article 43(1)",
+    "title": "Administrative fines",
+    "text": "Any of the following persons shall be subject to an administrative fine not exceeding 30 million won: 1. A person who fails to provide the notification, in violation of Article 31(1); 2. A person who fails to designate a domestic agent, in violation of Article 36(1); 3. A person who fails to comply with an order to cease or correct a violation under Article 40(3);"
+  },
+  "ARTICLE_43_2": {
+    "ref": "Article 43(2)",
+    "title": "Administrative fines",
+    "text": "An administrative fine under paragraph (1) shall be imposed and collected by the Minister of Science and ICT, as prescribed by Presidential Decree."
+  }
+}

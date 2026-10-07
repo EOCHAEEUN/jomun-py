@@ -44,8 +44,11 @@ PERSONAL_DATA = ["개인정보", "위치정보", "건강정보", "주민등록"]
 AUTOMATED = re.compile(r"자동(으로|적으로)?\s*(결정|승인|거절|탈락|평가|선발|채점|판단|심사|제어|배정)")
 HUMAN_FINAL = ["최종 결정은 사람", "사람이 최종", "담당자가 최종", "인사담당자가 결정", "사람이 결정"]
 RECOMMEND = ["추천", "보조", "참고", "제안", "도와", "지원하는", "지원해"]
-OVERSEAS_YES = ["해외", "국외", "외국 기업", "외국계", "미국 법인", "글로벌 본사",
-                "국내 법인 없이", "국내 영업소 없", "국내에 지사 없"]
+# overseas = '국내에 주소·영업소가 없는 사업자' (제36조). '해외'라는 말만으로는 단정하지 않는다.
+#   확정 문구가 있을 때만 True, 해외·외국 언급만 있으면 None으로 두고 되묻는다.
+OVERSEAS_CONFIRMED = re.compile(
+    r"(국내|한국)\s*(에|내)?\s*(는|에는)?\s*(주소|법인|영업소|지사|사무소)[^.,]{0,12}?(없|두지\s*않)")
+OVERSEAS_MENTION = ["해외", "국외", "외국 기업", "외국계", "미국 법인", "글로벌 본사", "미국 본사"]
 OVERSEAS_NO = ["국내 기업", "국내 법인", "한국 회사", "국내 스타트업"]
 USER_BUSINESS = ["API", "GPT", "외부 모델", "외부 LLM", "OpenAI", "오픈AI", "Claude", "Gemini", "LLM API"]
 DEVELOPER = ["자체 모델", "직접 학습", "사전학습", "파운데이션 모델 개발", "모델을 개발", "자체 개발한 모델"]
@@ -113,12 +116,15 @@ def heuristic_extract(spec: str) -> ServiceFeatures:
         f.decision_mode = "RECOMMEND"
         ev.append(f"decision_mode=RECOMMEND ← '{w}'")
 
-    if (w := _hit(spec, OVERSEAS_YES)):
+    if (m := OVERSEAS_CONFIRMED.search(spec)):
         f.overseas = True
-        ev.append(f"overseas ← '{w}'")
+        ev.append(f"overseas ← '{m.group(0)}'")
     elif (w := _hit(spec, OVERSEAS_NO)):
         f.overseas = False
         ev.append(f"overseas=False ← '{w}'")
+    elif (w := _hit(spec, OVERSEAS_MENTION)):
+        # 해외 기업이라도 국내 법인·영업소가 있을 수 있다 → 단정하지 않고 되묻기 (None)
+        ev.append(f"overseas=미확정 ← '{w}' (국내 주소·영업소 여부는 확인 질문으로)")
 
     if (w := _hit(spec, DEVELOPER)):
         f.business_type = "DEVELOPER"

@@ -1,9 +1,10 @@
-# 제31조② 생성형 결과물 표시
+# 제31조② + 시행령 제23조② 결과물 표시
 @requires(GENERATIVE)
 def render(output):
-    return label(output, 'AI 생성') # MUST
+    if mark == 'HUMAN_READABLE':
+        return label(output, 'AI 생성')
+    # 기계 판독(워터마크 등)만 쓰면
+    notify_once(user, 'AI 생성 결과물')
+    return machine_mark(output)
 
-# 방법·예외 → EXTERNAL (제31조④)
-# 위반 → INDIRECT
-#   제40조① 사실조사 → ③ 시정명령
-#   → 불이행 시 제43조①3
+# 위반 → INDIRECT (제40조 → 제43조①3)

@@ -1,0 +1,23 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    env:
+      # CI에는 API 키가 없다 → 규칙 기반 특성 추출 + 로컬 해싱 임베딩 (평가 스냅샷과 같은 조건)
+      FEATURE_EXTRACTOR: heuristic
+      EMBEDDING_PROVIDER: local
+      ANONYMIZED_TELEMETRY: "False"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      # 테스트가 임시 폴더에 Chroma를 새로 적재해서 돌린다 (data/vectorstore 불필요)
+      - run: pytest -q

@@ -11,6 +11,7 @@ from app.rag.store import build_collection
 def main():
     chunks = preprocess.run()
     print(f"[1/2] 전처리 완료: 청크 {len(chunks)}개 → {CHUNKS_PATH.relative_to(CHUNKS_PATH.parents[2])}")
+    print("      문서별:", dict(Counter(c["doc_short"] for c in chunks)))
     tagged = sum(1 for c in chunks if c["tagged"])
     print(f"      태깅 레코드 메타데이터 {tagged}개 / Clause Parser 자동 태깅 {len(chunks) - tagged}개")
     print("      수범자 분포:", dict(Counter(c["addressee"] for c in chunks)))

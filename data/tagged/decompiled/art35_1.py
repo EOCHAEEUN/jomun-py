@@ -1,8 +1,11 @@
-# 제35조① 기본권 영향평가
+# 제35조① + 시행령 제28조 영향평가
 @requires(HIGH_IMPACT)
-def before_launch(s):
-    should(assess_rights_impact(s))
-
-# SHOULD — 직접 제재 없음
+def assess(s, by=SELF or THIRD_PARTY):
+    should(include(
+        affected_people, rights_types,
+        social_economic_impact, usage,
+        metrics_and_method,
+        mitigation_and_recovery,
+        improvement_plan,
+    ))  # 7개 항목, SHOULD
 # 하면 → 제35조② 공공 우선 고려
-# 내용·방법 → EXTERNAL (③ 대통령령)

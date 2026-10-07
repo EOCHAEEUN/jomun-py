@@ -1,11 +1,13 @@
-# 제33조① 한 문장, 두 절
+# 제33조① 한 문장, 두 절 + 시행령 제25조
 class AIBusiness:
     def before_launch(self, s):
         # '검토하여야 하며' → MUST
         self.review_high_impact(s)
         if self.is_unsure(s):
             # '요청할 수 있다' → MAY
-            self.request_confirm(MSIT)
+            r = self.request(MSIT, docs=4)
+            # 30일 내 회신, 1회 연장 가능
+            if r.disagree:
+                self.recheck(days=10)
 
-# penalty: NONE
-# (제40조①·제43조에 없음)
+# penalty: NONE (제40조①·제43조에 없음)

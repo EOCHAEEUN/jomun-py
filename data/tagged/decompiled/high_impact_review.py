@@ -1,10 +1,11 @@
-# 제2조4호 + 제33조① 고영향 여부 판정
-def review_high_impact_status(service):
-    if service.domain not in HIGH_IMPACT:
+# 제2조4호 + 가이드라인 해설 2단계 판단
+def review_high_impact_status(s):
+    if s.domain not in HIGH_IMPACT:  # 1
         return 'NOT_HIGH_IMPACT'
-    if service.decision == 'AUTOMATED':
+    if s.decision == 'AUTOMATED':    # 2
         return 'HIGH_IMPACT'
-
-    # '추천'만 하고 사람이 최종 결정
-    # → 법률 본문만으로 단정 불가
-    return 'REVIEW'  # 제33조③ 가이드라인
+    if s.ministry_reply == 'NOT':  # 33조
+        return 'NOT_HIGH_IMPACT'
+    # 해설: '인적 개입 없이' → 해당 사례
+    # 역(개입 → 비해당)은 성립 X
+    return 'REVIEW'  # 사람 최종 결정도

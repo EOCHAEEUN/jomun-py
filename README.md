@@ -1,18 +1,42 @@
 # 조문.py — AI Legal Build Checker
 
 > **법조문을 읽는 대신, 법 빌드를 돌립니다.**
-> 개발할 AI 서비스를 한 줄로 설명하면, 인공지능기본법에서 걸리는 조문을 찾아 **빌드 로그**처럼 보여주는 RAG + Rule Engine 기반 Legal Linter
+> 개발할 AI 서비스를 한 줄로 설명하면, 인공지능기본법과 관련 법령에서 걸리는 조문을 찾아 **빌드 로그**처럼 보여주는 RAG + Rule Engine 기반 Legal Linter
 
 ![조문.py 화면](docs/screenshot.png)
 
-- 대상 법령: 인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제20676호, 2026.1.22. 시행, 2026.1.20. 개정 반영)
-- **법률 자문이 아닙니다.** 인공지능기본법 이해를 돕기 위한 사전 점검 도구입니다.
+- **법률 자문이 아닙니다.** 아래 데이터 6종 안에서만 판정하는 사전 점검 도구입니다.
+
+---
+
+## 데이터 범위 (6종으로 고정)
+
+| 문서 | 근거 | 조문.py에서 하는 일 |
+| --- | --- | --- |
+| 인공지능기본법 | 법률 제20676호, 2026.1.22. 시행 (2026.1.20. 개정 반영) | 핵심. 조문 태깅·판정 기준 |
+| 인공지능기본법 시행령 | 대통령령 제36053호, 2026.1.22. 시행 | 법률이 "대통령령으로 정한다"고 비워 둔 기준을 채움 (국내대리인 기준, 10²⁶ FLOPs, 고지·표시 방법, 5년 보관 등) |
+| 고영향 AI 판단 가이드라인 해설 | 법무법인 태평양 뉴스레터, 2025.9.29. (2차 자료) | 고영향 2단계 판단과 영역별 해당 사례 → REVIEW 근거. 원문 대신 팀이 쓴 요약 9개만 인덱싱하고, 화면에 "요약 · 원문 아님"으로 표시 |
+| 개인정보 보호법 | 법률 제21445호, 2026.9.11. 시행 | 제37조의2 자동화된 결정, 제23조 민감정보 |
+| 신용정보법 | 법률 제21445호(타법개정), 2026.9.11. 시행 | 제2조제14호 자동화평가, 제36조의2 설명·이의제기 |
+| 인공지능기본법 영문본 | 국가법령정보센터 영문 번역 (참고용) | INSPECT 원문 탭에 English 병기 |
+
+목록은 `data/sources.json`, 원본 PDF는 `data/raw/`에 있습니다 (가이드라인 해설 PDF는 저작권 때문에 배포본에서 뺐습니다 — 아래 출처·라이선스). 이 6종 밖의 규정(장관 고시, 가이드라인 원문, 개인정보 보호법 시행령 등)이 필요한 판단은 `◈ EXTERNAL`로 표시하고 판정하지 않습니다.
+
+**같은 질문, 법마다 다른 답.** "사람이 실질적으로 개입하는가"는 세 법의 판단에 모두 영향을 주지만, 작동 방식이 다릅니다.
+
+| 법 | 정의 | 사람이 실질적으로 최종 결정하면 |
+| --- | --- | --- |
+| 개인정보 보호법 제37조의2 | "완전히 자동화된 시스템"으로 한 결정 | 정의상 대상 아님 → `INFO` |
+| 신용정보법 제2조제14호 · 제36조의2 | "종사자가 평가 업무에 관여하지 아니하고" | 정의상 자동화평가 아님 → `INFO` |
+| 인공지능기본법 제2조제4호 | 영역 안에서 "판단 또는 평가"에 쓰이는 AI | 본문에 사람 개입 제외 규정이 없음 → `REVIEW` 유지, 제33조① 확인 요청 안내 |
+
+가이드라인 해설은 "실질적인 인사권자의 개입 **없이**" 탈락시키는 경우를 해당 사례로 들 뿐, 사람이 개입하면 고영향이 아니라고 정하지 않았습니다. "개입 없음 → 해당 사례"에서 "개입 있음 → 비해당"은 따라 나오지 않으므로, 고영향을 `INFO`로 내리는 길은 과기부 확인 회신(되묻기 답 `confirmed_no`)뿐입니다. 같은 문장을 법마다 다르게 읽어야 하므로 LLM 한 번으로 뭉뚱그려 판단하지 않습니다.
 
 ---
 
 ## 빠른 시작
 
-Python 3.10 이상이 필요합니다.
+Python 3.10 이상이 필요합니다 (CI는 3.11).
 
 ```bash
 # 1. 가상환경 만들고 켜기
@@ -27,14 +51,14 @@ pip install -r requirements.txt
 copy .env.example .env         # Windows
 # cp .env.example .env         # Mac / Linux
 
-# 4. (선택) 법령 PDF → Chroma 적재. 하면 INSPECT 화면에 'RAG 검색 근거'가 함께 보여요
+# 4. PDF 6종 → Chroma 적재 (RAG 후보 검색에 필요. 안 하면 '규칙만 모드'로 동작)
 python -m scripts.ingest
 
 # 5. 서버 실행 → 브라우저에서 http://127.0.0.1:8000
 python run.py
 ```
 
-API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베딩으로 동작합니다. `.env`에 `OPENAI_API_KEY`를 넣으면 서비스 특성 추출에 LLM(LangChain + OpenAI)을 씁니다.
+API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베딩으로 동작합니다. `.env`에 `OPENAI_API_KEY`를 넣으면 서비스 특성 추출에 LLM(LangChain + OpenAI)을 씁니다. 적재를 건너뛰면 검색 없이 규칙만으로 판정하고, 화면 상단 상태에 `규칙만 모드`라고 표시합니다.
 
 ---
 
@@ -42,10 +66,11 @@ API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베�
 
 | 영역 | 하는 일 |
 | --- | --- |
-| **01 SPEC** | 서비스 설명 입력, `예시 불러오기`(평가셋 10개 순환), `법 빌드 실행` (Ctrl+Enter) |
-| **02 BUILD** | 빌드 로그 — 조문별 판정 상태 배지, Build Summary, 남은 확인 질문 수 |
-| **03 INSPECT** | `원문`: 조문 원문 · 판정 근거 · 하위 규정 의존 · 제재 경로(근거 체인) · 되묻기 질문 / `디컴파일`: 조문을 코드로 번역 / `체크리스트`: 조문별 구현 항목 |
+| **01 SPEC** | 서비스 설명 입력, `예시 불러오기`(dev 평가셋 11개 순환), `법 빌드 실행` (Ctrl+Enter). 아래에 이 도구 자체의 AI 사용 고지 — LLM 모드일 때만 "생성형 AI(LLM)로 특성 추출", 아니면 "키워드 규칙 기반 자동 분석 (생성형 AI 미사용)" |
+| **02 BUILD** | 빌드 로그 — 조문별 판정 상태 배지, 연결 법률은 파란 출처 칩(개인정보보호법·신용정보법), 남은 확인 질문 수 |
+| **03 INSPECT** | `원문`: 법률·시행령 원문, 해설 요약, English 병기, 판정 근거, 하위 규정 의존, 제재 경로, 되묻기 질문, **이 항목을 찾은 경로**(RAG 검색 쿼리·유사도 / 참조 확장 / 기본 규칙), 규칙이 기각한 검색 후보 / `디컴파일`: 조문을 코드로 번역 / `체크리스트`: 조문별 구현 항목 |
 | 적용 사항 체크리스트 | 빌드 결과 전체에서 할 일 모음 (체크 상태는 브라우저에 저장) |
+| 사이드바 `법령 라이브러리` | 데이터 범위 6종 목록 |
 
 ### 판정 상태
 
@@ -53,15 +78,26 @@ API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베�
 | --- | --- |
 | `MATCH` | 서비스 특성이 조문의 정의·영역과 일치 |
 | `REQUIRED` | 조건이 확정된 사업자 의무 (MUST) |
-| `CONDITIONAL` | 조건이 확정되면 적용되는 의무 (예: `IF HIGH_IMPACT_AI →`) |
+| `CONDITIONAL` | 조건이 확정되면 적용되는 의무 (예: `IF HIGH_IMPACT_AI →`, `IF 완전히 자동화된 결정 →`) |
 | `SHOULD` | 노력의무 |
-| `REVIEW` | 법률 본문만으로 단정 불가 → 되묻기 질문 |
-| `OPPORTUNITY` | 공공기관 도입 검토 시 우선 고려 요소, 받을 수 있는 지원 |
-| `OUT OF SCOPE` | 인공지능기본법 밖의 법률 검토가 필요할 수 있음 (판정하지 않음) |
-| `INFO` | 참고 |
+| `REVIEW` | 데이터만으로 단정 불가 → 되묻기 질문 |
+| `OPPORTUNITY` | 공공기관 도입 검토 시 우선 고려 요소, 받을 수 있는 지원 (고영향 미확정이면 `IF HIGH_IMPACT_AI →` 조건부) |
+| `INFO` | 참고 (해당하지 않는 이유 포함) |
 
-되묻기 질문에 답하면 다시 빌드되어 `CONDITIONAL`이 `REQUIRED` / `SHOULD`로 승격됩니다.
-(예: "고영향 AI로 보고 대비할게요" 선택 → 제31조①·제34조① REQUIRED, 제35조① SHOULD)
+**보조 표식** — 판정 상태와 별도로 항목에 붙는 표시입니다.
+
+| 표식 | 의미 |
+| --- | --- |
+| `◈ EXTERNAL` | 장관 고시·다른 법의 시행령 등 데이터 6종 밖의 규정이 있어야 확정됨 |
+| `IF … →` | 조건부 항목의 조건 (`IF HIGH_IMPACT_AI`, `IF 정보주체가 거부·설명 요구` 등) |
+| 수범자 칩 | 조문의 주어. 정보주체의 권리(MAY)는 사업자 의무로 쓰지 않고 "요구가 오면 대응"으로 바꿔 보여준다 |
+| `penalty` | 제재 경로 DIRECT / INDIRECT / NONE |
+
+### 데모 3장면
+
+1. **바목 함정** — "얼굴 인식 채용 AI"에서 RAG는 생체정보 쿼리로 바목도 후보로 가져오지만, 규칙이 "생체정보를 쓰지만 목적이 범죄 수사·체포가 아님"으로 기각하고 채용(사목)으로 판정한다. INSPECT `원문` 탭 아래에 검색 경로와 기각 이유가 나온다.
+2. **같은 답, 법마다 다른 판단** — HIGH_IMPACT_AI의 질문에 "사람이 실질적으로 검토해 최종 결정해요"를 고르면 개인정보 보호법 제37조의2는 `INFO`(완전히 자동화된 결정 아님)로 바뀌지만, AI기본법 고영향은 `REVIEW`로 남고 제34조① 등은 `CONDITIONAL`로 유지된다. 고영향을 내리는 길은 제33조① 확인 요청 → 과기부 비해당 회신뿐이다.
+3. **시행령이 채운 숫자** — 해외 기업 예시에서 제36조 질문에 시행령 제29조 기준(매출 1조·AI 매출 100억·이용자 100만)이 그대로 나온다.
 
 ---
 
@@ -70,14 +106,20 @@ API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베�
 ```
 SERVICE SPEC
    ↓  ① 특성 추출 (LLM 또는 규칙) — 판정하지 않고 사실만 뽑는다
-   ↓  ② Scope Check — 제4조① 역외 적용 / 제4조② 적용 제외
-   ↓  ③ Chroma 검색 — 근거 표시용 (판정에는 쓰지 않음)
-   ↓  ④ Rule Engine — 고영향 여부, REQUIRED / CONDITIONAL / REVIEW 판정
-   ↓  ⑤ Penalty · Reference Graph — DIRECT / INDIRECT / NONE
+   ↓  ② RAG 후보 검색 — 설명 그대로(naive) + 특성을 법률 용어로 바꾼 쿼리, 쿼리마다 Chroma top-5
+   │                   → 참조 그래프 1단계 확장 (상위 조문 · refs · 고영향이면 적용되는 조문)
+   ↓  ③ Rule Engine 검증 — 후보 조문마다 적용 조건 확인 → MATCH / REQUIRED / CONDITIONAL / REVIEW …
+   │                   후보에 없는 조문은 판정하지 않는다 · 맞지 않는 후보는 이유와 함께 기각
+   │   기본 규칙 — 제4조(적용 범위) · 제33조①(사전 검토) · 고영향 판정 결과는 검색과 상관없이 항상 확인
+   ↓  ④ Penalty · Reference Graph — DIRECT / INDIRECT / NONE
 BUILD LOG → INSPECT (원문 │ 디컴파일 │ 체크리스트)
 ```
 
-핵심 설계: **LLM은 판결하지 않는다.** 특성만 추출하고, 판정은 규칙이, 근거는 원문이 맡는다.
+핵심 설계
+- **LLM은 판결하지 않는다.** 특성만 추출하고, 판정은 규칙이, 근거는 원문이 맡는다.
+- **RAG는 후보를 찾고, 규칙은 검증한다.** 검색이 놓친 조문은 빌드 로그에 오르지 않는다. 그래서 검색 성능이 최종 결과에 그대로 드러나고, 평가도 단계별로 따로 잰다.
+- **검색 누락을 '해당 없음'으로 넘기지 않는다.** 특성은 고영향 영역(예: 사목)을 가리키는데 그 조문이 후보에 없으면 `REVIEW · 고영향 영역 조문 검색 누락`으로 올린다.
+- Chroma가 비어 있으면 **규칙만 모드**로 모든 규칙을 평가한다 (평가의 ② 규칙 판정 정확도도 이 모드로 잰다).
 
 | 컴포넌트 | 파일 |
 | --- | --- |
@@ -87,53 +129,68 @@ BUILD LOG → INSPECT (원문 │ 디컴파일 │ 체크리스트)
 | Rule Engine | `app/engine/rules.py` |
 | Penalty Graph | `app/engine/penalty.py` |
 | 파이프라인 | `app/engine/pipeline.py` |
-| PDF 전처리·청킹 | `app/rag/preprocess.py` |
+| RAG 후보 검색 (쿼리 생성 · 참조 확장) | `app/rag/retriever.py` |
+| PDF 전처리·청킹 (국문 법령·영문·해설 요약) | `app/rag/preprocess.py` |
 | Chroma 적재·검색, 로컬 임베딩 | `app/rag/store.py`, `app/rag/embeddings.py` |
 
 ### 핵심 데이터: `data/tagged/articles.json`
 
-제2·4·16③·17③·30~36·40·43조를 **절(clause) 단위**로 직접 태깅한 66개 레코드입니다. 원문은 PDF와 글자 단위로 대조했습니다. 이 JSON 하나가 Rule Engine의 근거, Chroma 메타데이터, 평가 정답지를 겸합니다.
+조문을 **절(clause) 단위**로 직접 태깅한 152개 레코드입니다 (인공지능기본법 66 · 시행령 59 · 신용정보법 11 · 가이드라인 해설 9 · 개인정보 보호법 7). 해설을 뺀 143개는 원문 PDF와 글자 단위로 대조하는 테스트가 있습니다. 이 JSON 하나가 Rule Engine의 근거, Chroma 메타데이터, 평가 정답지를 겸합니다.
 
 ```json
 {
-  "id": "ARTICLE_33_1_A",
-  "ref_label": "제33조①",
-  "text": "인공지능사업자는 … 사전에 검토하여야 하며,",
-  "addressee": "AI_BUSINESS",
-  "condition": ["PROVIDES_AI_OR_AI_SERVICE"],
-  "obligation": "MUST",
-  "status_rule": "REQUIRED",
-  "external_dependency": null,
-  "penalty": { "type": "NONE", "ref": null, "path": [] }
+  "id": "DECREE_29_1",
+  "doc": "DECREE",
+  "ref_label": "제29조①",
+  "text": "법 제36조제1항 각 호 외의 부분에서 “대통령령으로 정하는 기준에 해당하는 자”란 …",
+  "summary": "국내대리인 지정 대상: 매출 1조↑ / AI 서비스 매출 100억↑ / 국내 일평균 이용자 100만↑ / 과태료 이력",
+  "refs": ["ARTICLE_36_1"]
 }
 ```
 
-- `addressee`(수범자): 주어가 장관·국가기관등인 조문을 사업자의 의무로 오해하지 않게 한다.
+- `addressee`(수범자): 인공지능사업자 · 개인정보처리자 · 정보주체 · 개인신용평가회사등 · 정부 등. 정부가 주어인 조문을 사업자 의무로 오해하지 않게 한다.
 - `obligation`과 `external_dependency`는 별개의 축: "누가 무엇을 해야 하나" vs "하위 규정이 필요한가"
 - `penalty`: MUST라도 제재가 없거나(제33조①), 사실조사를 거치는 간접 제재(제34조①)일 수 있다.
+- `verbatim: false`: 가이드라인 해설 요약. 원문 인용이 아님을 화면에 표시한다.
 
 디컴파일 코드는 `data/tagged/decompiled/*.py`에 있습니다. 이해를 돕는 비유이며 법률 해석이 아닙니다.
 
 ---
 
-## 평가 — Naive RAG vs RAG + Rule Engine
+## 평가 — 검색 · 규칙 · 최종 빌드를 따로 잰다
 
 ```bash
-python -m scripts.ingest      # 먼저 적재
-python -m scripts.evaluate    # 결과 → data/eval/results.json
+python -m scripts.ingest                # 먼저 적재
+python -m scripts.evaluate              # 결과 → data/eval/results.json
+python -m scripts.evaluate --snapshot   # docs/eval_snapshot.json 갱신
 ```
 
-평가셋 `data/eval/cases.json` 10개 (얼굴 인식 채용의 바목 함정, 경찰 얼굴 인식 대조군, 생성형 표시 의무, 영화 추천 오탐 방지, 해외 기업, 국방 전용, 외부 LLM API 등).
-
-로컬 해싱 임베딩 기준 실행 결과:
-
-| 지표 | Naive RAG | RAG + Rule |
+| 평가셋 | 파일 | 성격 |
 | --- | --- | --- |
-| 고영향 영역(목) 판정 정확도 | 0.7 | 1.0 |
-| 정답 조문 Hit | 0.5 (top-3) | 1.0 |
-| 조문별 판정 상태 정확도 | — | 1.0 |
+| dev 11개 | `data/eval/cases.json` | 규칙을 만들면서 본 케이스 (바목 함정, 경찰 얼굴 인식 대조군, 생성형 표시 의무, 영화 추천 오탐 방지, 해외 기업, 국방 전용, 외부 LLM API, 사람이 최종 결정하는 채용 AI 등) |
+| held-out 11개 | `data/eval/heldout_cases.json` | 엔진 수정 전에 따로 써 둔 케이스. **결과를 보고 엔진을 고치지 않는다** |
 
-> Naive의 영역 정확도 0.7에는 '고영향 영역 아님'이 정답인 케이스에서 아무 목도 못 찾은 경우가 포함돼 있습니다. 로컬 임베딩은 글자 n-gram 기반이라 의미 검색이 약합니다. `EMBEDDING_PROVIDER=openai`로 바꾸면 Naive 수치가 달라지므로, 발표에서는 두 임베딩 결과를 함께 보여주는 것을 권장합니다.
+로컬 해싱 임베딩 · 규칙 기반 특성 추출 · 청크 1,725개 기준 ([상세](docs/evaluation.md), [스냅샷](docs/eval_snapshot.json)):
+
+| 지표 | dev | held-out |
+| --- | --- | --- |
+| ① 검색 Hit@3 — 설명 그대로 (naive) | 0.28 | 0.07 |
+| ① 검색 Hit@3 — 특성 쿼리 (enriched) | 0.83 | 0.80 |
+| ② 규칙 판정 정확도 (검색 없이) | 1.00 | 0.69 |
+| ③ 최종 빌드 정확도 (RAG → 규칙) | 1.00 | **0.61** |
+| ③ 케이스 완전 일치 | 1.00 | 0.36 |
+
+- **검색**: 서비스 설명을 그대로 넣으면 개인정보 보호법·신용정보법 청크에 묻혀 정답 조문을 거의 못 찾는다. 특성을 법률 용어 쿼리로 바꾸면 0.80까지 오른다.
+- **dev 1.00은 실력이 아니다.** 규칙을 만들며 본 케이스라서다. 지금 실력은 held-out ③ 0.61이다.
+- **held-out에서 틀린 14개 점검의 원인**: 검색 3개(에너지 영역 가목을 후보로 못 찾음), 특성 추출 8개(“판독”, “스스로 결정”, “사람 검토 없이 산출”, “실제 사람 목소리처럼” 같은 표현을 못 읽음), 규칙 범위 3개(시행령 제23조④ 내부 업무 예외, 설명 속 이용자 수를 시행령 기준과 비교). 고치면 이 held-out은 '본 데이터'가 되므로, 새 held-out을 먼저 쓰고 고친다.
+
+이전 버전의 `rule_hit = 1.0`은 규칙이 직접 넣은 근거 레코드에 정답이 있는지 본 순환 지표라서 뺐습니다.
+
+**평가 운영 규칙** (데이터 누수 방지)
+- merge 기준은 **dev 회귀 1.0 유지**뿐입니다 (`test_rules.py`, `test_rag.py`의 dev 케이스).
+- held-out은 **보고용**입니다. held-out 점수를 올리려고 규칙·쿼리·키워드를 고치지 않습니다.
+- held-out 실패를 고치고 싶으면 ① 새 held-out(v2)을 먼저 쓰고 ② v1을 dev로 옮긴 뒤 ③ 고치고 ④ v2로 다시 잽니다.
+- 판정 정책이 바뀌어 dev 정답을 고칠 때는 이유를 케이스의 `point`에 남깁니다 (예: dev 11 — 사람 최종 결정 시 고영향 `REVIEW` 유지).
 
 ---
 
@@ -143,9 +200,17 @@ python -m scripts.evaluate    # 결과 → data/eval/results.json
 python -m pytest -q
 ```
 
-문법 파서(SHOULD > MUST 우선순위, 어미 변화, 한 문장 두 절), 판정 엔진(데모 케이스, 답변 후 승격, 국내대리인 흐름, 제32조 자동 제외 금지), 제재 경로, 평가셋 10개 정답 일치를 확인합니다.
+GitHub Actions(`.github/workflows/test.yml`)가 push·PR마다 Python 3.11에서 같은 명령을 돌립니다. 테스트는 임시 폴더에 Chroma를 새로 적재해서 쓰므로 `data/vectorstore`가 없어도 됩니다.
 
-> 참고: `한다`의 첫 글자는 `하`가 아니라 `한`이라서, 어간을 `하여야\s*하`로만 잡으면 가장 흔한 형태인 "하여야 한다"를 놓칩니다. `grammar.py`는 `(한|하)`로 둘 다 잡습니다.
+| 파일 | 내용 |
+| --- | --- |
+| `tests/test_data.py` | 태깅 레코드 143개가 원문 PDF와 글자 단위로 일치하는지, 해설이 요약으로 표시되는지 |
+| `tests/test_preprocess.py` | 6종 청킹, 제33조① 절 분리, 시행령 제29조 수치 보존, 줄바꿈 이어 붙이기, 개정 표시 제거, 영문 매핑, 해설은 요약만 인덱싱 |
+| `tests/test_rules.py` | 문법 파서, 특성 추출('해외' 단독 언급은 미확정), 판정 엔진(규칙만 모드), 사람 최종 결정이 법마다 다르게 작동, 제37조의2 ④공개/③대응 분리, 신용정보법 권리를 사업자 의무로 쓰지 않음, OPPORTUNITY 조건, RAG 후보 검증(후보에 없으면 판정 안 함 · 기본 규칙 유지 · 검색 누락은 REVIEW · 영역 후보 기각 이유), 제재 경로, dev 11개 |
+| `tests/test_rag.py` | 임시 Chroma 적재, 검색 필터, 특성 쿼리, 사목 검색·참조 확장, 파이프라인이 RAG 후보를 쓰는지, 규칙만 모드 폴백, dev 11개(RAG 모드), **평가 결과 = 커밋된 스냅샷** |
+| `tests/test_api.py` | `/`, `/api/sources`(6종), `/api/examples`, `/api/build` 스키마·답변 반영, 잘못된 입력 422, `/api/articles/{id}` |
+
+> 참고: `한다`의 첫 글자는 `하`가 아니라 `한`이고, 시행령은 `해야 한다`·`포함되어야 한다`처럼 어미가 다릅니다. `grammar.py`는 `(어|여|해)야\s*(한|하)`로 모두 MUST로 잡습니다.
 
 ---
 
@@ -153,13 +218,14 @@ python -m pytest -q
 
 | 메서드 | 경로 | 설명 |
 | --- | --- | --- |
-| `POST` | `/api/build` | `{"spec": "...", "answers": {"high_impact": "assume"}}` → 빌드 결과 |
+| `POST` | `/api/build` | `{"spec": "...", "answers": {"high_impact": "human_final"}}` → 빌드 결과 (`items[].found_by` · `baseline` · `rejected`, `rag` 후보 요약 포함) |
+| `GET` | `/api/sources` | 데이터 6종 목록 |
 | `GET` | `/api/examples` | 평가셋 예시 목록 |
 | `GET` | `/api/articles` | 태깅된 조문 목록 |
 | `GET` | `/api/articles/{id}` | 조문 레코드 하나 |
 | `GET` | `/api/health` | 추출기·벡터DB 상태 |
 
-`answers` 키: `high_impact`(automated / human_final / assume), `domestic_office`(yes / no / unknown), `threshold`(yes / no / unknown), `compute`(yes / no / unknown)
+`answers` 키: `high_impact`(automated / human_final / assume / confirmed_no), `domestic_office`(yes / no / unknown), `threshold`(yes / no / unknown), `compute`(yes / no / unknown)
 
 Swagger 문서: http://127.0.0.1:8000/docs
 
@@ -171,36 +237,41 @@ Swagger 문서: http://127.0.0.1:8000/docs
 jomun-py/
 ├── run.py                    # 서버 실행
 ├── requirements.txt
+├── .github/workflows/test.yml  # CI: pytest -q
 ├── .env.example
 ├── app/
 │   ├── main.py               # FastAPI (화면 + API)
 │   ├── config.py             # 설정 모음
 │   ├── schemas.py            # ServiceFeatures, BuildRequest
 │   ├── engine/               # 특성 추출 · 문법 파서 · Rule Engine · Penalty Graph
-│   ├── rag/                  # PDF 전처리 · 임베딩 · Chroma
+│   ├── rag/                  # PDF 전처리 · 임베딩 · Chroma · 후보 검색(retriever)
 │   └── static/               # index.html, css, js, img, fonts
 ├── data/
-│   ├── raw/                  # 법령 PDF
-│   ├── tagged/               # articles.json (핵심), decompiled/*.py
-│   └── eval/cases.json       # 평가셋
+│   ├── sources.json          # 데이터 6종 목록
+│   ├── raw/                  # 원본 PDF 6종
+│   ├── tagged/               # articles.json (핵심), en_articles.json, decompiled/*.py
+│   └── eval/                 # cases.json (dev 11) · heldout_cases.json (held-out 11)
+├── docs/                     # evaluation.md, eval_snapshot.json, screenshot.png
 ├── scripts/                  # ingest.py, evaluate.py
-└── tests/                    # pytest
+└── tests/                    # pytest (data · preprocess · rules · rag · api)
 ```
 
 ---
 
-## 다음 단계 (Stretch)
+## 다음 단계 (하루 범위 밖)
 
+- [ ] held-out v2를 먼저 쓰고 → held-out v1 실패 수정 (영역 쿼리 공통 문구, 자동 판정 표현, 시행령 제23조④ 예외)
+- [ ] LLM 특성 추출기로 같은 평가표 다시 만들기
 - [ ] 2차 빌드 `--validate`: 구현 상태 체크 → `ERROR` / `PASS`
 - [ ] Plain 모드: 비개발자용 쉬운 설명 (LLM 표현 단계)
-- [ ] 시행령·고시·가이드라인 문서 추가 → `EXTERNAL` 항목 해소
-- [ ] 법령 라이브러리·프로젝트 화면 (사이드바 메뉴는 현재 자리만 있음)
+- [ ] 가이드라인 원문·장관 고시 추가 → 남은 `EXTERNAL` 해소
 - [ ] 리포트 Export
 
 ---
 
 ## 출처·라이선스
 
-- 법령 원문: 국가법령정보센터. 법령은 저작권법 제7조에 따라 보호받지 않는 저작물입니다.
+- 법령 원문(법률·시행령·영문 번역): 국가법령정보센터. 법령은 저작권법 제7조에 따라 보호받지 않는 저작물입니다.
+- **가이드라인 해설 PDF는 법무법인 태평양의 저작물입니다.** 배포 압축본과 공개 저장소에는 넣지 않습니다 (`.gitignore`에도 `data/raw/bkl_*.pdf`). 팀 내부에서 원문 확인이 필요하면 따로 받아 `data/raw/`에 두세요. `articles.json`과 벡터 DB에는 원문 대신 팀이 쓴 요약만 들어가므로, PDF가 없어도 적재·테스트·평가 결과가 같습니다.
 - 글꼴: [Pretendard](https://github.com/orioncactus/pretendard) (SIL Open Font License 1.1, `app/static/fonts/Pretendard-LICENSE.txt`)
 - `app/static/img/`의 일러스트·로고: UI 시안 이미지에서 잘라낸 임시 이미지입니다. 원본 일러스트로 교체하세요.

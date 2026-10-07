@@ -1,0 +1,125 @@
+[
+  {
+    "id": "H01",
+    "name": "의료진 개입 없는 X-ray 자동 판독",
+    "spec": "병원에서 의료진 개입 없이 흉부 X-ray를 자동으로 판독해 진단 결과를 내는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_RA",
+      "retrieval": ["ARTICLE_2_4_RA"],
+      "statuses": {"제2조4호라목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED", "제31조①": "REQUIRED"}
+    },
+    "point": "가이드라인 해설의 보건의료 해당 사례(의료진 개입 없는 진단)와 같은 구조"
+  },
+  {
+    "id": "H02",
+    "name": "발전소 출력 자동 제어",
+    "spec": "전력 수요를 예측해 발전소 출력을 자동으로 제어하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_GA",
+      "retrieval": ["ARTICLE_2_4_GA"],
+      "statuses": {"제2조4호가목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED"}
+    },
+    "point": "에너지 공급 영역 + 자동 제어"
+  },
+  {
+    "id": "H03",
+    "name": "자율주행 셔틀 경로·속도 결정",
+    "spec": "자율주행 셔틀버스의 경로와 속도를 스스로 결정하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_A",
+      "retrieval": ["ARTICLE_2_4_A"],
+      "statuses": {"제2조4호아목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED"}
+    },
+    "point": "'자동' 같은 단어 없이 사람 개입이 없는 구조를 알아보는가"
+  },
+  {
+    "id": "H04",
+    "name": "복지 수급 자격 자동 판단",
+    "spec": "지자체 복지 수급 자격을 AI가 자동으로 판단하는 시스템",
+    "gold": {
+      "domain": "ARTICLE_2_4_JA",
+      "retrieval": ["ARTICLE_2_4_JA"],
+      "statuses": {"제2조4호자목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED"}
+    },
+    "point": "국가기관등의 의사결정 영역 (개인정보 보호법 제37조의2는 행정청 자동적 처분 제외 여부가 애매해 채점하지 않음)"
+  },
+  {
+    "id": "H05",
+    "name": "웹툰 배경 그림 생성 툴",
+    "spec": "웹툰 작가를 위해 AI가 배경 그림을 생성해 주는 툴",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_2"],
+      "statuses": {"HIGH_IMPACT_AI": "INFO", "제31조①": "REQUIRED", "제31조②": "REQUIRED", "제31조③": "CONDITIONAL"}
+    },
+    "point": "생성형이지만 고영향 아님"
+  },
+  {
+    "id": "H06",
+    "name": "내부 업무용 메일 초안 생성",
+    "spec": "사내 직원의 업무 메일 초안을 써 주는 생성형 AI, 내부 업무용으로만 사용",
+    "gold": {
+      "domain": null,
+      "retrieval": ["DECREE_23_4", "ARTICLE_31_1"],
+      "statuses": {"HIGH_IMPACT_AI": "INFO", "제31조①": "INFO", "제31조②": "INFO"}
+    },
+    "point": "시행령 제23조④2호: 내부 업무 용도로만 쓰면 고지·표시 규정을 적용하지 않을 수 있음"
+  },
+  {
+    "id": "H07",
+    "name": "실제 사람 같은 AI 상담 음성",
+    "spec": "고객 문의에 답하는 AI 상담원, 실제 사람 목소리처럼 합성한 음성으로 응대",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_3_A"],
+      "statuses": {"제31조①": "REQUIRED", "제31조③": "REQUIRED"}
+    },
+    "point": "실제와 구분하기 어려운 음향 → 제31조③"
+  },
+  {
+    "id": "H08",
+    "name": "개인 신용점수 자동 산출",
+    "spec": "핀테크 스타트업이 개인 신용점수를 사람 검토 없이 자동으로 산출하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_SA",
+      "retrieval": ["CREDIT_36-2_1", "ARTICLE_2_4_SA"],
+      "statuses": {"제2조4호사목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제36조의2": "CONDITIONAL", "제37조의2": "REQUIRED"}
+    },
+    "point": "세 법이 모두 걸리는 자동 평가"
+  },
+  {
+    "id": "H09",
+    "name": "국내 법인 없는 해외 이미지 앱, 이용자 150만",
+    "spec": "미국 본사가 운영하고 한국에 법인이나 영업소가 없는 AI 이미지 생성 앱, 국내 하루 이용자 150만 명",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_36_1", "DECREE_29_1"],
+      "statuses": {"제4조①": "MATCH", "제36조①": "REQUIRED", "제31조②": "REQUIRED"}
+    },
+    "point": "시행령 제29조① 3호(일평균 이용자 100만 명 이상)를 문장에서 읽어내는가"
+  },
+  {
+    "id": "H10",
+    "name": "쇼핑몰 상품 추천",
+    "spec": "온라인 쇼핑몰 상품을 사용자 취향에 맞게 추천하는 AI",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_33_1_A"],
+      "statuses": {"제33조①": "REQUIRED", "HIGH_IMPACT_AI": "INFO"},
+      "absent": ["제34조①", "제37조의2"]
+    },
+    "point": "추천이라는 단어만으로 고영향·자동화된 결정이 되지 않음"
+  },
+  {
+    "id": "H11",
+    "name": "범죄 위험 지역 예측 (생체정보 없음)",
+    "spec": "과거 신고 데이터로 범죄 발생 위험 지역을 예측해 경찰 순찰 경로를 짜는 AI",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_2_4_BA", "ARTICLE_33_1_A"],
+      "statuses": {"HIGH_IMPACT_AI": "INFO"},
+      "absent": ["제2조4호바목", "제34조①"]
+    },
+    "point": "바목은 생체인식정보 분석일 때만 — 경찰 업무라는 이유만으로 바목이 아님"
+  }
+]

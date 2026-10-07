@@ -6,9 +6,9 @@
     "gold": {
       "domain": "ARTICLE_2_4_SA",
       "retrieval": ["ARTICLE_2_4_SA"],
-      "statuses": {"제2조4호사목": "MATCH", "제33조①": "REQUIRED", "HIGH_IMPACT_AI": "REVIEW", "제31조①": "CONDITIONAL", "제34조①": "CONDITIONAL", "제35조①": "CONDITIONAL"}
+      "statuses": {"제2조4호사목": "MATCH", "제33조①": "REQUIRED", "HIGH_IMPACT_AI": "REVIEW", "제31조①": "CONDITIONAL", "제34조①": "CONDITIONAL", "제35조①": "CONDITIONAL", "제37조의2": "CONDITIONAL", "제23조": "CONDITIONAL"}
     },
-    "point": "'얼굴'에 끌려 바목(범죄 수사 생체인식)을 가져오면 오답"
+    "point": "'얼굴'에 끌려 바목(범죄 수사 생체인식)을 가져오면 오답 · 개인정보보호법 제37조의2·제23조도 조건부로 연결"
   },
   {
     "id": "02",
@@ -50,10 +50,10 @@
     "spec": "은행 대출 승인 여부를 판단하는 AI",
     "gold": {
       "domain": "ARTICLE_2_4_SA",
-      "retrieval": ["ARTICLE_2_4_SA"],
-      "statuses": {"제2조4호사목": "MATCH", "HIGH_IMPACT_AI": "REVIEW"}
+      "retrieval": ["ARTICLE_2_4_SA", "CREDIT_36-2_1"],
+      "statuses": {"제2조4호사목": "MATCH", "HIGH_IMPACT_AI": "REVIEW", "제37조의2": "CONDITIONAL", "제36조의2": "CONDITIONAL"}
     },
-    "point": "채용 외의 사목 영역"
+    "point": "채용 외의 사목 영역 + 신용정보법 자동화평가 연결"
   },
   {
     "id": "06",
@@ -63,7 +63,7 @@
       "domain": null,
       "retrieval": ["ARTICLE_33_1_A"],
       "statuses": {"제33조①": "REQUIRED", "HIGH_IMPACT_AI": "INFO"},
-      "absent": ["제34조①", "제31조①"]
+      "absent": ["제34조①", "제31조①", "제37조의2"]
     },
     "point": "'추천'이라는 단어만으로 고영향 AI가 되지 않음"
   },
@@ -74,9 +74,9 @@
     "gold": {
       "domain": "ARTICLE_2_4_CHA",
       "retrieval": ["ARTICLE_2_4_CHA"],
-      "statuses": {"제2조4호차목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제31조①": "REQUIRED", "제34조①": "REQUIRED", "제35조①": "SHOULD"}
+      "statuses": {"제2조4호차목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제31조①": "REQUIRED", "제34조①": "REQUIRED", "제35조①": "SHOULD", "제37조의2": "REQUIRED", "제37조의2③": "CONDITIONAL"}
     },
-    "point": "자동 평가 → 고영향 확정, CONDITIONAL 없이 바로 REQUIRED"
+    "point": "자동 평가 → 고영향 확정 + 개인정보보호법 자동화된 결정까지 REQUIRED"
   },
   {
     "id": "08",
@@ -84,7 +84,7 @@
     "spec": "국내 영업소가 없는 해외 기업이 한국 이용자에게 제공하는 LLM 기반 번역 앱",
     "gold": {
       "domain": null,
-      "retrieval": ["ARTICLE_4_1", "ARTICLE_36_1"],
+      "retrieval": ["ARTICLE_4_1", "ARTICLE_36_1", "DECREE_29_1"],
       "statuses": {"제4조①": "MATCH", "제36조①": "REVIEW", "제31조①": "REQUIRED"}
     },
     "point": "역외 적용 → 국내대리인 기준(대통령령) 되묻기"
@@ -95,7 +95,7 @@
     "spec": "국방 목적으로만 쓰는 표적 식별 AI",
     "gold": {
       "domain": null,
-      "retrieval": ["ARTICLE_4_2"],
+      "retrieval": ["ARTICLE_4_2", "DECREE_2"],
       "statuses": {"제4조②": "REVIEW"}
     },
     "point": "적용 제외 가능성 + 대통령령 확인 (EXTERNAL)"
@@ -110,5 +110,17 @@
       "statuses": {"제31조①": "REQUIRED", "제31조②": "REQUIRED", "제32조①": "REVIEW"}
     },
     "point": "이용사업자라도 제32조를 자동 제외하지 않음"
+  },
+  {
+    "id": "11",
+    "name": "사람이 최종 결정하는 채용 AI (같은 답, 법마다 다른 판단)",
+    "spec": "AI가 채용 서류를 점수화하고 인사담당자가 최종 결정하는 서비스",
+    "gold": {
+      "domain": "ARTICLE_2_4_SA",
+      "retrieval": ["ARTICLE_2_4_SA", "BKL_RECRUIT"],
+      "statuses": {"제2조4호사목": "MATCH", "HIGH_IMPACT_AI": "REVIEW", "제37조의2": "INFO", "제33조①": "REQUIRED", "제34조①": "CONDITIONAL"},
+      "absent": ["제37조의2③"]
+    },
+    "point": "사람이 최종 결정 → 개인정보 보호법은 '완전히 자동화된 결정'이 아니라 INFO, AI기본법은 사람 개입만으로 고영향에서 제외된다고 단정할 수 없어 REVIEW (해설은 '인적 개입 없는' 경우를 해당 사례로 들 뿐)"
   }
 ]

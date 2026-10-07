@@ -30,8 +30,14 @@ def health():
         "feature_extractor": "llm" if use_llm() else "heuristic",
         "vectorstore": {"ready": col is not None, "count": col.count() if col else 0,
                         "embedding": EMBEDDING_PROVIDER},
-        "law": get_lawbook().law,
+        "sources": get_lawbook().sources,
     }
+
+
+@app.get("/api/sources")
+def sources():
+    """데이터 6종 목록"""
+    return get_lawbook().sources
 
 
 @app.get("/api/examples")

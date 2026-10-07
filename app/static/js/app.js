@@ -88,7 +88,9 @@ async function runBuild({ keepSelection = false } = {}) {
       const firstQuestion = data.items.find((i) => i.status === "REVIEW" && i.question);
       state.selectedKey = (firstQuestion || data.items[0] || {}).key;
     }
-    setStatus("done", "빌드 완료", `${sec.toFixed(1)}초 소요`);
+    setAiNotice(data.mode.feature_extractor);
+    const ragNote = data.rag.mode === "chroma" ? `RAG 후보 ${data.rag.n_candidates}` : "규칙만 모드";
+    setStatus("done", "빌드 완료", `${sec.toFixed(1)}초 · ${ragNote}`);
     renderAll(!keepSelection);
   } catch (err) {
     setStatus("error", "빌드 실패", "");
@@ -96,6 +98,13 @@ async function runBuild({ keepSelection = false } = {}) {
   } finally {
     btn.disabled = false;
   }
+}
+
+// 이 도구 자체의 AI 사용 고지 — 생성형 AI(LLM)를 실제로 쓸 때만 그렇게 알린다
+function setAiNotice(extractor) {
+  $("#ai-notice").textContent = extractor === "llm"
+    ? "생성형 AI(LLM)로 서비스 설명에서 특성을 추출해요"
+    : "키워드 규칙 기반 자동 분석 도구예요 (생성형 AI 미사용)";
 }
 
 function setStatus(kind, label, time) {
@@ -122,12 +131,13 @@ function renderLog(animate) {
   $("#log").innerHTML = items.map((it, i) => {
     const cond = it.condition ? `<span class="cond">${esc(it.condition)} → </span>` : "";
     const ask = it.question && !it.question.answer ? '<span class="q">질문</span>' : "";
+    const doc = it.doc !== "AIACT" ? `<span class="doc">${esc(it.doc_short)}</span>` : "";
     return `
       <li class="log-row ${it.key === state.selectedKey ? "selected" : ""}" data-key="${it.key}"
           style="animation-delay:${animate ? i * 45 : 0}ms; ${animate ? "" : "animation:none"}">
         ${badge(it.status)}
         <span class="ref">${esc(it.label)}</span>
-        <span class="desc" title="${esc((it.condition ? it.condition + " → " : "") + it.summary)}">${ask}${cond}${esc(it.summary)}</span>
+        <span class="desc" title="${esc((it.doc !== "AIACT" ? it.doc_short + " · " : "") + (it.condition ? it.condition + " → " : "") + it.summary)}">${doc}${ask}${cond}${esc(it.summary)}</span>
         <svg><use href="#i-chevron"/></svg>
       </li>`;
   }).join("") || '<li class="log-empty">적용되는 항목이 없어요.</li>';
@@ -189,10 +199,12 @@ function renderOriginal(it) {
   if (it.externals.length) chips.push('<span class="chip ext">◈ EXTERNAL</span>');
 
   const texts = it.records.map((rec) => `
-    <div class="law-text">
-      <span class="ref">${esc(rec.ref_label)} · ${esc(rec.title)} · ${rec.source_page}쪽</span>
+    <div class="law-text ${rec.verbatim ? "" : "summary"} k-${rec.doc_kind.toLowerCase()}">
+      <span class="ref"><b class="src">${esc(rec.doc_short)}</b>${rec.verbatim ? `${esc(rec.ref_label)} · ${esc(rec.title)}` : "요약 · 2차 자료 (원문 아님)"} · ${rec.source_page}쪽</span>
+      ${rec.verbatim ? "" : `<strong class="sum-title">${esc(rec.summary)}</strong>`}
       ${esc(rec.text)}
       ${rec.children.length ? `<ol>${rec.children.map((c) => `<li>${esc(c.marker)} ${esc(c.text)}</li>`).join("")}</ol>` : ""}
+      ${rec.en ? `<details class="en"><summary>English · ${esc(rec.en.ref)}</summary>${esc(rec.en.text)}</details>` : ""}
     </div>`).join("");
 
   const chain = it.chain ? `
@@ -202,21 +214,50 @@ function renderOriginal(it) {
       <div class="chain-node k-${n.kind}"><span class="dot"></span><span class="r">${esc(n.ref || "")}</span><span class="l">${esc(n.label)}</span></div>`).join("")}
     </div>` : "";
 
-  const retrieved = r.retrieved.length ? `
-    <p class="sub-title">RAG 검색 근거 (Chroma top-${r.retrieved.length})</p>
-    <div class="retrieved">${r.retrieved.map((h) => `<span class="chip" title="${esc(h.snippet)}">${esc(h.ref_label)}<small>${h.score}</small></span>`).join("")}</div>` : "";
+  const retrieved = renderFoundBy(it, r.rag);
 
   return `
     ${it.question ? renderQuestion(it.question) : ""}
     <div class="art-head"><h3>${esc(it.label)}</h3><span class="art-title">${esc(it.summary)}</span></div>
     <div class="chips">${chips.join("")}</div>
-    ${texts || '<p class="muted">Knowledge Base(인공지능기본법) 밖의 항목이라 원문이 없어요.</p>'}
+    ${texts || '<p class="muted">데이터 범위(6종) 밖의 항목이라 원문이 없어요.</p>'}
     ${it.notes.length ? `<p class="sub-title">판정 근거</p><ul class="notes">${it.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
-    ${it.externals.length ? `<p class="sub-title">하위 규정 의존</p><div class="ext-box"><b>◈ EXTERNAL</b>${it.externals.map(esc).join("<br>")}<br>→ 상위 조문만으로 확정되지 않아요. 하위 규정 확인 필요</div>` : ""}
+    ${it.externals.length ? `<p class="sub-title">하위 규정 의존</p><div class="ext-box"><b>◈ EXTERNAL</b>${it.externals.map(esc).join("<br>")}<br>→ 이번 데이터 6종만으로는 확정되지 않아요. 해당 규정 확인 필요</div>` : ""}
     ${chain}
     ${retrieved}
     <p class="sub-title">추출된 서비스 특성 (${esc(r.mode.feature_extractor)})</p>
     <ul class="notes">${(r.features.evidence.length ? r.features.evidence : ["근거 문구 없음"]).map((e) => `<li>${esc(e)}</li>`).join("")}</ul>`;
+}
+
+// 이 항목이 빌드 로그에 오른 경로: RAG 검색 → (참조 확장) → 규칙 검증 / 기본 규칙
+// 출처 표시: 인공지능기본법은 조문 번호만, 다른 문서는 문서명 + 조문 번호, 해설은 '해설 · 주제'
+function srcLabel(h) {
+  if (h.doc_short === h.ref_label) return `<em>${esc(h.doc_short)}</em>${h.title ? ` · ${esc(h.title.split(":")[0])}` : ""}`;
+  return `${h.doc_short && h.doc_short !== "인공지능기본법" ? `<em>${esc(h.doc_short)}</em> ` : ""}${esc(h.ref_label)}`;
+}
+
+function renderFoundBy(it, rag) {
+  const src = srcLabel;
+  const paths = [];
+  if (it.baseline) paths.push('<li><span class="how base">기본 규칙</span>검색 결과와 상관없이 항상 확인하는 항목이에요.</li>');
+  if (rag.mode !== "chroma") {
+    paths.push('<li><span class="how off">규칙만</span>벡터 DB가 비어 있어 검색 없이 규칙만으로 판정했어요. <code>python -m scripts.ingest</code></li>');
+  } else {
+    it.found_by.forEach((f) => paths.push(f.how === "search"
+      ? `<li title="${esc(f.title)}"><span class="how search">검색</span>${src(f)} <small>‘${esc(f.query)}’ 쿼리 · 유사도 ${f.score}</small></li>`
+      : `<li title="${esc(f.title)}"><span class="how expand">참조 확장</span>${src(f)} <small>← ${esc(f.from)}에서</small></li>`));
+  }
+  const rejected = it.rejected.length ? `
+    <p class="sub-title">검색 후보였지만 규칙이 기각한 조문</p>
+    <ul class="found rejected">${it.rejected.map((x) => `<li><span class="how no">기각</span>${esc(x.label)} <small>${esc(x.reason)}</small></li>`).join("")}</ul>` : "";
+  const funnel = rag.mode === "chroma" ? `
+    <p class="sub-title">RAG 후보 → 규칙 검증</p>
+    <p class="funnel">쿼리 ${rag.queries.length}개 · 검색 ${rag.n_hits} + 참조 확장 ${rag.n_expanded} = 후보 ${rag.n_candidates}개 → 빌드 로그 근거로 쓰인 조문 ${rag.n_used}개</p>
+    <div class="retrieved">${rag.top.map((h) => `<span class="chip ${h.used ? "used" : ""}" title="‘${esc(h.query)}’ 쿼리${h.used ? " · 빌드 로그 근거로 쓰임" : " · 규칙 검증에서 쓰이지 않음"}">${srcLabel(h)}<small>${h.score}</small></span>`).join("")}</div>` : "";
+  return `
+    <p class="sub-title">이 항목을 찾은 경로</p>
+    <ul class="found">${paths.join("") || "<li>-</li>"}</ul>
+    ${rejected}${funnel}`;
 }
 
 function renderImpl(it) {
@@ -318,13 +359,29 @@ function bindEvents() {
 
   document.querySelectorAll(".nav-item").forEach((n) => n.addEventListener("click", () => {
     if (n.dataset.view === "home") return;
+    if (n.dataset.view === "library") { showSources(); return; }
     toast(`'${n.textContent.trim()}' 화면은 준비 중이에요.`);
   }));
   $("#bell").addEventListener("click", () => toast("새 알림이 없어요."));
 }
 
+// 법령 라이브러리 → 이번 프로젝트의 데이터 범위(6종)를 INSPECT 영역에 보여준다
+async function showSources() {
+  try {
+    const sources = await (await fetch("/api/sources")).json();
+    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    $("#tab-content").innerHTML = `
+      <h3>데이터 범위 · ${sources.length}종</h3>
+      <p class="muted" style="margin:6px 0 12px">이 문서들 안에서만 판정해요. 범위 밖 규정은 EXTERNAL로 표시돼요.</p>
+      <ul class="sources">${sources.map((s) => `
+        <li><b>${esc(s.short)}</b><span class="kind k-${s.kind.toLowerCase()}">${esc(s.kind)}</span>
+          <p>${esc(s.title)}</p><small>${esc(s.authority)} · 시행 ${esc(s.effective)} · ${esc(s.role)}</small></li>`).join("")}</ul>`;
+  } catch { toast("데이터 목록을 불러오지 못했어요."); }
+}
+
 async function init() {
   bindEvents();
+  try { setAiNotice((await (await fetch("/api/health")).json()).feature_extractor); } catch { /* 기본 문구 유지 */ }
   try {
     state.examples = await (await fetch("/api/examples")).json();
   } catch { state.examples = []; }
