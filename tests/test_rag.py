@@ -27,7 +27,17 @@ def test_ingest_loads_all_chunks(chroma, chunks):
 def test_search_excludes_english_and_government_clauses(chroma):
     hits = store.search("고영향 인공지능 사업자 책무", k=10, where=SEARCH_FILTER)
     assert hits and all(h["doc"] != "AIACT_EN" for h in hits)
+    assert all(h["kind"] != "COMMENTARY_PDF" for h in hits)
     assert all(h["addressee"] not in ("GOVERNMENT", "COMMITTEE") for h in hits)
+
+
+def test_original_commentary_pdf_is_embedded_and_searchable(chroma, chunks):
+    original = [c for c in chunks["chunks"] if c["kind"] == "COMMENTARY_PDF"]
+    hits = store.search("실질적인 인사권자의 개입 없이 지원자를 탈락", k=3,
+                        where={"kind": "COMMENTARY_PDF"})
+    assert hits and all(h["id"].startswith("BKL_P") for h in hits)
+    assert all(h["source_sha256"] == original[0]["source_sha256"] for h in hits)
+    assert any(h["page"] in (3, 4) for h in hits)
 
 
 def test_feature_queries_use_legal_vocabulary():

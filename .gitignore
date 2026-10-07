@@ -19,6 +19,3 @@ data/eval/results.json
 Thumbs.db
 .vscode/
 .idea/
-
-# 제3자 저작물 (팀 내부 학습용, 공개 저장소에 올리지 않음)
-data/raw/bkl_*.pdf

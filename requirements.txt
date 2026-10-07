@@ -3,7 +3,9 @@ fastapi>=0.110
 uvicorn[standard]>=0.29
 pydantic>=2.6
 python-dotenv>=1.0
-pypdf>=4.0
+pypdf>=4.0             # 원문 대조 테스트
+docling-slim[format-pdf,feat-chunking]==2.135.0  # Docling native PDF 변환·청킹
+rtree>=1.4,<2.0        # Docling PDF 모듈 로딩에 필요
 chromadb>=1.0,<2.0
 
 # ── LLM 특성 추출 ─────────────────────

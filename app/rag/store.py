@@ -9,6 +9,7 @@ from app.rag.embeddings import get_embedding_function
 
 log = logging.getLogger(__name__)
 META_KEYS = ["doc", "doc_short", "kind", "ref_label", "title", "chapter", "article", "paragraph", "page", "tagged",
+             "source_file", "source_sha256",
              "addressee", "obligation", "external", "flags", "status_rule", "penalty_type"]
 
 
@@ -68,6 +69,10 @@ def search(query: str, k: int = 5, where: dict | None = None) -> list[dict]:
         hits.append({
             "id": cid,
             "doc": meta.get("doc"),
+            "kind": meta.get("kind"),
+            "page": meta.get("page"),
+            "source_file": meta.get("source_file"),
+            "source_sha256": meta.get("source_sha256"),
             "doc_short": meta.get("doc_short"),
             "ref_label": meta.get("ref_label"),
             "title": meta.get("title"),

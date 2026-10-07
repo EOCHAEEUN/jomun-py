@@ -53,11 +53,16 @@ def test_linked_laws_keep_the_human_involvement_articles(chunks):
     assert "설명하여 줄 것을 요구" in c["CREDIT_36-2_1"]["text"]
 
 
-def test_commentary_indexes_team_summaries_not_original_text(chunks):
-    # 해설(2차 저작물)은 원문 대신 팀이 쓴 요약 레코드만 인덱싱 → PDF 없이도(CI) 같은 인덱스
-    bkl = [c for c in chunks["chunks"] if c["doc"] == "BKL"]
+def test_commentary_indexes_docling_pdf_with_provenance(chunks):
+    # BKL PDF 원문도 Docling으로 청킹한다. Rule Engine 요약 레코드와 ID를 구별한다.
+    bkl = [c for c in chunks["chunks"] if c["kind"] == "COMMENTARY_PDF"]
+    summaries = [c for c in chunks["chunks"] if c["doc"] == "BKL" and c["kind"] == "COMMENTARY"]
     law = get_lawbook()
-    assert bkl and all(c["id"] in law.by_id and law.by_id[c["id"]]["verbatim"] is False for c in bkl)
+    assert bkl and {c["page"] for c in bkl} == {1, 2, 3, 4, 5}
+    assert all(c["id"].startswith("BKL_P") and c["id"] not in law.by_id for c in bkl)
+    assert len({c["source_sha256"] for c in bkl}) == 1
+    assert any("인사권자" in c["text"] for c in bkl)
+    assert len(summaries) == 9 and all(c["id"] in law.by_id for c in summaries)
 
 
 def test_english_translation_is_mapped(chunks):

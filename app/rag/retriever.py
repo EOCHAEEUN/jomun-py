@@ -19,6 +19,7 @@ log = logging.getLogger(__name__)
 # 검색 대상: 판정에 쓰는 문서만 (영문 번역은 화면 병기용이라 제외)
 SEARCH_FILTER = {"$and": [
     {"doc": {"$in": ["AIACT", "DECREE", "PIPA", "CREDIT", "BKL"]}},
+    {"kind": {"$ne": "COMMENTARY_PDF"}},
     {"addressee": {"$nin": ["GOVERNMENT", "COMMITTEE"]}},
 ]}
 

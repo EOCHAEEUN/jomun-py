@@ -1,9 +1,9 @@
-# preprocess.py — 데이터 6종(PDF) → 조·항·호·목 구조 → clause 청크
+# preprocess.py — Docling으로 PDF 6종을 읽고 조문·페이지 단위로 청킹
 #
 # 데이터 목록은 data/sources.json 에 있다. 문서 종류(parser)에 따라 다르게 자른다.
 #   ko_law     : 국가법령정보센터 국문 PDF (법률·시행령) → 조·항·호·목 트리
 #   en_law     : 국가법령정보센터 영문 번역 PDF → Article·paragraph 단위
-#   commentary : 해설 자료(2차 저작물) → 원문 대신 팀이 쓴 요약 레코드만 인덱싱
+#   commentary_pdf : 해설 PDF → Docling 문서 요소를 페이지별로 묶어 인덱싱
 #
 # 공통 처리
 #   1. 머리말("법제처 N 국가법령정보센터", 문서 제목)과 개정 표시(<개정 …>, [본조신설 …])를 제거한다.
@@ -12,9 +12,15 @@
 #   4. 태깅 JSON(articles.json)에 있는 레코드는 그 메타데이터를, 없으면 grammar.py로 자동 태깅한다.
 import json
 import re
+import hashlib
 from collections import Counter
+from functools import lru_cache
+from pathlib import Path
 
-from pypdf import PdfReader
+from docling.chunking import HierarchicalChunker
+from docling.datamodel.base_models import ConversionStatus, InputFormat
+from docling.datamodel.pipeline_options import NativePdfPipelineOptions
+from docling.document_converter import DocumentConverter, NativePdfFormatOption
 
 from app.config import CHUNKS_PATH, EN_ARTICLES_PATH, RAW_DIR, SOURCES_PATH
 from app.engine.grammar import parse as parse_clauses
@@ -42,7 +48,7 @@ RE_EN_ARTICLE = re.compile(r"^Article (\d+)(?:-(\d+))? \(([^)]+)\)\s*(.*)$")
 RE_EN_ARTICLE_OPEN = re.compile(r"^Article (\d+)(?:-(\d+))? \(([^)]+)$")   # 제목이 다음 줄로 넘어감
 RE_EN_PARAGRAPH = re.compile(r"^\((\d+)\)\s+(.*)$")
 RE_EN_ITEM = re.compile(r"^(\d+)\.\s+(.*)$")
-RE_EN_NOISE = re.compile(r"^(법제처\s+\d+|터$|「FRAMEWORK|FOUNDATION FOR TRUST」$|CHAPTER [IVX]+)")
+RE_EN_NOISE = re.compile(r"^(?:법제처$|국가법령정보센(?:터)?$|\d+$|터$|「FRAMEWORK|FOUNDATION FOR TRUST」$|CHAPTER [IVX]+)")
 RE_PARTICLE_HEAD = re.compile(r"^(은|는|이|가|을|를|의|에|와|과|로|도)(\s|$)")
 
 
@@ -51,10 +57,28 @@ def load_sources() -> list[dict]:
 
 
 # ── 공통: 줄 읽기·줄 이어 붙이기 ─────────────────────────────
+@lru_cache(maxsize=1)
+def _converter() -> DocumentConverter:
+    # 원문 텍스트가 포함된 PDF 6개: OCR 모델 없이 Docling의 native PDF 파서 사용.
+    options = NativePdfPipelineOptions()
+    return DocumentConverter(format_options={InputFormat.PDF: NativePdfFormatOption(pipeline_options=options)})
+
+
+@lru_cache(maxsize=6)
+def _convert(path: Path):
+    result = _converter().convert(path)
+    if result.status != ConversionStatus.SUCCESS:
+        raise RuntimeError(f"Docling PDF 변환 실패: {path} ({result.status})")
+    return result.document
+
+
 def _pdf_lines(path) -> list[tuple[int, str]]:
     out = []
-    for page_no, page in enumerate(PdfReader(str(path)).pages, start=1):
-        for raw in (page.extract_text() or "").splitlines():
+    for item, _ in _convert(Path(path)).iterate_items(with_groups=False):
+        if not getattr(item, "prov", None) or not getattr(item, "text", None):
+            continue
+        page_no = item.prov[0].page_no
+        for raw in item.text.splitlines():
             line = raw.strip()
             if line:
                 out.append((page_no, line))
@@ -91,7 +115,8 @@ def _ko_body_lines(path, title: str) -> list[tuple[int, str]]:
     """제1장부터 부칙 전까지, 머리말·개정 표시를 뺀 본문 줄"""
     lines, started, in_note = [], False, False
     for page, line in _pdf_lines(path):
-        if RE_HEADER.match(line) or line == title or RE_BRACKET_NOTE.match(line):
+        if (RE_HEADER.match(line) or line in ("법제처", "국가법령정보센터", title)
+                or line.isdigit() or RE_BRACKET_NOTE.match(line)):
             continue
         if in_note:                       # 두 줄에 걸친 <개정 …, … > 의 뒷부분
             if ">" not in line:
@@ -293,13 +318,40 @@ def en_lookup(chunks: list[dict]) -> dict:
 
 
 # ── 해설 자료 ───────────────────────────────────────────────
-def build_commentary_chunks(src: dict) -> list[dict]:
-    """해설 자료(2차 저작물)는 원문을 인덱싱하지 않고, 팀이 작성한 요약 레코드(verbatim: false)만 인덱싱한다.
+def build_commentary_chunks(path: Path, src: dict) -> list[dict]:
+    """Docling 문서 요소를 페이지·길이 기준으로 묶어 해설 PDF 원문을 인덱싱한다.
 
-    - 제3자 저작물 원문이 벡터 DB에 들어가지 않는다 (PDF는 팀 내부 확인용).
-    - PDF가 없는 공개 저장소·CI에서도 같은 인덱스가 만들어진다.
-    - 검색 결과 id가 Rule Engine이 인용하는 레코드 id(BKL_RECRUIT 등)와 같아진다.
+    Rule Engine의 BKL_* 요약 레코드는 별도로 유지해 PDF 원문과 판단 요약을 구별한다.
     """
+    chunks, current, current_page = [], [], None
+
+    def flush():
+        if not current:
+            return
+        page = current_page
+        seq = 1 + sum(c["page"] == page for c in chunks)
+        chunks.append({"id": f"BKL_P{page}_{seq}", "doc": src["id"], "doc_short": src["short"],
+                       "kind": "COMMENTARY_PDF", "ref_label": f"해설 p.{page}", "text": "\n".join(current),
+                       "article": 0, "article_sub": None, "paragraph": None,
+                       "title": src["title"], "chapter": "", "page": page, "lead": ""})
+        current.clear()
+
+    for item in HierarchicalChunker().chunk(_convert(path)):
+        text = item.text.strip()
+        pages = [prov.page_no for doc_item in item.meta.doc_items for prov in doc_item.prov]
+        if not text or not pages or text.isdigit():
+            continue
+        page = pages[0]
+        if current and (page != current_page or len("\n".join(current)) + len(text) + 1 > MAX_CHUNK_CHARS):
+            flush()
+        current_page = page
+        current.append(text)
+    flush()
+    return chunks
+
+
+def build_commentary_summary_chunks(src: dict) -> list[dict]:
+    """검수된 BKL_* 요약을 Rule Engine 후보 검색용으로 유지한다."""
     chunks = []
     for r in get_lawbook().records:
         if r["doc"] != src["id"]:
@@ -377,18 +429,24 @@ def build_all(sources: list[dict] | None = None) -> tuple[list[dict], dict]:
     chunks, en_map = [], {}
     for src in sources:
         path = RAW_DIR / src["file"]
-        if src["parser"] == "commentary":           # 요약 레코드만 쓰므로 PDF가 없어도 된다
-            chunks += build_commentary_chunks(src)
-            continue
         if not path.exists():
-            print(f"  [건너뜀] {src['file']} 없음")
-            continue
+            raise FileNotFoundError(f"원본 PDF가 없습니다: {path}")
+        start = len(chunks)
         if src["parser"] == "ko_law":
             chunks += build_ko_chunks(parse_ko_law(path, src["title"]), src)
         elif src["parser"] == "en_law":
             en_chunks = build_en_chunks(parse_en_law(path), src)
             en_map = en_lookup(en_chunks)
             chunks += en_chunks
+        elif src["parser"] == "commentary_pdf":
+            chunks += build_commentary_chunks(path, src)
+            chunks += build_commentary_summary_chunks(src)
+        else:
+            raise ValueError(f"알 수 없는 PDF 파서: {src['parser']}")
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        for chunk in chunks[start:]:
+            chunk["source_file"] = src["file"]
+            chunk["source_sha256"] = digest
     return attach_metadata(chunks), en_map
 
 

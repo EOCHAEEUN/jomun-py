@@ -17,12 +17,12 @@
 | --- | --- | --- |
 | 인공지능기본법 | 법률 제20676호, 2026.1.22. 시행 (2026.1.20. 개정 반영) | 핵심. 조문 태깅·판정 기준 |
 | 인공지능기본법 시행령 | 대통령령 제36053호, 2026.1.22. 시행 | 법률이 "대통령령으로 정한다"고 비워 둔 기준을 채움 (국내대리인 기준, 10²⁶ FLOPs, 고지·표시 방법, 5년 보관 등) |
-| 고영향 AI 판단 가이드라인 해설 | 법무법인 태평양 뉴스레터, 2025.9.29. (2차 자료) | 고영향 2단계 판단과 영역별 해당 사례 → REVIEW 근거. 원문 대신 팀이 쓴 요약 9개만 인덱싱하고, 화면에 "요약 · 원문 아님"으로 표시 |
+| 고영향 AI 판단 가이드라인 해설 | 법무법인 태평양 뉴스레터, 2025.9.29. (2차 자료) | PDF 원문을 Docling으로 청킹·임베딩해 별도 검색 가능하게 하고, 판정 후보에는 검수한 요약 9개를 사용. 화면의 요약은 "요약 · 원문 아님"으로 표시 |
 | 개인정보 보호법 | 법률 제21445호, 2026.9.11. 시행 | 제37조의2 자동화된 결정, 제23조 민감정보 |
 | 신용정보법 | 법률 제21445호(타법개정), 2026.9.11. 시행 | 제2조제14호 자동화평가, 제36조의2 설명·이의제기 |
 | 인공지능기본법 영문본 | 국가법령정보센터 영문 번역 (참고용) | INSPECT 원문 탭에 English 병기 |
 
-목록은 `data/sources.json`, 원본 PDF는 `data/raw/`에 있습니다 (가이드라인 해설 PDF는 저작권 때문에 배포본에서 뺐습니다 — 아래 출처·라이선스). 이 6종 밖의 규정(장관 고시, 가이드라인 원문, 개인정보 보호법 시행령 등)이 필요한 판단은 `◈ EXTERNAL`로 표시하고 판정하지 않습니다.
+목록은 `data/sources.json`, 원본 PDF 6개는 `data/raw/`에 있습니다. 이 6종 밖의 규정(장관 고시, 가이드라인 원문, 개인정보 보호법 시행령 등)이 필요한 판단은 `◈ EXTERNAL`로 표시하고 판정하지 않습니다.
 
 **같은 질문, 법마다 다른 답.** "사람이 실질적으로 개입하는가"는 세 법의 판단에 모두 영향을 주지만, 작동 방식이 다릅니다.
 
@@ -53,7 +53,7 @@ pip install -r requirements.txt
 copy .env.example .env         # Windows
 # cp .env.example .env         # Mac / Linux
 
-# 4. PDF 6종 → Chroma 적재 (RAG 후보 검색에 필요. 안 하면 '규칙만 모드'로 동작)
+# 4. PDF 6종 → Docling 변환·청킹 → Chroma 임베딩 (안 하면 '규칙만 모드')
 python -m scripts.ingest
 
 # 5. 서버 실행 → 브라우저에서 http://127.0.0.1:8000
@@ -61,6 +61,8 @@ python run.py
 ```
 
 API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베딩으로 동작합니다. `.env`에 `OPENAI_API_KEY`를 넣으면 서비스 특성 추출에 LLM(LangChain + OpenAI)을 씁니다. 적재를 건너뛰면 검색 없이 규칙만으로 판정하고, 화면 상단 상태에 `규칙만 모드`라고 표시합니다.
+
+적재는 원본 PDF를 바꾸지 않습니다. Docling의 native PDF 파서로 여섯 파일의 텍스트와 페이지를 읽고, 법령은 조·항·호·목 단위로, 영문본은 Article 단위로 나눕니다. BKL 해설은 PDF 원문 청크 11개와 판정용 요약 9개를 별도 ID로 저장합니다. 결과는 `data/processed/chunks.json`과 `data/vectorstore/`에 생성되며, 각 청크에는 원본 파일명과 SHA-256 해시가 남습니다. 기본 임베딩은 로컬 해싱이고 `EMBEDDING_PROVIDER=openai`를 설정하면 OpenAI 임베딩을 사용합니다.
 
 ---
 
@@ -132,7 +134,7 @@ BUILD LOG → INSPECT (원문 │ 디컴파일 │ 체크리스트)
 | Penalty Graph | `app/engine/penalty.py` |
 | 파이프라인 | `app/engine/pipeline.py` |
 | RAG 후보 검색 (쿼리 생성 · 참조 확장) | `app/rag/retriever.py` |
-| PDF 전처리·청킹 (국문 법령·영문·해설 요약) | `app/rag/preprocess.py` |
+| Docling PDF 변환·청킹 (국문 법령·영문·해설 원문) | `app/rag/preprocess.py` |
 | Chroma 적재·검색, 로컬 임베딩 | `app/rag/store.py`, `app/rag/embeddings.py` |
 
 ### 핵심 데이터: `data/tagged/articles.json`
@@ -172,7 +174,7 @@ python -m scripts.evaluate --snapshot   # docs/eval_snapshot.json 갱신
 | dev 11개 | `data/eval/cases.json` | 규칙을 만들면서 본 케이스 (바목 함정, 경찰 얼굴 인식 대조군, 생성형 표시 의무, 영화 추천 오탐 방지, 해외 기업, 국방 전용, 외부 LLM API, 사람이 최종 결정하는 채용 AI 등) |
 | held-out 11개 | `data/eval/heldout_cases.json` | 엔진 수정 전에 따로 써 둔 케이스. **결과를 보고 엔진을 고치지 않는다** |
 
-로컬 해싱 임베딩 · 규칙 기반 특성 추출 · 청크 1,725개 기준 ([상세](docs/evaluation.md), [스냅샷](docs/eval_snapshot.json)):
+로컬 해싱 임베딩 · 규칙 기반 특성 추출 · 청크 1,736개 기준 ([상세](docs/evaluation.md), [스냅샷](docs/eval_snapshot.json)):
 
 | 지표 | dev | held-out |
 | --- | --- | --- |
@@ -207,7 +209,7 @@ GitHub Actions(`.github/workflows/test.yml`)가 push·PR마다 Python 3.11에서
 | 파일 | 내용 |
 | --- | --- |
 | `tests/test_data.py` | 태깅 레코드 143개가 원문 PDF와 글자 단위로 일치하는지, 해설이 요약으로 표시되는지 |
-| `tests/test_preprocess.py` | 6종 청킹, 제33조① 절 분리, 시행령 제29조 수치 보존, 줄바꿈 이어 붙이기, 개정 표시 제거, 영문 매핑, 해설은 요약만 인덱싱 |
+| `tests/test_preprocess.py` | 6개 PDF 청킹, 제33조① 절 분리, 시행령 제29조 수치 보존, 줄바꿈 이어 붙이기, 개정 표시 제거, 영문 매핑, 해설 원문·요약 분리 |
 | `tests/test_rules.py` | 문법 파서, 특성 추출('해외' 단독 언급은 미확정), 판정 엔진(규칙만 모드), 사람 최종 결정이 법마다 다르게 작동, 제37조의2 ④공개/③대응 분리, 신용정보법 권리를 사업자 의무로 쓰지 않음, OPPORTUNITY 조건, RAG 후보 검증(후보에 없으면 판정 안 함 · 기본 규칙 유지 · 검색 누락은 REVIEW · 영역 후보 기각 이유), 제재 경로, dev 11개 |
 | `tests/test_rag.py` | 임시 Chroma 적재, 검색 필터, 특성 쿼리, 사목 검색·참조 확장, 파이프라인이 RAG 후보를 쓰는지, 규칙만 모드 폴백, dev 11개(RAG 모드), **평가 결과 = 커밋된 스냅샷** |
 | `tests/test_api.py` | `/`, `/api/sources`(6종), `/api/examples`, `/api/build` 스키마·답변 반영, 잘못된 입력 422, `/api/articles/{id}` |
@@ -274,6 +276,6 @@ jomun-py/
 ## 출처·라이선스
 
 - 법령 원문(법률·시행령·영문 번역): 국가법령정보센터. 법령은 저작권법 제7조에 따라 보호받지 않는 저작물입니다.
-- **가이드라인 해설 PDF는 법무법인 태평양의 저작물입니다.** 배포 압축본과 공개 저장소에는 넣지 않습니다 (`.gitignore`에도 `data/raw/bkl_*.pdf`). 팀 내부에서 원문 확인이 필요하면 따로 받아 `data/raw/`에 두세요. `articles.json`과 벡터 DB에는 원문 대신 팀이 쓴 요약만 들어가므로, PDF가 없어도 적재·테스트·평가 결과가 같습니다.
+- **가이드라인 해설 PDF는 법무법인 태평양의 2차 자료입니다.** 사용자 제공 원본을 `data/raw/`에 포함해 Docling으로 청킹·임베딩합니다. Rule Engine의 `BKL_*` 레코드 9개는 팀이 작성한 요약(`verbatim: false`)으로 원문 청크와 구별하며, 화면에도 요약임을 표시합니다.
 - 글꼴: [Pretendard](https://github.com/orioncactus/pretendard) (SIL Open Font License 1.1, `app/static/fonts/Pretendard-LICENSE.txt`)
 - `app/static/img/`의 일러스트·로고: UI 시안 이미지에서 잘라낸 임시 이미지입니다. 원본 일러스트로 교체하세요.

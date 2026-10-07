@@ -4,7 +4,7 @@
     "embedding": "local",
     "top_k": 5,
     "hit_k": 3,
-    "chunks": 1725,
+    "chunks": 1736,
     "feature_extractor": "heuristic"
   },
   "dev": {
