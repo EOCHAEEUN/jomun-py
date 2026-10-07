@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>조문.py — AI Legal Build Checker</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232f3540'/><text x='16' y='22' font-size='15' text-anchor='middle' fill='white' font-family='monospace'>§</text></svg>" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <!-- 아이콘 스프라이트 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/><rect x="3" y="4" width="18" height="16" rx="2" opacity="0"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M8.5 12.5h7M8.5 16h7"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1.9-1.1 1.6v.4M12 16.8h.01"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8.5-3 8.5h18S18 15 18 8M13.7 20a2 2 0 0 1-3.4 0"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4 20.5c1.2-3.8 4.3-5.5 8-5.5s6.8 1.7 8 5.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-inspect" viewBox="0 0 24 24"><path d="M13 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21H11"/><path d="M13 3l5 5v3M13 3v5h5M8.5 12.5h4M8.5 16h2.5"/><circle cx="16.5" cy="16.5" r="3"/><path d="m18.7 18.7 2.3 2.3"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M12 11v6M12 7.5h.01" stroke="#fff" stroke-width="2.2"/></symbol>
+    <symbol id="i-bars" viewBox="0 0 24 24"><path d="M5 20v-6M12 20V9M19 20V4" stroke-width="3.2" stroke-linecap="butt"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" stroke-width="2.6"/></symbol>
+  </svg>
+
+  <div class="app">
+    <!-- ── 사이드바 ── -->
+    <aside class="sidebar">
+      <nav class="nav">
+        <a class="nav-item active" data-view="home"><svg><use href="#i-home"/></svg><span>홈</span></a>
+        <a class="nav-item" data-view="projects"><svg><use href="#i-list"/></svg><span>프로젝트</span></a>
+        <a class="nav-item" data-view="library"><svg><use href="#i-doc"/></svg><span>법령 라이브러리</span></a>
+        <a class="nav-item" data-view="guide"><svg><use href="#i-help"/></svg><span>가이드</span></a>
+        <a class="nav-item" data-view="settings"><svg><use href="#i-gear"/></svg><span>설정</span></a>
+      </nav>
+      <div class="brand-mark">
+        <img src="/static/img/abo-logo.png" alt="made by ABO" />
+      </div>
+    </aside>
+
+    <div class="main">
+      <!-- ── 헤더 ── -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="logo">조문.py</h1>
+          <span class="divider"></span>
+          <span class="product">AI Legal Build Checker</span>
+          <span class="dash">—</span>
+          <span class="tagline">좋은 기술이 좋은 세상을 만듭니다. 조문.py 가 함께합니다.</span>
+        </div>
+        <div class="topbar-right">
+          <span class="slogan">AI로 만드는 더 안전한 서비스</span>
+          <span class="divider"></span>
+          <button class="icon-btn" id="bell" aria-label="알림"><svg><use href="#i-bell"/></svg></button>
+          <span class="avatar"><svg><use href="#i-user"/></svg></span>
+        </div>
+      </header>
+
+      <main class="board">
+        <!-- ── 01 SPEC ── -->
+        <section class="panel spec">
+          <div class="panel-head">
+            <svg class="panel-icon"><use href="#i-doc"/></svg>
+            <div>
+              <h2><span class="step">01</span> SPEC</h2>
+              <p>서비스 설명을 입력하면 관련 법령을 분석해요.</p>
+            </div>
+          </div>
+
+          <div class="card spec-card">
+            <div class="card-title-row">
+              <h3>서비스 설명</h3>
+              <button class="link-btn" id="load-example">예시 불러오기</button>
+            </div>
+            <div class="textarea-wrap">
+              <textarea id="spec" maxlength="500" placeholder="개발할 AI 서비스를 한두 문장으로 설명해 주세요.&#10;예: 얼굴 인식으로 면접 영상을 분석해서 지원자의 채용 점수를 추천하는 AI"></textarea>
+              <span class="counter" id="counter">0/500</span>
+            </div>
+            <button class="run-btn" id="run"><svg><use href="#i-play"/></svg><span>법 빌드 실행</span></button>
+            <p class="disclaimer"><svg><use href="#i-info"/></svg>법률 자문 아님 / 인공지능기본법 기반 사전 점검</p>
+          </div>
+
+          <div class="spec-illust">
+            <blockquote class="quote">좋은 아이디어가<br />더 멀리 갈 수 있도록,<br />법과 함께 점검해요.</blockquote>
+            <img src="/static/img/capybara-judge.png" alt="판사 옷을 입은 카피바라" />
+          </div>
+        </section>
+
+        <!-- ── 02 BUILD ── -->
+        <section class="panel build">
+          <div class="panel-head">
+            <svg class="panel-icon"><use href="#i-gear"/></svg>
+            <div>
+              <h2><span class="step">02</span> BUILD</h2>
+              <p>입력한 서비스에 적용되는 법령을 분석하고 체크해요.</p>
+            </div>
+            <div class="status-pill idle" id="status"><i></i><b>대기 중</b><span></span></div>
+          </div>
+
+          <div class="card log-card">
+            <h3 class="log-title">빌드 로그</h3>
+            <ul class="log" id="log">
+              <li class="log-empty">법 빌드 실행을 누르면 결과가 여기에 표시돼요.</li>
+            </ul>
+            <div class="log-summary" id="summary">
+              <svg><use href="#i-bars"/></svg>
+              <span><b>Build Summary</b> : <em id="summary-text">-</em></span>
+            </div>
+          </div>
+
+          <div class="robot-card">
+            <blockquote>AI 서비스가 더 안전하게 만들어질 수 있도록<br />관련 법령을 꼼꼼히 확인하고 있어요.</blockquote>
+            <img src="/static/img/robot.png" alt="노트북을 쓰는 로봇" />
+          </div>
+        </section>
+
+        <!-- ── 03 INSPECT ── -->
+        <section class="panel inspect">
+          <div class="panel-head">
+            <svg class="panel-icon"><use href="#i-inspect"/></svg>
+            <div>
+              <h2><span class="step">03</span> INSPECT</h2>
+              <p>분석 근거를 확인하고, 적용 사항을 점검해요.</p>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button class="tab" data-tab="original" role="tab">원문<i class="tab-dot" hidden></i></button>
+            <button class="tab active" data-tab="decompiled" role="tab">디컴파일</button>
+            <button class="tab" data-tab="checklist" role="tab">체크리스트</button>
+          </div>
+
+          <div class="card tab-card" id="tab-content">
+            <p class="muted">빌드 로그에서 항목을 선택하면 근거가 여기에 표시돼요.</p>
+          </div>
+
+          <div class="card todo-card">
+            <h3>적용 사항 체크리스트</h3>
+            <ul class="todo" id="todo"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

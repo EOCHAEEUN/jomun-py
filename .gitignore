@@ -1,0 +1,22 @@
+# 환경 변수 (API 키)
+.env
+.env.*
+!.env.example
+
+# 파이썬
+__pycache__/
+*.pyc
+venv/
+.venv/
+.pytest_cache/
+
+# 실행하면 생기는 파일 (python -m scripts.ingest / evaluate)
+data/vectorstore/
+data/processed/
+data/eval/results.json
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

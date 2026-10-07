@@ -1,0 +1,15 @@
+# ── 필수 ──────────────────────────────
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+python-dotenv>=1.0
+pypdf>=4.0
+chromadb>=1.0,<2.0
+
+# ── LLM 특성 추출 ─────────────────────
+# .env에 OPENAI_API_KEY가 있을 때만 사용. 없으면 규칙 기반(heuristic) 추출기로 동작
+langchain-core>=0.3
+langchain-openai>=0.2
+
+# ── 테스트 ────────────────────────────
+pytest>=8.0

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "01",
+    "name": "얼굴 인식 채용 (바목 함정)",
+    "spec": "얼굴 인식으로 면접 영상을 분석해서 지원자의 채용 점수를 추천하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_SA",
+      "retrieval": ["ARTICLE_2_4_SA"],
+      "statuses": {"제2조4호사목": "MATCH", "제33조①": "REQUIRED", "HIGH_IMPACT_AI": "REVIEW", "제31조①": "CONDITIONAL", "제34조①": "CONDITIONAL", "제35조①": "CONDITIONAL"}
+    },
+    "point": "'얼굴'에 끌려 바목(범죄 수사 생체인식)을 가져오면 오답"
+  },
+  {
+    "id": "02",
+    "name": "경찰 얼굴 인식 (01의 대조군)",
+    "spec": "경찰이 CCTV 얼굴 인식으로 용의자를 찾아 체포를 돕는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_BA",
+      "retrieval": ["ARTICLE_2_4_BA"],
+      "statuses": {"제2조4호바목": "MATCH", "제33조①": "REQUIRED"}
+    },
+    "point": "목적이 범죄 수사·체포일 때만 바목"
+  },
+  {
+    "id": "03",
+    "name": "생성형 마케팅 이미지",
+    "spec": "생성형 AI로 쇼핑몰 마케팅 이미지를 제작해 주는 서비스",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_2", "ARTICLE_2_5"],
+      "statuses": {"제31조①": "REQUIRED", "제31조②": "REQUIRED", "제31조③": "CONDITIONAL", "HIGH_IMPACT_AI": "INFO"}
+    },
+    "point": "생성형 조건으로 제31조①② 적용, 실사 여부는 조건부"
+  },
+  {
+    "id": "04",
+    "name": "가상 인물 광고 영상 (표시 의무 ≠ 직접 과태료)",
+    "spec": "실제 사람처럼 보이는 가상 인물 영상을 생성해 광고에 쓰는 서비스",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_3_A"],
+      "statuses": {"제31조②": "REQUIRED", "제31조③": "REQUIRED"},
+      "penalty": {"제31조③": "INDIRECT", "제31조①": "DIRECT"}
+    },
+    "point": "MUST라도 제31조②③은 제40조 경유 간접 제재"
+  },
+  {
+    "id": "05",
+    "name": "대출 승인 AI",
+    "spec": "은행 대출 승인 여부를 판단하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_SA",
+      "retrieval": ["ARTICLE_2_4_SA"],
+      "statuses": {"제2조4호사목": "MATCH", "HIGH_IMPACT_AI": "REVIEW"}
+    },
+    "point": "채용 외의 사목 영역"
+  },
+  {
+    "id": "06",
+    "name": "영화 추천 AI (고영향 오탐 방지)",
+    "spec": "시청 기록 기반 영화 추천 AI 서비스",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_33_1_A"],
+      "statuses": {"제33조①": "REQUIRED", "HIGH_IMPACT_AI": "INFO"},
+      "absent": ["제34조①", "제31조①"]
+    },
+    "point": "'추천'이라는 단어만으로 고영향 AI가 되지 않음"
+  },
+  {
+    "id": "07",
+    "name": "학생 답안 자동 채점",
+    "spec": "초·중등 학생 수행평가 답안을 자동으로 채점하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_CHA",
+      "retrieval": ["ARTICLE_2_4_CHA"],
+      "statuses": {"제2조4호차목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제31조①": "REQUIRED", "제34조①": "REQUIRED", "제35조①": "SHOULD"}
+    },
+    "point": "자동 평가 → 고영향 확정, CONDITIONAL 없이 바로 REQUIRED"
+  },
+  {
+    "id": "08",
+    "name": "해외 기업 + 국내 이용자",
+    "spec": "국내 영업소가 없는 해외 기업이 한국 이용자에게 제공하는 LLM 기반 번역 앱",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_4_1", "ARTICLE_36_1"],
+      "statuses": {"제4조①": "MATCH", "제36조①": "REVIEW", "제31조①": "REQUIRED"}
+    },
+    "point": "역외 적용 → 국내대리인 기준(대통령령) 되묻기"
+  },
+  {
+    "id": "09",
+    "name": "국방 전용 AI",
+    "spec": "국방 목적으로만 쓰는 표적 식별 AI",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_4_2"],
+      "statuses": {"제4조②": "REVIEW"}
+    },
+    "point": "적용 제외 가능성 + 대통령령 확인 (EXTERNAL)"
+  },
+  {
+    "id": "10",
+    "name": "외부 LLM API 상담 챗봇",
+    "spec": "OpenAI API를 이용한 쇼핑몰 고객 상담 챗봇",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_1", "ARTICLE_31_2"],
+      "statuses": {"제31조①": "REQUIRED", "제31조②": "REQUIRED", "제32조①": "REVIEW"}
+    },
+    "point": "이용사업자라도 제32조를 자동 제외하지 않음"
+  }
+]
