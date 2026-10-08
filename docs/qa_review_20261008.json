@@ -1,0 +1,121 @@
+[
+  {
+    "id": "safety_documentation",
+    "valid": true,
+    "answer_correct": true,
+    "note": "질문의 두 조치를 정확히 설명했다.",
+    "claims": [
+      {"text": "제34조제1항은 고영향 AI 사업자의 안전성·신뢰성 조치를 규정한다", "supported": true, "basis": "인용 ARTICLE_34_1"},
+      {"text": "사람의 관리·감독이 조치에 포함된다", "supported": true, "basis": "인용 ARTICLE_34_1 제4호"},
+      {"text": "조치 내용 문서의 작성·보관이 포함된다", "supported": true, "basis": "인용 ARTICLE_34_1 제5호"}
+    ]
+  },
+  {
+    "id": "impact_assessment_strength",
+    "valid": true,
+    "answer_correct": true,
+    "note": "노력의무와 완료를 확정하는 의무를 구별했다.",
+    "claims": [
+      {"text": "제35조제1항은 사전 기본권 영향평가를 위해 노력하여야 한다고 규정한다", "supported": true, "basis": "인용 ARTICLE_35_1"},
+      {"text": "영향평가를 반드시 완료해야 한다는 표현은 조문보다 강하다", "supported": true, "basis": "인용 ARTICLE_35_1의 노력하여야 한다는 문구"},
+      {"text": "평가에는 인공지능취약계층 특성을 고려한다", "supported": true, "basis": "인용 ARTICLE_35_1 후단"}
+    ]
+  },
+  {
+    "id": "notice_versus_label",
+    "valid": true,
+    "answer_correct": true,
+    "note": "사전 고지와 결과물 표시를 구분하고 예외도 조건부로 설명했다.",
+    "claims": [
+      {"text": "생성형 AI 서비스 사전 고지와 생성 결과물 표시는 별개의 조항이다", "supported": true, "basis": "인용 ARTICLE_31_1, ARTICLE_31_2"},
+      {"text": "결과물 표시만으로 사전 고지가 자동 면제되지는 않는다", "supported": true, "basis": "인용 ARTICLE_31_1, ARTICLE_31_2"},
+      {"text": "AI 활용 사실이 명백한 경우 고지·표시의 전부 또는 일부 예외가 가능하다", "supported": true, "basis": "인용 DECREE_23_4"},
+      {"text": "서비스명이나 화면의 AI 활용 표시도 예외 판단 요소다", "supported": true, "basis": "인용 DECREE_23_4 제1호"}
+    ]
+  },
+  {
+    "id": "high_impact_confirmation",
+    "valid": true,
+    "answer_correct": false,
+    "note": "정부 확인 요청은 맞지만, 자체 판단을 하지 말라는 결론이 사업자의 사전 검토 의무와 충돌한다. 필수 정답도 빠졌다.",
+    "claims": [
+      {"text": "필요하면 장관에게 고영향 해당 여부 확인을 요청할 수 있다", "supported": true, "basis": "인용 ARTICLE_33_1_B"},
+      {"text": "확인 요청 때 제품·학습데이터·활용 자료를 제출한다", "supported": true, "basis": "인용 DECREE_25_1"},
+      {"text": "장관은 30일 내 회신하며 한 차례 연장할 수 있다", "supported": true, "basis": "인용 DECREE_25_3"},
+      {"text": "공식 확인 전까지 사업자가 자체적으로 판단하지 않아야 한다", "supported": false, "kind": "contradicted", "basis": "미인용 ARTICLE_33_1_A는 사업자의 사전 검토를 의무로 규정"}
+    ]
+  },
+  {
+    "id": "pipa_exemption_unknown",
+    "valid": true,
+    "answer_correct": true,
+    "note": "자동 면제를 단정하지 않고 별도 법률 검토를 권했다. 다만 두 법의 목적·범위 차이는 인용 근거에 없다.",
+    "claims": [
+      {"text": "인공지능기본법은 AI 윤리적 기준을 다룬다", "supported": true, "basis": "인용 ARTICLE_2_11"},
+      {"text": "국가·지자체의 AI 대응 시책도 규정한다", "supported": true, "basis": "인용 ARTICLE_3_4"},
+      {"text": "인공지능기본법 준수만으로 개인정보 보호법 의무의 자동 면제는 확인되지 않는다", "supported": true, "basis": "QA 근거 범위에 면제 조항이 없으므로 단정을 유보"},
+      {"text": "두 법률은 서로 다른 목적과 규율 대상을 가진다", "supported": false, "kind": "uncited", "basis": "인용 출처에 개인정보 보호법 원문이 없음"}
+    ]
+  },
+  {
+    "id": "human_final_hiring",
+    "valid": true,
+    "answer_correct": false,
+    "note": "핵심 판단은 맞지만 검토 기록을 법정 필수 작업처럼 말했고, 사전 고지·안전 조치·영향평가를 해당 조문 없이 나열했다.",
+    "claims": [
+      {"text": "채용 평가 AI는 고영향 AI가 될 수 있는 법정 영역이다", "supported": true, "basis": "인용 ARTICLE_2_4_SA"},
+      {"text": "사람이 최종 결정한다는 이유만으로 고영향 가능성을 배제할 수 없다", "supported": true, "basis": "인용 ARTICLE_2_4, DECREE_25_2"},
+      {"text": "영역과 위험의 중대성·사람 개입 방식을 함께 검토한다", "supported": true, "basis": "인용 DECREE_25_2"},
+      {"text": "사업자가 사전 검토하고 필요하면 정부 확인을 요청할 수 있다", "supported": true, "basis": "인용 ARTICLE_33_1_A, ARTICLE_33_1_B"},
+      {"text": "검토 결과를 기록으로 남겨야 한다", "supported": false, "kind": "uncited", "basis": "인용 조문에 검토 기록 의무는 명시되지 않음"},
+      {"text": "고영향이면 사전 고지 의무가 적용될 수 있다", "supported": false, "kind": "uncited", "basis": "인용 출처에 ARTICLE_31_1이 없음"},
+      {"text": "고영향이면 안전성·신뢰성 조치가 적용될 수 있다", "supported": false, "kind": "uncited", "basis": "인용 출처에 ARTICLE_34_1이 없음"},
+      {"text": "고영향이면 영향평가 노력이 적용될 수 있다", "supported": false, "kind": "uncited", "basis": "인용 출처에 ARTICLE_35_1이 없음"}
+    ]
+  },
+  {
+    "id": "shopping_recommendation",
+    "valid": true,
+    "answer_correct": false,
+    "note": "상품 추천을 곧바로 고영향으로 단정하지 않은 점은 맞다. 검토 기록을 필수처럼 표현했고 정부 확인 요청의 출처를 인용하지 않았다.",
+    "claims": [
+      {"text": "고영향 AI는 법정 영역과 중대한 영향 또는 위험을 전제로 한다", "supported": true, "basis": "인용 ARTICLE_2_4"},
+      {"text": "제34조의 안전성·신뢰성 조치는 고영향 AI에 적용된다", "supported": true, "basis": "인용 ARTICLE_34_1"},
+      {"text": "단순 상품 추천만으로 고영향 해당성을 확정할 수 없다", "supported": true, "basis": "질문 속 활용 영역과 인용 ARTICLE_2_4 대조"},
+      {"text": "사업자는 고영향 여부를 사전에 검토해야 한다", "supported": true, "basis": "인용 ARTICLE_33_1_A"},
+      {"text": "검토 결과를 공식적으로 기록으로 남겨야 한다", "supported": false, "kind": "uncited", "basis": "인용 조문에 기록 의무는 명시되지 않음"},
+      {"text": "필요하면 정부에 고영향 확인 요청을 할 수 있다", "supported": false, "kind": "uncited", "basis": "인용 출처에 ARTICLE_33_1_B가 없음"}
+    ]
+  },
+  {
+    "id": "synthetic_voice",
+    "valid": true,
+    "answer_correct": false,
+    "note": "제31조제3항의 실제와 구분 어려운 음향 고지는 맞지만, 독립적인 생성형 결과물 표시(제31조제2항)를 빠뜨렸다.",
+    "claims": [
+      {"text": "실제 사람 음성과 구분하기 어려운 AI 음향에는 명확한 고지 또는 표시가 필요하다", "supported": true, "basis": "인용 ARTICLE_31_3_A"},
+      {"text": "이용자가 명확히 인식할 수 있는 방식이어야 한다", "supported": true, "basis": "인용 ARTICLE_31_3_A"},
+      {"text": "예술적·창의적 표현물에는 향유를 방해하지 않는 방식으로 표시할 수 있다", "supported": true, "basis": "인용 ARTICLE_31_3_B"},
+      {"text": "제공된 사실대로라면 실제와 구분 어려운 합성 음향 조건에 해당한다", "supported": true, "basis": "서비스 설명과 인용 ARTICLE_31_3_A"}
+    ]
+  },
+  {
+    "id": "internal_draft_exception",
+    "valid": true,
+    "answer_correct": true,
+    "note": "내부 업무 예외의 가능성을 정확히 설명했지만, 그 핵심 근거인 시행령 제23조제4항을 출처 목록에 넣지 않았다.",
+    "claims": [
+      {"text": "생성형 AI 서비스 사전 고지와 결과물 표시 조항이 있다", "supported": true, "basis": "인용 ARTICLE_31_1, ARTICLE_31_2"},
+      {"text": "사업자의 내부 업무 용도만이면 고지·표시의 전부 또는 일부 예외가 가능하다", "supported": false, "kind": "uncited", "basis": "정답 DECREE_23_4를 답변은 언급했으나 인용 출처 목록에는 없음"},
+      {"text": "내부용이라는 사실만으로 무조건 면제라고 단정하지 않고 추가 확인을 권한다", "supported": true, "basis": "예외 가능성으로 표현한 답변 자체와 서비스 설명"}
+    ]
+  },
+  {
+    "id": "overseas_agent_threshold",
+    "valid": false,
+    "answer_correct": null,
+    "reason": "평가 질문이 '직전 3개월'이라고만 써서 시행령 제29조제1항의 '전년도 말 기준 직전 3개월'이라는 측정 기준일을 특정하지 않았다. 정답지의 확정 판정도 이 결함을 공유하므로 독립적인 답변 정확도 분모에서 제외한다.",
+    "note": "검색 평가는 포함한다. 실제 답변은 현재 150만 명이라는 사실만으로 지정·신고 의무를 확정했고, 기준 시점을 '전년도 3개월간'이라고 부정확하게 표현했다.",
+    "claims": []
+  }
+]

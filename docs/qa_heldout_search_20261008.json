@@ -1,0 +1,260 @@
+{
+  "count": 10,
+  "retrieval_evaluated": 9,
+  "hybrid_rerank": {
+    "hit@3": 0.889,
+    "hit@5": 1.0,
+    "mrr": 0.856,
+    "all_gold@3": 0.333,
+    "all_gold@5": 0.556,
+    "gold_coverage@5": 0.667
+  },
+  "cases": [
+    {
+      "id": "safety_documentation",
+      "mode": "general",
+      "question": "고영향 인공지능의 안전성·신뢰성 조치에 사람의 관리·감독과 조치 문서의 작성·보관도 포함되나요?",
+      "gold_ids": [
+        "ARTICLE_34_1"
+      ],
+      "must_include": [
+        "제34조제1항은 고영향 인공지능 사업자의 안전성·신뢰성 확보 조치를 규정한다",
+        "사람의 관리·감독과 조치 문서의 작성·보관이 포함된다"
+      ],
+      "must_not_say": [
+        "모든 AI 서비스에 제34조 조치가 확정적으로 적용된다"
+      ],
+      "rationale": "제34조제1항 제4·5호의 조치와 적용 대상을 함께 확인한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_34_1",
+        "ARTICLE_36_1",
+        "ARTICLE_17_3",
+        "DECREE_27_1",
+        "ARTICLE_27_1"
+      ]
+    },
+    {
+      "id": "impact_assessment_strength",
+      "mode": "general",
+      "question": "고영향 AI 서비스를 내놓기 전에 기본권 영향평가를 반드시 끝내야 하나요, 아니면 노력해야 하는 건가요?",
+      "gold_ids": [
+        "ARTICLE_35_1"
+      ],
+      "must_include": [
+        "제35조제1항은 사전 영향평가를 위해 노력하여야 한다고 규정한다",
+        "완료를 확정 의무라고 단정하지 않는다"
+      ],
+      "must_not_say": [
+        "영향평가는 아무 의무도 아니다",
+        "모든 사업자는 영향평가를 반드시 완료해야 한다"
+      ],
+      "rationale": "노력의무와 확정 의무를 구별한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_35_1",
+        "ARTICLE_33_1_A",
+        "DECREE_25_2",
+        "ARTICLE_35_2",
+        "ARTICLE_30_3"
+      ]
+    },
+    {
+      "id": "notice_versus_label",
+      "mode": "general",
+      "question": "생성형 AI 결과물에 AI 생성 표시를 했으면 서비스가 AI 기반이라는 사전 고지는 생략해도 되나요?",
+      "gold_ids": [
+        "ARTICLE_31_1",
+        "ARTICLE_31_2"
+      ],
+      "must_include": [
+        "제31조제1항의 이용자 사전 고지와 제31조제2항의 결과물 표시를 구별한다",
+        "결과물 표시만으로 사전 고지 의무가 자동으로 사라진다고 단정하지 않는다"
+      ],
+      "must_not_say": [
+        "표시만 하면 사전 고지는 항상 면제된다"
+      ],
+      "rationale": "서로 다른 두 조항의 의무를 혼동하지 않는지 확인한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_31_1",
+        "DECREE_23_2",
+        "DECREE_23_4",
+        "DECREE_23_1",
+        "ARTICLE_31_2"
+      ]
+    },
+    {
+      "id": "high_impact_confirmation",
+      "mode": "general",
+      "question": "AI가 고영향 인공지능인지 애매하면 누가 먼저 검토하고, 정부에 확인을 요청할 수도 있나요?",
+      "gold_ids": [
+        "ARTICLE_33_1_A",
+        "ARTICLE_33_1_B"
+      ],
+      "must_include": [
+        "인공지능사업자가 사전에 고영향 해당 여부를 검토한다",
+        "필요하면 과학기술정보통신부장관에게 확인을 요청할 수 있다"
+      ],
+      "must_not_say": [
+        "정부 확인을 받아야만 서비스를 출시할 수 있다"
+      ],
+      "rationale": "사업자의 사전 검토와 선택적 확인 요청을 구분한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_33_1_B",
+        "DECREE_25_6",
+        "DECREE_25_1",
+        "DECREE_25_3",
+        "DECREE_27_4"
+      ]
+    },
+    {
+      "id": "pipa_exemption_unknown",
+      "mode": "general",
+      "question": "인공지능기본법만 준수하면 개인정보 보호법의 모든 의무가 자동으로 면제되나요?",
+      "gold_ids": [],
+      "must_include": [
+        "제공된 인공지능기본법·시행령 근거만으로 개인정보 보호법 의무 면제를 단정할 수 없다",
+        "개인정보 보호법은 별도로 검토해야 한다"
+      ],
+      "must_not_say": [
+        "모든 개인정보 보호법 의무가 면제된다"
+      ],
+      "rationale": "QA 인덱스 범위 밖의 법률에 대한 근거 없는 단정을 검사한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_3_4",
+        "DECREE_16-2_2",
+        "ARTICLE_2_11",
+        "ARTICLE_2_10",
+        "ARTICLE_2_4_BA"
+      ]
+    },
+    {
+      "id": "human_final_hiring",
+      "mode": "service",
+      "question": "사람이 최종 합격자를 고르는데, 우리 채용 점수 추천 AI는 무조건 고영향 AI가 아닌가요?",
+      "service_description": "지원자의 면접 영상을 분석해 채용 점수를 추천하고, 인사담당자가 최종 합격 여부를 결정하는 AI 서비스",
+      "gold_ids": [
+        "ARTICLE_2_4",
+        "ARTICLE_2_4_SA",
+        "ARTICLE_33_1_A"
+      ],
+      "must_include": [
+        "채용 등 권리·의무에 중대한 영향을 미치는 영역인지 검토한다",
+        "사람이 최종 결정한다는 이유만으로 고영향 해당 가능성을 일괄 배제하지 않는다"
+      ],
+      "must_not_say": [
+        "사람이 최종 결정하므로 고영향 AI가 절대 아니다",
+        "고영향 AI가 확정되었으므로 모든 의무가 즉시 적용된다"
+      ],
+      "rationale": "채용 영역과 실제 영향, 결정 방식의 불확실성을 함께 본다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_2_4_SA",
+        "DECREE_25_2",
+        "ARTICLE_34_1",
+        "ARTICLE_33_2",
+        "DECREE_28_2"
+      ]
+    },
+    {
+      "id": "shopping_recommendation",
+      "mode": "service",
+      "question": "이 상품 추천 기능에도 고영향 AI의 안전성·신뢰성 확보 조치가 무조건 적용되나요?",
+      "service_description": "쇼핑몰 이용자의 취향에 맞는 상품을 추천하며 채용·대출·의료·공공서비스 결정에는 사용하지 않는 AI",
+      "gold_ids": [
+        "ARTICLE_2_4",
+        "ARTICLE_34_1"
+      ],
+      "must_include": [
+        "단순 상품 추천이라는 사실만으로 고영향 인공지능이라고 확정하지 않는다",
+        "제34조 조치는 고영향 인공지능 해당 여부를 전제로 검토한다"
+      ],
+      "must_not_say": [
+        "상품 추천 AI에는 제34조 의무가 무조건 적용된다"
+      ],
+      "rationale": "고영향 AI의 정의와 의무의 전제조건을 지키는지 확인한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_2_4_SA",
+        "ARTICLE_34_1",
+        "ARTICLE_36_1",
+        "ARTICLE_30_4",
+        "ARTICLE_30_3"
+      ]
+    },
+    {
+      "id": "synthetic_voice",
+      "mode": "service",
+      "question": "사용자가 실제 사람의 음성으로 착각할 수 있는데 무엇을 알려야 하나요?",
+      "service_description": "생성형 AI로 실제 사람 목소리와 구별하기 어려운 상담 음성을 만들어 사용자에게 들려주는 서비스",
+      "gold_ids": [
+        "ARTICLE_31_2",
+        "ARTICLE_31_3_A"
+      ],
+      "must_include": [
+        "생성형 AI 결과물 표시를 검토한다",
+        "실제와 구분하기 어려운 가상 음향은 AI로 생성되었다는 사실을 명확히 인식할 수 있게 고지 또는 표시해야 한다"
+      ],
+      "must_not_say": [
+        "음성은 제31조제3항의 대상이 아니다"
+      ],
+      "rationale": "생성형 결과물 표시와 실제 같은 합성 음향의 추가 고지·표시를 검사한다.",
+      "hybrid_rerank_ids": [
+        "ARTICLE_31_3_A",
+        "DECREE_23_2",
+        "ARTICLE_35_1",
+        "ARTICLE_31_2",
+        "ARTICLE_2_4"
+      ]
+    },
+    {
+      "id": "internal_draft_exception",
+      "mode": "service",
+      "question": "직원들이 내부 문서 초안을 만들 때도 이용자에게 사전 고지와 결과물 표시를 항상 해야 하나요?",
+      "service_description": "회사 직원만 내부 업무용 이메일과 회의록 초안을 생성하는 AI 도구이며 외부 고객에게 결과물을 제공하지 않는다",
+      "gold_ids": [
+        "ARTICLE_31_1",
+        "ARTICLE_31_2",
+        "DECREE_23_4"
+      ],
+      "must_include": [
+        "내부 업무 용도에 대한 시행령 제23조제4항의 고지·표시 예외 가능성을 검토한다",
+        "항상 고지·표시해야 한다고 단정하지 않는다"
+      ],
+      "must_not_say": [
+        "내부 업무용이어도 예외 없이 고객에게 반드시 고지해야 한다"
+      ],
+      "rationale": "시행령의 내부 업무 예외를 적용 조건과 함께 본다.",
+      "hybrid_rerank_ids": [
+        "DECREE_23_2",
+        "DECREE_23_1",
+        "ARTICLE_2_5",
+        "ARTICLE_31_3_A",
+        "ARTICLE_31_1"
+      ]
+    },
+    {
+      "id": "overseas_agent_threshold",
+      "mode": "service",
+      "question": "이용자가 이 정도면 국내대리인을 지정해야 하나요?",
+      "service_description": "국내 주소나 영업소가 없는 해외 AI 사업자이며, 직전 3개월간 국내 이용자는 하루 평균 150만 명이고 국내 서비스를 운영한다",
+      "gold_ids": [
+        "ARTICLE_36_1",
+        "DECREE_29_1"
+      ],
+      "must_include": [
+        "시행령 제29조제1항은 직전 3개월 국내 이용자 수 하루 평균 100만 명 이상을 기준 중 하나로 둔다",
+        "제시된 150만 명은 이용자 수 기준을 넘는다",
+        "법 제36조제1항에 따른 국내대리인 지정·신고를 검토한다"
+      ],
+      "must_not_say": [
+        "150만 명은 100만 명 기준 미만이다",
+        "이용자 수 정보가 없어 판단할 수 없다"
+      ],
+      "rationale": "문장 속 수치를 법과 시행령의 기준에 대조한다.",
+      "hybrid_rerank_ids": [
+        "DECREE_29_1",
+        "ARTICLE_36_1",
+        "ARTICLE_36_2",
+        "ARTICLE_36_3",
+        "DECREE_29_2"
+      ]
+    }
+  ]
+}
