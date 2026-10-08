@@ -149,33 +149,101 @@
     return state.graphLoading;
   }
   function graphSelection(item) {
-    const graph=state.graph, r=firstRecord(item);
-    if (!graph || !r) return null;
-    const ids = new Set(records(item).map(x=>x.id));
-    let root = graph.nodes.find(n=>ids.has(n.id) && n.kind==="provision") || graph.nodes.find(n=>n.id===r.id);
+    const graph = state.graph;
+    const primary = firstRecord(item);
+    if (!graph || !primary) return null;
+    const byId = new Map(graph.nodes.map(node => [node.id, node]));
+    const root = byId.get(primary.id);
     if (!root) return null;
-    const touching = graph.edges.filter(e=>e.source===root.id || e.target===root.id).slice(0,8);
-    const nodes = touching.map(e=>graph.nodes.find(n=>n.id===(e.source===root.id?e.target:e.source))).filter(Boolean);
-    if (!nodes.length) for (const other of records(item).slice(1,7)) {const n=graph.nodes.find(x=>x.id===other.id);if(n) nodes.push(n);}
-    return {root,nodes,edges:touching};
+    const relevant = new Set(records(item).map(record => record.id));
+    const neighbors = graph.edges
+      .filter(edge => edge.source === root.id || edge.target === root.id)
+      .map(edge => ({
+        node: byId.get(edge.source === root.id ? edge.target : edge.source),
+        type: edge.type,
+      }))
+      .filter(entry => entry.node)
+      .sort((a, b) =>
+        Number(relevant.has(b.node.id)) - Number(relevant.has(a.node.id)) ||
+        Number(b.node.kind === "provision") - Number(a.node.kind === "provision") ||
+        a.node.id.localeCompare(b.node.id)
+      );
+    const seen = new Set(neighbors.map(entry => entry.node.id));
+    for (const record of records(item).slice(1)) {
+      const node = byId.get(record.id);
+      if (node && !seen.has(node.id)) {
+        neighbors.push({node, type:"REFERS"});
+        seen.add(node.id);
+      }
+    }
+    return {root, neighbors:neighbors.slice(0, 8)};
   }
-  function renderGraphPreview(item) {
+  function renderGraphPreview(item, expanded = false) {
     if (!state.graph) return "";
-    const g=graphSelection(item);
+    const g = graphSelection(item);
     if (!g) return "";
-    const center={x:420,y:108};
-    const positions=new Map([[g.root.id,center]]);
-    g.nodes.forEach((n,i)=>{const a=(i/g.nodes.length)*Math.PI*2-Math.PI/2;positions.set(n.id,{x:center.x+Math.cos(a)*Math.min(270,170+g.nodes.length*10),y:center.y+Math.sin(a)*77});});
-    const lines=g.edges.map(e=>{const a=positions.get(e.source),b=positions.get(e.target);return a&&b?`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#b9d2ef" stroke-width="2"/>`:"";}).join("");
-    const node=(n,main)=>{const p=positions.get(n.id);if(!p)return "";return `<g data-preview-node="${esc(n.id)}" style="cursor:pointer"><circle cx="${p.x}" cy="${p.y}" r="${main?18:12}" fill="${main?"#376fb9":"#8db7ef"}" stroke="#fff" stroke-width="4"/><text x="${p.x+17}" y="${p.y+4}" fill="#1c4271" font-size="12" font-weight="${main?700:500}" stroke="none">${esc((n.label||n.title||"").slice(0,24))}</text></g>`};
-    return `<div class="graph-preview"><div class="graph-preview-head">${icon("network")}<h4>관련 법령 관계도 미리보기</h4><p>선택한 조문과 연결된 근거</p><button class="outline-button" type="button" data-library="${esc(g.root.id)}">전체 화면으로 보기 ${icon("link")}</button></div><svg viewBox="0 0 840 216" role="img" aria-label="선택한 조문의 관련 법령 관계도">${lines}${node(g.root,true)}${g.nodes.map(n=>node(n,false)).join("")}</svg></div>`;
+    const entries = g.neighbors.slice(0, expanded ? 8 : 6);
+    const height = expanded ? 450 : 370;
+    const rowGap = expanded ? 100 : 112;
+    const rowStart = expanded ? 23 : 25;
+    const rootY = Math.round(height / 2);
+    const shorten = (value, max) => {const text = String(value || "").trim();return text.length > max ? text.slice(0,max - 1) + "…" : text;};
+    const wrap = (value, max = 15) => {
+      let text = String(value || "").trim().replace(/\s+/g, " ");
+      const lines = [];
+      while (text && lines.length < 2) {
+        if (text.length <= max) { lines.push(text); text = ""; break; }
+        const space = text.lastIndexOf(" ", max);
+        const cut = space >= max - 4 ? space : max;
+        lines.push(text.slice(0, cut).trim());
+        text = text.slice(cut).trim();
+      }
+      if (text && lines.length === 2) lines[1] = lines[1].slice(0, max - 1) + "…";
+      return lines;
+    };
+    const rootLabel = g.root.label || g.root.title || "선택한 조문";
+    const rootDetail = g.root.summary || g.root.doc_short || "";
+    const cards = entries.map((entry, index) => {
+      const left = index % 2 === 0;
+      const x = left ? 26 : 596;
+      const y = rowStart + Math.floor(index / 2) * rowGap;
+      const label = shorten(entry.node.label || entry.node.title, 11);
+      const detail = wrap(entry.node.summary || entry.node.doc_short || entry.node.kind);
+      const line = left
+        ? `M 244 ${y + 42} C 290 ${y + 42}, 300 ${rootY}, 315 ${rootY}`
+        : `M 505 ${rootY} C 540 ${rootY}, 556 ${y + 42}, 596 ${y + 42}`;
+      return `<path d="${line}" fill="none" stroke="#b8cee7" stroke-width="1.6"/>
+        <g class="graph-node" data-preview-node="${esc(entry.node.id)}" role="button" tabindex="0" aria-label="${esc(entry.node.doc_short || "관련 항목")} ${esc(entry.node.label || entry.node.title)}">
+          <rect x="${x}" y="${y}" width="218" height="84" rx="12" fill="#fff" stroke="#dfe9f3"/>
+          <circle cx="${x + 21}" cy="${y + 24}" r="7" fill="#7da7d6"/>
+          <text x="${x + 37}" y="${y + 29}" fill="#213f64" font-size="15" font-weight="600">${esc(label)}</text>
+          <text x="${x + 16}" y="${y + 53}" fill="#59738f" font-size="12.5">${esc(detail[0] || "")}</text>
+          <text x="${x + 16}" y="${y + 70}" fill="#59738f" font-size="12.5">${esc(detail[1] || "")}</text>
+        </g>`;
+    }).join("");
+    const rootLines = wrap(rootDetail, 14);
+    const root = `<g class="graph-node" data-preview-node="${esc(g.root.id)}" role="button" tabindex="0" aria-label="${esc(g.root.doc_short || "선택한 조문")} ${esc(rootLabel)}">
+      <rect x="315" y="${rootY - 55}" width="190" height="110" rx="15" fill="#eef5fd" stroke="#9bbde2" stroke-width="1.5"/>
+      <text x="410" y="${rootY - 24}" text-anchor="middle" fill="#4a77a9" font-size="11.5" font-weight="600">${esc(shorten(g.root.doc_short, 15))}</text>
+      <text x="410" y="${rootY + 1}" text-anchor="middle" fill="#17375d" font-size="17" font-weight="700">${esc(shorten(rootLabel, 11))}</text>
+      <text x="410" y="${rootY + 25}" text-anchor="middle" fill="#4d6b8c" font-size="11.5">${esc(rootLines[0] || "")}</text>
+      <text x="410" y="${rootY + 41}" text-anchor="middle" fill="#4d6b8c" font-size="11.5">${esc(rootLines[1] || "")}</text>
+    </g>`;
+    return `<section class="graph-preview ${expanded ? "expanded" : ""}" aria-label="관련 법령 관계도 미리보기">
+      <div class="graph-preview-head">
+        <div class="graph-preview-heading"><h4>관련 법령 관계도 미리보기</h4><p>선택한 조문과 직접 연결된 근거 ${entries.length}개</p></div>
+        <div class="graph-preview-actions"><span class="graph-preview-mark" aria-hidden="true">${icon("network")}</span><button class="graph-preview-open" type="button" data-library="${esc(g.root.id)}">전체 화면으로 보기 ${icon("link")}</button></div>
+      </div>
+      <div class="graph-preview-stage"><svg class="graph-preview-canvas" viewBox="0 0 820 ${height}" role="img" aria-label="${esc(rootLabel)} 및 연결 근거 ${entries.length}개">${cards}${root}</svg></div>
+      <p class="graph-preview-hint">조문을 선택하면 전체 관계도에서 연결 근거를 볼 수 있습니다.</p>
+    </section>`;
   }
   function renderGraphTab() {
     const item=current();
     if (state.mode !== "build") {$("#graph-content").innerHTML='<div class="empty-state">서비스 점검 결과에서 관계도를 볼 수 있습니다.</div>';return;}
     if (!state.graph) {$("#graph-content").innerHTML='<div class="graph-card"><div class="empty-state">관계도를 불러오는 중입니다.</div></div>';ensureGraph().then(renderGraphTab).catch(e=>{$("#graph-content").innerHTML=`<div class="empty-state">${esc(e.message)}</div>`});return;}
-    const preview=renderGraphPreview(item);
-    $("#graph-content").innerHTML=`<div class="graph-card"><h3>${esc(lawLabel(item))}의 연결 근거</h3><p>실제 조문 관계 데이터에서 연결된 근거를 표시합니다.</p>${preview || '<div class="empty-state">이 조문에 연결된 관계가 없습니다.</div>'}</div>`;
+    const preview=renderGraphPreview(item,true);
+    $("#graph-content").innerHTML=preview || '<div class="empty-state">이 조문에 연결된 관계가 없습니다.</div>';
   }
   function renderArticleList(q="") {
     if (!state.graph) return;
@@ -209,6 +277,11 @@
     $("#more-button").addEventListener("click",()=>{state.shown+=4;renderResults();});
     document.querySelectorAll("[data-guide-tab]").forEach(b=>b.addEventListener("click",()=>{state.tab=b.dataset.guideTab;renderGuide();}));
     $("#guide-content").addEventListener("click",guideClick);$("#graph-content").addEventListener("click",guideClick);
+    [$("#guide-content"), $("#graph-content")].forEach(container => container.addEventListener("keydown", e => {
+      if ((e.key !== "Enter" && e.key !== " ") || !e.target.matches("[data-preview-node]")) return;
+      e.preventDefault();
+      showView("library", e.target.dataset.previewNode);
+    }));
     $("#guide-content").addEventListener("change",e=>{const c=e.target.closest("[data-check]");if(!c)return;const key=`${state.query}:${current().key}:${c.dataset.check}`;c.checked?state.checks.add(key):state.checks.delete(key);});
     $("#library-list-tab").addEventListener("click",showLibraryList);
     $("#library-graph-tab").addEventListener("click",showLibraryGraph);

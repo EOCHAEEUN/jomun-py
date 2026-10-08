@@ -10,3 +10,42 @@
 .attachment-pill{margin:9px auto 0;max-width:1000px;text-align:left;color:#537498;font-size:12px}.attachment-pill button{margin-left:10px;color:#315e98;text-decoration:underline}.results-view>.attachment-pill{max-width:1720px;margin:-13px auto 13px}.submit-button.loading svg{animation:loading-arrow 1.1s ease-in-out infinite}@keyframes loading-arrow{50%{transform:translateX(4px);opacity:.5}}
 .library .lib-side section:nth-child(3){order:0}.library .lib-side section:nth-child(2){order:1}.library .lib-side section:nth-child(4){order:2}.library .lib-side section:nth-child(1){order:3}.library .lib-side section:nth-child(5){order:4}
 .answer-options{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0 30px}.answer-options button{border:1px solid #dce7f4;border-radius:8px;background:#fff;color:#466788;padding:8px 10px;font-size:12px;text-align:left}.answer-options button:hover,.answer-options button.active{border-color:#8ab3ea;background:#eef6ff;color:#214e87}.source-details{margin-top:14px;padding:12px 15px;border-top:1px solid #e6edf5;color:#5d7897;font-size:12px}.source-details summary{cursor:pointer;font-weight:700;color:#2e578a}.source-details p{white-space:pre-line;line-height:1.7}.library .art-head{padding-bottom:14px;border-bottom:1px solid #e9eff6}.library .art-head h3{margin:7px 0}.library .art-title{display:block;color:#758ca7;line-height:1.5}.library .eyebrow{color:#5275a0;font-size:12px;font-weight:700}.library .law-text{white-space:pre-line;background:#f6f9fd;border-radius:10px;padding:13px;color:#45617f}.library .chips{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0}.library .chip{font-size:11px;padding:4px 8px;border-radius:13px;background:#eff5fc;color:#37659c}.library .sources{list-style:none;margin:13px 0;padding:0}.library .sources li{padding:12px 0;border-bottom:1px solid #ebf0f6}.library .sources li p{margin:3px 0;color:#617b98}.library .sources li small{color:#98a9bc}.library .sub-title{margin:17px 0 8px;color:#2a4b72}.library .muted{color:#8499b0}
+
+/* 관계도 머리글 아이콘은 고정 크기로, 실제 조문 그래프만 가로 폭을 사용한다. */
+.graph-preview{margin-top:18px;border-color:#dbe8f5;background:#fff;box-shadow:0 4px 18px rgba(45,87,136,.045)}
+.graph-preview-head{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:74px;padding:14px 19px;background:#fff}
+.graph-preview-heading{min-width:0}
+.graph-preview-heading h4{margin:0 0 3px;color:#19395f;font-size:17px;line-height:1.35}
+.graph-preview-heading p{margin:0;color:#8398b0;font-size:12px;line-height:1.4}
+.graph-preview-actions{display:flex;align-items:center;justify-content:flex-end;gap:11px;flex:none}
+.graph-preview-mark{display:grid;place-items:center;width:36px;height:36px;flex:none;border:1px solid #e0eaf5;border-radius:10px;background:#f5f9fd;color:#315c8e}
+.graph-preview .graph-preview-head svg,.graph-card .graph-preview .graph-preview-head svg{display:block;width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8}
+.graph-preview-open{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:36px;margin:0!important;padding:7px 12px;border:1px solid #d4e2f2;border-radius:9px;background:#fff;color:#315f96;font-size:12px;font-weight:700;white-space:nowrap}
+.graph-preview-open:hover{background:#f2f7fd;border-color:#abc9ed}
+.graph-preview-stage{width:100%;overflow-x:auto;overflow-y:hidden;background:radial-gradient(ellipse at center,#fff 20%,#f4f9fe 100%)}
+.graph-preview .graph-preview-canvas,.graph-card .graph-preview .graph-preview-canvas{display:block;width:100%;min-width:760px;height:auto;min-height:330px;background:none}
+.graph-preview.expanded .graph-preview-canvas,.graph-card .graph-preview.expanded .graph-preview-canvas{min-height:430px}
+.graph-preview-canvas .graph-node{cursor:pointer;outline:none}
+.graph-preview-canvas .graph-node:hover rect{stroke:#82b1eb;stroke-width:2}
+.graph-preview-canvas .graph-node:focus-visible rect{stroke:#2769b8;stroke-width:3}
+.graph-preview-hint{margin:0;padding:10px 19px 12px;border-top:1px solid #edf3fa;color:#8399b2;font-size:11px}
+.graph-card .graph-preview{margin-top:16px}
+.graph-card .graph-preview svg:not(.graph-preview-canvas){height:19px}
+.home-mascots{right:clamp(18px,2.6vw,48px);bottom:3.5%;width:420px;height:300px}
+.home-mascots img:first-child{left:0;width:248px}
+.home-mascots img:nth-child(2){left:180px;width:237px}
+.home-mascots p{left:238px;top:35px;bottom:auto;width:178px;margin:0;color:#8196b0;font-size:14px;line-height:1.5}
+.home-mascots p:before{left:-22px;top:-12px;font-size:31px}
+.home-mascots p:after{content:'”';position:absolute;right:-2px;bottom:-20px;color:#c5d2e0;font-size:31px}
+.result-mascots img:first-child{left:0;width:88px}
+.result-mascots img:nth-child(2){left:90px;width:80px}
+.result-mascots p{left:178px;top:0;min-width:0;width:178px;padding:10px 12px}
+/* The global icon SVG stroke must never outline graph labels. */
+.graph-preview .graph-preview-canvas text{stroke:none;stroke-width:0;paint-order:normal;font-family:'Noto Sans KR','Malgun Gothic',sans-serif}
+.graph-preview-stage{background:#f8fbff}
+.graph-preview{border-color:#e2eaf2;box-shadow:0 3px 14px rgba(35,70,110,.035)}
+.graph-preview-heading h4{font-size:16px;font-weight:700;letter-spacing:-.35px}
+.graph-preview-heading p{color:#657f9b}
+.graph-preview-hint{background:#fff;color:#7289a3}
+@media(max-width:950px){.home-mascots{right:3%;bottom:6%;transform:scale(.82)}}
+@media(max-width:640px){.graph-preview-head{min-height:0;align-items:flex-start;gap:8px;padding:12px}.graph-preview-heading h4{font-size:14px}.graph-preview-heading p{font-size:11px}.graph-preview-actions{gap:5px}.graph-preview-mark{width:31px;height:31px}.graph-preview-open{min-height:31px;padding:5px 8px;font-size:0}.graph-preview .graph-preview-head svg,.graph-card .graph-preview .graph-preview-head svg{width:17px;height:17px}.graph-preview .graph-preview-canvas,.graph-card .graph-preview .graph-preview-canvas{min-width:760px}.home-mascots{right:0;bottom:55px;width:230px;height:175px;transform:none}.home-mascots img:first-child{left:0;width:95px}.home-mascots img:nth-child(2){left:98px;width:90px}.home-mascots p{display:block;left:95px;top:0;width:130px;font-size:10px}.home-mascots p:before{font-size:25px;left:-16px;top:-9px}}
