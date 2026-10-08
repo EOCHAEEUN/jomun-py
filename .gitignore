@@ -21,3 +21,6 @@ data/eval/qa_results.json
 Thumbs.db
 .vscode/
 .idea/
+
+# 참고 자료 (지식그래프 프로토타입 등, 커밋하지 않음)
+reference/
