@@ -5,7 +5,8 @@
 #
 # 평가셋
 #   dev      data/eval/cases.json          규칙을 만들면서 본 케이스 (개발용)
-#   held-out data/eval/heldout_cases.json  엔진 수정 전에 따로 써 둔 케이스 — 결과를 보고 엔진을 고치지 않는다
+#   held-out data/eval/heldout_cases.json  엔진 수정 전에 따로 써 둔 케이스 (v1) — 실패 분석에 쓰여 이제 '본 데이터'
+#   held-out v2 data/eval/heldout_v2_cases.json  v1 실패를 고치기 전에 새로 써 둔 케이스 — 결과를 보고 엔진을 고치지 않는다
 #
 # 지표 (서로 다른 단계를 따로 잰다 — 정답 레코드를 규칙이 직접 넣는 순환 지표는 쓰지 않는다)
 #   ① 검색 Hit@3        정답 조문(gold.retrieval)이 검색 상위 3개 안에 드는 비율 (정답 조문 단위)
@@ -30,6 +31,7 @@ from app.rag.retriever import SEARCH_FILTER, retrieve_candidates
 from app.rag.store import get_collection, search
 
 HELDOUT_PATH = DATA_DIR / "eval" / "heldout_cases.json"
+HELDOUT_V2_PATH = DATA_DIR / "eval" / "heldout_v2_cases.json"
 SNAPSHOT_PATH = DATA_DIR.parent / "docs" / "eval_snapshot.json"
 MOK = "ARTICLE_2_4_"
 K = 3
@@ -156,7 +158,7 @@ def main():
     if col is None:
         raise SystemExit("Chroma가 비어 있습니다. 먼저 `python -m scripts.ingest`를 실행하세요.")
 
-    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH})
+    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH, "heldout_v2": HELDOUT_V2_PATH})
     print_report(results)
 
     meta = {"date": date.today().isoformat(), "embedding": EMBEDDING_PROVIDER, "top_k": RETRIEVAL_TOP_K,

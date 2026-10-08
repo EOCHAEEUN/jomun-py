@@ -1,0 +1,139 @@
+[
+  {
+    "id": "V01",
+    "name": "정수장 약품 투입 자동 조절",
+    "spec": "정수장의 약품 투입량을 사람 확인 없이 AI가 실시간으로 조절하는 시스템",
+    "gold": {
+      "domain": "ARTICLE_2_4_NA",
+      "retrieval": ["ARTICLE_2_4_NA"],
+      "statuses": {"제2조4호나목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED", "제31조①": "REQUIRED"}
+    },
+    "point": "먹는물 생산 공정 + '사람 확인 없이' (자동이라는 말 없이 인적 개입이 없는 구조)"
+  },
+  {
+    "id": "V02",
+    "name": "무인 지하철 운행 판단",
+    "spec": "지하철 열차의 출발과 정차를 기관사 없이 스스로 판단해 운행하는 AI",
+    "gold": {
+      "domain": "ARTICLE_2_4_A",
+      "retrieval": ["ARTICLE_2_4_A"],
+      "statuses": {"제2조4호아목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED"}
+    },
+    "point": "교통수단 운영 · '교통'이라는 단어 없이 지하철·열차로만 표현"
+  },
+  {
+    "id": "V03",
+    "name": "응급실 중증도 분류",
+    "spec": "대학병원 응급실에서 의사 판단 없이 AI가 환자의 중증도를 분류해 진료 순서를 정하는 시스템",
+    "gold": {
+      "domain": "ARTICLE_2_4_DA",
+      "retrieval": ["ARTICLE_2_4_DA"],
+      "statuses": {"제2조4호다목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED", "제31조①": "REQUIRED"}
+    },
+    "point": "보건의료 제공 + '의사 판단 없이'"
+  },
+  {
+    "id": "V04",
+    "name": "심사역이 최종 승인하는 대출 점수",
+    "spec": "AI가 대출 신청자의 상환 능력을 점수로 산출하면 심사역이 이를 참고해 최종 승인 여부를 결정하는 서비스",
+    "gold": {
+      "domain": "ARTICLE_2_4_SA",
+      "retrieval": ["ARTICLE_2_4_SA"],
+      "statuses": {"제2조4호사목": "MATCH", "HIGH_IMPACT_AI": "REVIEW", "제34조①": "CONDITIONAL",
+                   "제37조의2": "INFO", "제36조의2": "INFO"},
+      "absent": ["제37조의2③"]
+    },
+    "point": "사람(심사역)이 최종 결정 → 개인정보 보호법·신용정보법은 자동화된 결정이 아님(INFO), AI기본법은 단정하지 않음(REVIEW)"
+  },
+  {
+    "id": "V05",
+    "name": "사내 전용 규정 검색 챗봇",
+    "spec": "회사 내부 직원만 쓰는 사내 규정 검색·요약 챗봇",
+    "gold": {
+      "domain": null,
+      "retrieval": ["DECREE_23_4"],
+      "statuses": {"HIGH_IMPACT_AI": "INFO", "제31조①": "INFO", "제31조②": "INFO"}
+    },
+    "point": "시행령 제23조④2호: 사업자의 내부 업무 용도로만 쓰면 고지·표시 규정의 적용 예외"
+  },
+  {
+    "id": "V06",
+    "name": "연예인 얼굴·목소리 재현 광고 영상",
+    "spec": "실존 연예인의 얼굴과 목소리를 똑같이 재현한 광고 영상을 생성해 주는 서비스",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_3_A"],
+      "statuses": {"HIGH_IMPACT_AI": "INFO", "제31조①": "REQUIRED", "제31조②": "REQUIRED", "제31조③": "REQUIRED"}
+    },
+    "point": "실제와 구분하기 어려운 영상 → 제31조③ ('딥페이크' 같은 단어 없이)"
+  },
+  {
+    "id": "V07",
+    "name": "국내 영업소 없는 LLM 번역 앱, 매출 2조",
+    "spec": "싱가포르에만 법인이 있고 국내 영업소는 없는 회사의 LLM 기반 번역 앱, 작년 매출 2조 원",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_36_1", "DECREE_29_1"],
+      "statuses": {"제4조①": "MATCH", "제36조①": "REQUIRED", "제31조①": "REQUIRED"}
+    },
+    "point": "시행령 제29조①1호(전년도 매출 1조원 이상) — 기준 하나만 충족해도 지정 의무"
+  },
+  {
+    "id": "V08",
+    "name": "국내 사무소 없는 그림 앱, 기준 미달 수치",
+    "spec": "국내 사무소가 없는 해외 AI 그림 생성 앱, 국내 일평균 이용자 약 30만 명, 연 매출 50억 원",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_36_1", "DECREE_29_1"],
+      "statuses": {"제4조①": "MATCH", "제36조①": "REVIEW", "제31조②": "REQUIRED"}
+    },
+    "point": "수치는 1~3호 기준에 못 미치지만 4호(과태료 부과 이력)를 알 수 없음 → 미해당으로 단정하지 않음"
+  },
+  {
+    "id": "V09",
+    "name": "온라인 강의 추천",
+    "spec": "온라인 강의 플랫폼에서 수강생에게 다음에 들을 강의를 추천하는 AI",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_33_1_A"],
+      "statuses": {"제33조①": "REQUIRED", "HIGH_IMPACT_AI": "INFO"},
+      "absent": ["제34조①", "제37조의2"]
+    },
+    "point": "교육 서비스라도 학생 평가가 아닌 추천은 고영향 아님"
+  },
+  {
+    "id": "V10",
+    "name": "중학교 서술형 답안 채점 후 성적 반영",
+    "spec": "중학교 기말고사 서술형 답안을 교사 확인 없이 AI가 채점해 성적에 바로 반영하는 시스템",
+    "gold": {
+      "domain": "ARTICLE_2_4_CHA",
+      "retrieval": ["ARTICLE_2_4_CHA"],
+      "statuses": {"제2조4호차목": "MATCH", "HIGH_IMPACT_AI": "MATCH", "제34조①": "REQUIRED",
+                   "제31조①": "REQUIRED", "제37조의2": "REQUIRED"}
+    },
+    "point": "학생 평가 + '교사 확인 없이' → 고영향 확정 + 개인정보 보호법 자동화된 결정"
+  },
+  {
+    "id": "V11",
+    "name": "경찰서 민원 안내 챗봇",
+    "spec": "경찰서 민원실을 찾은 방문객에게 필요한 서류를 안내하는 문구를 생성해 주는 챗봇",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_1"],
+      "statuses": {"HIGH_IMPACT_AI": "INFO", "제31조①": "REQUIRED", "제31조②": "REQUIRED"},
+      "absent": ["제2조4호바목", "제34조①"]
+    },
+    "point": "경찰이 쓰더라도 범죄 수사용 생체인식 분석이 아니면 바목이 아님"
+  },
+  {
+    "id": "V12",
+    "name": "사람 목소리 같은 AI 오디오북",
+    "spec": "실제 성우 목소리와 구별이 안 될 만큼 자연스러운 AI 음성으로 오디오북을 낭독해 판매하는 서비스",
+    "gold": {
+      "domain": null,
+      "retrieval": ["ARTICLE_31_3_A"],
+      "statuses": {"제31조①": "REQUIRED", "제31조②": "REQUIRED", "제31조③": "REQUIRED"}
+    },
+    "point": "AI가 만든 음향이 실제와 구분하기 어려움 → 생성형 + 제31조③"
+  }
+]

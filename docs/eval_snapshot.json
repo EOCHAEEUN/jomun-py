@@ -91,5 +91,69 @@
       "H10": [],
       "H11": []
     }
+  },
+  "heldout_v2": {
+    "summary": {
+      "cases": 12,
+      "retrieval_hit@3_naive": 0.29,
+      "retrieval_hit@3_enriched": 0.71,
+      "candidate_recall": 0.79,
+      "avg_candidates": 27.4,
+      "rule_accuracy": 0.53,
+      "final_accuracy": 0.53,
+      "final_case_exact": 0.25,
+      "domain_acc_naive": 0.58,
+      "domain_acc_final": 0.92,
+      "checks": 47,
+      "errors_by_cause": {
+        "검색": 0,
+        "특성·규칙": 22
+      }
+    },
+    "cases": {
+      "V01": [
+        "HIGH_IMPACT_AI",
+        "제34조①",
+        "제31조①"
+      ],
+      "V02": [
+        "제2조4호아목",
+        "HIGH_IMPACT_AI",
+        "제34조①"
+      ],
+      "V03": [
+        "HIGH_IMPACT_AI",
+        "제34조①",
+        "제31조①"
+      ],
+      "V04": [
+        "제37조의2",
+        "제36조의2"
+      ],
+      "V05": [
+        "제31조①",
+        "제31조②"
+      ],
+      "V06": [
+        "제31조③"
+      ],
+      "V07": [
+        "제36조①"
+      ],
+      "V08": [],
+      "V09": [],
+      "V10": [
+        "HIGH_IMPACT_AI",
+        "제34조①",
+        "제31조①",
+        "제37조의2"
+      ],
+      "V11": [],
+      "V12": [
+        "제31조①",
+        "제31조②",
+        "제31조③"
+      ]
+    }
   }
 }

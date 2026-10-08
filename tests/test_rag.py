@@ -89,9 +89,9 @@ def test_dev_cases_with_rag(chroma, case):
 @pytest.mark.skipif(use_llm(), reason="스냅샷은 규칙 기반(heuristic) 특성 추출 기준")
 def test_evaluation_matches_committed_snapshot(chroma):
     # 평가 결과가 바뀌면 docs/eval_snapshot.json도 같이 갱신해야 한다 (python -m scripts.evaluate --snapshot)
-    from scripts.evaluate import HELDOUT_PATH, SNAPSHOT_PATH, run
+    from scripts.evaluate import HELDOUT_PATH, HELDOUT_V2_PATH, SNAPSHOT_PATH, run
     snap = json.loads(SNAPSHOT_PATH.read_text(encoding="utf-8"))
-    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH})
+    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH, "heldout_v2": HELDOUT_V2_PATH})
     for split, res in results.items():
         assert res["summary"] == snap[split]["summary"], split
         failed = {r["id"]: [c["check"] for c in r["final_checks"] if not c["ok"]] for r in res["rows"]}
