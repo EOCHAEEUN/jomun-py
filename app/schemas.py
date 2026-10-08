@@ -41,6 +41,9 @@ class ServiceFeatures(BaseModel):
     public_sector_target: Optional[bool] = Field(None, description="공공기관·지자체 납품을 고려하는가")
     sme: Optional[bool] = Field(None, description="스타트업·중소기업·소상공인인가")
     handles_personal_data: Optional[bool] = Field(None, description="개인정보를 처리하는가")
+    internal_only: Optional[bool] = Field(None, description="사업자의 내부 업무 용도로만 쓰는가 (외부 이용자에게 제공하지 않음)")
+    domestic_daily_users: Optional[int] = Field(None, description="설명에 적힌 국내 1일 평균 이용자 수 (명)")
+    annual_revenue_krw: Optional[int] = Field(None, description="설명에 적힌 전년도(연) 매출액 (원)")
     evidence: list[str] = Field(default_factory=list, description="각 특성을 뽑은 근거 문구")
 
 

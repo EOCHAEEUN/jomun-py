@@ -201,6 +201,15 @@ def resolve_high_impact(f: ServiceFeatures, domain: str | None, answers: dict,
     return None, "AI 결과가 결정에 쓰이는 방식에 대한 정보가 없음"
 
 
+def agent_threshold(f: ServiceFeatures) -> str | None:
+    """설명 속 수치가 시행령 제29조① 기준(1호 매출 · 3호 이용자 수)을 넘는지. 넘지 않으면 None (2·4호는 알 수 없음)"""
+    if f.annual_revenue_krw is not None and f.annual_revenue_krw >= 10**12:
+        return f"전년도 매출액 {f.annual_revenue_krw / 10**12:g}조원 — 1조원 이상 (1호)"
+    if f.domestic_daily_users is not None and f.domestic_daily_users >= 10**6:
+        return f"국내 1일 평균 이용자 {f.domestic_daily_users / 10**4:g}만명 — 100만명 이상 (3호)"
+    return None
+
+
 def _with_answer(question: dict, answers: dict) -> dict:
     return {**question, "answer": answers.get(question["id"])}
 
@@ -345,7 +354,14 @@ def _evaluate(f: ServiceFeatures, answers: dict, candidates: set[str] | None) ->
                    "내부 업무용으로만 쓰면 적용 예외 (시행령 제23조④2호)"],
         todo={"title": "AI 사용 사전고지 검토", "desc": "제31조·시행령 제23조에 따른 이용자 대상 사전고지 방법 검토"},
     )
-    if hi or f.generative:
+    internal_notes = ["사업자의 내부 업무 용도로만 사용 → 시행령 제23조④2호에 따라 제31조①~③ 고지·표시 규정의 "
+                      "전부 또는 일부를 적용하지 않을 수 있음",
+                      "외부 이용자에게 제공하게 되면 다시 검토"]
+    if f.internal_only and (hi is not False or f.generative):
+        items.append(RuleItem(
+            key="art31_1", status="INFO", summary="내부 업무 용도 — 사전 고지 적용 예외 가능",
+            notes=internal_notes, **notice_common))
+    elif hi or f.generative:
         why = "고영향 AI" if hi else "생성형 AI"
         items.append(RuleItem(
             key="art31_1", status="REQUIRED", summary=f"AI 기반 서비스 사전 고지 ({why})",
@@ -357,7 +373,13 @@ def _evaluate(f: ServiceFeatures, answers: dict, candidates: set[str] | None) ->
             key="art31_1", status="CONDITIONAL", condition=IF_HIGH_IMPACT, summary="AI 기반 서비스 사전 고지",
             notes=["고영향 AI로 확정되면 REQUIRED", "직접 과태료 대상 (제43조①1호)"], **notice_common))
 
-    if f.generative:
+    if f.generative and f.internal_only:
+        items.append(RuleItem(
+            key="art31_2", status="INFO", label="제31조②", obligation="MUST",
+            summary="내부 업무 용도 — 결과물 표시 적용 예외 가능", records=["ARTICLE_31_2", "DECREE_23_4", "DECREE_23_2"],
+            notes=internal_notes, decompiled="art31_2.py", penalty_from="ARTICLE_31_2",
+        ))
+    elif f.generative:
         items.append(RuleItem(
             key="art31_2", status="REQUIRED", label="제31조②", obligation="MUST",
             summary="생성형 AI 결과물 표시", records=["ARTICLE_31_2", "DECREE_23_2"],
@@ -369,7 +391,14 @@ def _evaluate(f: ServiceFeatures, answers: dict, candidates: set[str] | None) ->
                        "다운로드·공유 시에도 표시가 유지되는지 확인"],
             todo={"title": "생성형 결과물 표시 설계", "desc": "제31조②·시행령 제23조②에 따른 표시 방식 설계"},
         ))
-    if f.realistic_synthetic_media:
+    if f.internal_only and (f.realistic_synthetic_media or (f.generative and f.realistic_synthetic_media is None)):
+        items.append(RuleItem(
+            key="art31_3", status="INFO", label="제31조③", obligation="MUST",
+            summary="내부 업무 용도 — 실제와 구분 어려운 결과물 고지·표시 적용 예외 가능",
+            records=["ARTICLE_31_3_A", "DECREE_23_4", "DECREE_23_3"],
+            notes=internal_notes, decompiled="art31_3.py", penalty_from="ARTICLE_31_3_A",
+        ))
+    elif f.realistic_synthetic_media:
         items.append(RuleItem(
             key="art31_3", status="REQUIRED", label="제31조③", obligation="MUST",
             summary="실제와 구분 어려운 결과물 AI 생성 고지·표시",
@@ -502,11 +531,13 @@ def _evaluate(f: ServiceFeatures, answers: dict, candidates: set[str] | None) ->
         common = dict(label="제36조①", obligation="MUST", records=["ARTICLE_36_1", "DECREE_29_1", "ARTICLE_36_3"],
                       decompiled="art36_1.py", penalty_from="ARTICLE_36_1",
                       question=_with_answer(Q_THRESHOLD, answers))
-        if choice == "yes":
+        met = agent_threshold(f)
+        if choice == "yes" or (choice in (None, "unknown") and met):
             items.append(RuleItem(
                 key="art36_1", status="REQUIRED", summary="국내대리인 서면 지정·신고",
-                notes=["시행령 제29조① 기준 중 하나 이상 해당", "미지정 시 직접 과태료 (제43조①2호)",
-                       "③ 대리인의 위반은 사업자의 행위로 봄 (TREAT_AS)"],
+                notes=([f"설명 속 수치로 확인: {met}"] if choice != "yes" else [])
+                + ["시행령 제29조① 기준 중 하나 이상 해당", "미지정 시 직접 과태료 (제43조①2호)",
+                   "③ 대리인의 위반은 사업자의 행위로 봄 (TREAT_AS)"],
                 checklist=["국내에 주소·영업소가 있는 대리인 선정", "서면 지정 후 과기부 신고"],
                 todo={"title": "국내대리인 지정", "desc": "제36조·시행령 제29조에 따른 국내대리인 서면 지정·신고"},
                 **common))
@@ -517,7 +548,10 @@ def _evaluate(f: ServiceFeatures, answers: dict, candidates: set[str] | None) ->
         else:
             items.append(RuleItem(
                 key="art36_1", status="REVIEW", summary="매출 1조·AI 매출 100억·이용자 100만 기준 확인",
-                notes=["국내 주소·영업소 없음 확인됨", "시행령 제29조① 네 기준 중 하나라도 해당하면 지정 의무"],
+                notes=["국내 주소·영업소 없음 확인됨", "시행령 제29조① 네 기준 중 하나라도 해당하면 지정 의무"]
+                + (["설명 속 매출·이용자 수는 1호·3호 기준 미만이지만, 2호(AI 서비스 부문 매출)·4호(과태료 부과 이력)는 "
+                    "설명만으로 알 수 없음"]
+                   if not met and (f.annual_revenue_krw is not None or f.domestic_daily_users is not None) else []),
                 **common))
 
     # ── STEP 8. 연결 법률 — 개인정보 보호법 · 신용정보법 ───────────────

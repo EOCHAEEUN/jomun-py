@@ -24,18 +24,20 @@ SEARCH_FILTER = {"$and": [
 ]}
 
 # 특성 → 법률 용어 쿼리 (서비스 설명의 일상어를 법조문의 단어로 옮긴다)
+#   영역 쿼리에는 목 조문 어휘만 둔다. 공통 문구("고영향 인공지능 영역")를 붙이면 짧은 ○목 조문보다
+#   그 문구가 반복되는 제33조·제35조가 위로 올라와 ○목이 후보에서 빠진다 (held-out H02).
 PURPOSE_QUERY = {
-    "RECRUITMENT": "채용 지원자 판단 평가 개인의 권리 의무 관계 중대한 영향 고영향 인공지능 영역",
-    "LENDING": "대출 심사 신용 평가 개인의 권리 의무 관계 판단 고영향 인공지능 영역",
-    "STUDENT_ASSESSMENT": "유아교육 초등교육 중등교육 학생 평가 고영향 인공지능 영역",
-    "HEALTHCARE": "보건의료 제공 이용체계 진료 고영향 인공지능 영역",
-    "MEDICAL_DEVICE": "의료기기 디지털의료기기 개발 이용 진단 고영향 인공지능 영역",
-    "ENERGY": "에너지 공급 전력 고영향 인공지능 영역",
-    "DRINKING_WATER": "먹는물 생산 공정 고영향 인공지능 영역",
-    "NUCLEAR": "핵물질 원자력시설 안전한 관리 운영 고영향 인공지능 영역",
-    "TRANSPORT": "교통수단 교통시설 교통체계 주요한 작동 운영 고영향 인공지능 영역",
-    "PUBLIC_SERVICE_DECISION": "공공서비스 자격 확인 결정 비용징수 국가기관등 의사결정 고영향 인공지능 영역",
-    "CRIMINAL_INVESTIGATION": "범죄 수사 체포 업무 생체인식정보 분석 활용 고영향 인공지능 영역",
+    "RECRUITMENT": "채용 지원자 판단 평가 개인의 권리 의무 관계 중대한 영향",
+    "LENDING": "대출 심사 신용 평가 개인의 권리 의무 관계 판단",
+    "STUDENT_ASSESSMENT": "유아교육 초등교육 중등교육 학생 평가",
+    "HEALTHCARE": "보건의료 제공 이용체계 진료",
+    "MEDICAL_DEVICE": "의료기기 디지털의료기기 개발 이용 진단",
+    "ENERGY": "에너지 공급 전력",
+    "DRINKING_WATER": "먹는물 생산 공정",
+    "NUCLEAR": "핵물질 원자력시설 안전한 관리 운영",
+    "TRANSPORT": "교통수단 교통시설 교통체계 주요한 작동 운영",
+    "PUBLIC_SERVICE_DECISION": "공공서비스 자격 확인 결정 비용징수 국가기관등 의사결정",
+    "CRIMINAL_INVESTIGATION": "범죄 수사 체포 업무 생체인식정보 분석 활용",
     "DEFENSE": "국방 국가안보 목적 개발 이용 인공지능 적용 제외",
 }
 INDIVIDUAL_DECISION_PURPOSES = {"RECRUITMENT", "LENDING", "STUDENT_ASSESSMENT", "PUBLIC_SERVICE_DECISION"}
@@ -70,13 +72,17 @@ class Retrieval:
 
 def build_queries(spec: str, f: ServiceFeatures) -> list[dict]:
     """서비스 설명 그대로의 쿼리 + 특성별 법률 용어 쿼리"""
-    q = [{"label": "서비스 설명 (naive)", "text": spec}]
+    q = [{"label": "서비스 설명 (naive)", "text": spec},
+         # 모든 AI 제공자의 의무(제33조①) — 영역 쿼리가 없는 서비스에서도 근거 조문을 찾는다
+         {"label": "고영향 사전 검토", "text": "인공지능사업자 고영향 인공지능 해당 여부 사전 검토 확인 요청"}]
     if f.purpose in PURPOSE_QUERY:
         q.append({"label": f"활용 영역: {f.purpose}", "text": PURPOSE_QUERY[f.purpose]})
     if f.uses_biometric:
         q.append({"label": "생체정보", "text": "얼굴 지문 생체인식정보 민감정보 처리 제한 별도 동의"})
     if f.generative:
         q.append({"label": "생성형 AI", "text": "생성형 인공지능 결과물 생성 사실 표시 제품 서비스 사전 고지"})
+        q.append({"label": "생성형 AI 정의",
+                  "text": "생성형 인공지능이란 입력한 데이터의 구조와 특성을 모방하여 글 소리 그림 영상 결과물을 생성하는 인공지능시스템"})
         if f.realistic_synthetic_media is not False:
             q.append({"label": "실제와 구분 어려운 결과물",
                       "text": "실제와 구분하기 어려운 가상의 음향 이미지 영상 결과물 고지 표시"})
@@ -84,6 +90,7 @@ def build_queries(spec: str, f: ServiceFeatures) -> list[dict]:
         q.append({"label": "학습 연산량·안전성", "text": "학습에 사용된 누적 연산량 기준 인공지능시스템 안전성 확보 위험관리체계"})
     if f.overseas:
         q.append({"label": "국외 사업자", "text": "국외 행위 국내 시장 이용자 영향 국내에 주소 영업소 없는 인공지능사업자 국내대리인 지정"})
+        q.append({"label": "국내대리인 기준", "text": "국내대리인 지정 사업자의 기준 전년도 매출액 1일 평균 국내 이용자 수"})
     if f.purpose in INDIVIDUAL_DECISION_PURPOSES:
         q.append({"label": "자동화된 결정", "text": "완전히 자동화된 시스템 개인정보 처리 결정 거부 설명 요구 기준 절차 공개"})
     if f.purpose == "LENDING":

@@ -38,10 +38,17 @@ RIGHTS_PURPOSES = {
 GENERATIVE = ["생성형", "생성", "LLM", "GPT", "챗봇", "합성", "만들어 주", "작성해 주", "제작"]
 REALISTIC = ["딥페이크", "가상 인물", "가상 인간", "디지털 휴먼", "실제와 구분", "실사", "합성 영상",
              "보이스 클로닝", "음성 복제", "목소리 복제", "AI 아바타"]
+# "실제 사람 목소리처럼", "실제와 구분하기 어려운" 처럼 단어 목록에 없는 표현
+REALISTIC_RE = re.compile(r"(실제|진짜|실존)\s*(사람|인물)[^.,]{0,8}?(처럼|같은|같이)|구분하기\s*어려|구별하기\s*어려|구별이\s*안")
 MEDIA = ["이미지", "영상", "음성", "사진", "목소리", "음향", "그림"]
 BIOMETRIC = ["얼굴", "안면", "지문", "홍채", "정맥", "생체", "음성 인식", "목소리로 본인"]
 PERSONAL_DATA = ["개인정보", "위치정보", "건강정보", "주민등록"]
-AUTOMATED = re.compile(r"자동(으로|적으로)?\s*(결정|승인|거절|탈락|평가|선발|채점|판단|심사|제어|배정)")
+AUTOMATED = re.compile(r"자동(으로|적으로)?\s*(결정|승인|거절|탈락|평가|선발|채점|판단|심사|제어|배정|판독|산출|진단|분류|조절)")
+# '자동'이라는 말 없이 사람의 개입이 없다고 밝힌 구조 ("의료진 개입 없이", "사람 검토 없이", "스스로 결정")
+NO_HUMAN = re.compile(
+    r"(사람|인간|담당자|직원|전문가|의료진|의사|교사|심사역|심사자|운전자|기관사|관리자|상담원)\s*(의)?\s*"
+    r"(개입|검토|확인|관여|판단|조작)\s*(이|을|를)?\s*없이"
+    r"|스스로\s*(결정|판단|제어|운행|운전|조절)")
 HUMAN_FINAL = ["최종 결정은 사람", "사람이 최종", "담당자가 최종", "인사담당자가 결정", "사람이 결정"]
 RECOMMEND = ["추천", "보조", "참고", "제안", "도와", "지원하는", "지원해"]
 # overseas = '국내에 주소·영업소가 없는 사업자' (제36조). '해외'라는 말만으로는 단정하지 않는다.
@@ -54,6 +61,18 @@ USER_BUSINESS = ["API", "GPT", "외부 모델", "외부 LLM", "OpenAI", "오픈A
 DEVELOPER = ["자체 모델", "직접 학습", "사전학습", "파운데이션 모델 개발", "모델을 개발", "자체 개발한 모델"]
 PUBLIC_TARGET = ["공공기관", "지자체", "정부 납품", "조달", "관공서", "공공 납품"]
 SME = ["스타트업", "중소기업", "소상공인", "벤처"]
+# 시행령 제23조④2호: 사업자의 내부 업무 용도로만 사용
+INTERNAL_ONLY = re.compile(r"(내부\s*업무|사내|내부\s*(직원|임직원))[^.,]{0,10}?(으로만|에만|만\s*(사용|쓰|이용)|전용)")
+# 시행령 제29조① 기준과 비교할 수치 (판정은 Rule Engine이 한다)
+DAILY_USERS = re.compile(
+    r"(?:일평균|하루|1일\s*평균|일일|일간)\s*(?:국내\s*)?(?:이용자|사용자)\s*(?:수)?\s*(?:는|가|이)?\s*(?:약|대략)?\s*"
+    r"([\d,]+(?:\.\d+)?)\s*(만)?\s*명")
+REVENUE = re.compile(r"매출(?:액)?\s*(?:은|이|는)?\s*(?:약|대략)?\s*([\d,]+(?:\.\d+)?)\s*(조|억|만)?\s*원")
+UNIT = {None: 1, "": 1, "만": 10**4, "억": 10**8, "조": 10**12}
+
+
+def _amount(num: str, unit: str | None) -> int:
+    return int(float(num.replace(",", "")) * UNIT[unit])
 
 
 def _hit(text: str, words: list[str]) -> str | None:
@@ -95,9 +114,9 @@ def heuristic_extract(spec: str) -> ServiceFeatures:
     else:
         f.generative = False
 
-    if (w := _hit(spec, REALISTIC)):
+    if (w := _hit(spec, REALISTIC)) or (m := REALISTIC_RE.search(spec)):
         f.realistic_synthetic_media = True
-        ev.append(f"realistic_synthetic_media ← '{w}'")
+        ev.append(f"realistic_synthetic_media ← '{w or m.group(0)}'")
     elif f.generative and _hit(spec, MEDIA):
         f.realistic_synthetic_media = None   # 실사 수준인지 알 수 없음 → CONDITIONAL
     else:
@@ -109,7 +128,7 @@ def heuristic_extract(spec: str) -> ServiceFeatures:
     if (w := _hit(spec, HUMAN_FINAL)):
         f.decision_mode = "HUMAN_FINAL"
         ev.append(f"decision_mode=HUMAN_FINAL ← '{w}'")
-    elif (m := AUTOMATED.search(spec)):
+    elif (m := NO_HUMAN.search(spec) or AUTOMATED.search(spec)):
         f.decision_mode = "AUTOMATED"
         ev.append(f"decision_mode=AUTOMATED ← '{m.group(0)}'")
     elif (w := _hit(spec, RECOMMEND)):
@@ -141,6 +160,15 @@ def heuristic_extract(spec: str) -> ServiceFeatures:
         ev.append(f"sme ← '{w}'")
     if f.uses_biometric or _hit(spec, PERSONAL_DATA):
         f.handles_personal_data = True
+    if (m := INTERNAL_ONLY.search(spec)):
+        f.internal_only = True
+        ev.append(f"internal_only ← '{m.group(0)}'")
+    if (m := DAILY_USERS.search(spec)):
+        f.domestic_daily_users = _amount(m.group(1), m.group(2))
+        ev.append(f"domestic_daily_users={f.domestic_daily_users} ← '{m.group(0)}'")
+    if (m := REVENUE.search(spec)):
+        f.annual_revenue_krw = _amount(m.group(1), m.group(2))
+        ev.append(f"annual_revenue_krw={f.annual_revenue_krw} ← '{m.group(0)}'")
     return f
 
 

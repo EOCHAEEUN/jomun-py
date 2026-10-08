@@ -152,6 +152,36 @@ def test_overseas_threshold_flow():
     assert statuses(build(spec, {"threshold": "yes"}))["제36조①"] == "REQUIRED"
 
 
+@pytest.mark.parametrize("tail, expected", [
+    ("국내 하루 이용자 150만 명", "REQUIRED"),       # 3호: 1일 평균 이용자 100만명 이상
+    ("전년도 매출 1조 2,000억 원", "REVIEW"),        # '1조 2,000억'은 읽지 못함 → 되묻기 유지
+    ("작년 매출 2조 원", "REQUIRED"),                # 1호: 매출액 1조원 이상
+    ("국내 일평균 이용자 30만 명", "REVIEW"),         # 1·3호 미만이어도 2·4호를 알 수 없음
+])
+def test_overseas_threshold_from_numbers_in_spec(tail, expected):
+    spec = f"국내 영업소가 없는 해외 기업이 제공하는 LLM 기반 번역 앱, {tail}"
+    assert statuses(build(spec))["제36조①"] == expected
+    assert statuses(build(spec, {"threshold": "no"}))["제36조①"] == "INFO"   # 답변이 수치보다 우선
+    assert statuses(build(spec, {"threshold": "unknown"}))["제36조①"] == expected
+
+
+@pytest.mark.parametrize("spec", ["의료진 개입 없이 흉부 X-ray를 판독하는 AI", "사람 검토 없이 신용점수를 산출하는 AI",
+                                  "자율주행 셔틀의 속도를 스스로 결정하는 AI", "병원에서 X-ray를 자동으로 판독하는 AI"])
+def test_no_human_wording_is_automated(spec):
+    assert heuristic_extract(spec).decision_mode == "AUTOMATED"
+
+
+def test_recommend_and_human_final_are_not_read_as_automated():
+    assert heuristic_extract("AI가 채용 서류를 점수화하고 인사담당자가 최종 결정하는 서비스").decision_mode == "HUMAN_FINAL"
+    assert heuristic_extract("시청 기록 기반 영화 추천 AI 서비스").decision_mode == "RECOMMEND"
+
+
+def test_internal_only_use_is_an_exception_not_an_obligation():
+    s = statuses(build("사내 직원의 업무 메일 초안을 써 주는 생성형 AI, 내부 업무용으로만 사용"))
+    assert s["제31조①"] == s["제31조②"] == "INFO"
+    assert statuses(build("사내 직원의 업무 메일 초안을 써 주는 생성형 AI"))["제31조①"] == "REQUIRED"
+
+
 def test_user_business_not_excluded_from_article_32():
     s = statuses(build("OpenAI API를 이용한 쇼핑몰 고객 상담 챗봇"))
     assert s["제32조①"] == "REVIEW"
