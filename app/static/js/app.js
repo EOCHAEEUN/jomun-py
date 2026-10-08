@@ -6,25 +6,32 @@ const state = {
   builtSpec: "",
   answers: {},          // 되묻기 답변 {question_id: value}
   selectedKey: null,
-  tab: "decompiled",
+  tab: "original",
   examples: [],
   exampleIndex: 0,
   checks: loadChecks(),
 };
 
-// ── 상태 배지 아이콘 ─────────────────────────────
-const BADGE_ICON = {
-  MATCH: '<svg class="ico" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5L20 7" stroke-width="3"/></svg>',
-  REQUIRED: '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="3.2" fill="#fff" stroke="none"/></svg>',
-  REVIEW: '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f3a83b" stroke="none"/><path d="M12 7v6.5M12 16.8h.01" stroke="#fff" stroke-width="2.6"/></svg>',
-  CONDITIONAL: '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" stroke-width="2.2"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/></svg>',
-  SHOULD: '<svg class="ico" viewBox="0 0 24 24"><path d="M12 3 22 20.5H2z" fill="currentColor" stroke="currentColor" stroke-width="1.5"/><path d="M12 9.5v5M12 17.6h.01" stroke="#fff" stroke-width="2.4"/></svg>',
-  OPPORTUNITY: '<svg class="ico" viewBox="0 0 24 24"><path d="M12 2.5 21.5 12 12 21.5 2.5 12z" fill="currentColor" stroke="none"/></svg>',
-  OUT_OF_SCOPE: '<svg class="ico" viewBox="0 0 24 24"><path d="M5 5v6a4 4 0 0 0 4 4h10M15 11l4 4-4 4" stroke-width="2.4"/></svg>',
-  INFO: '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2.2"/><path d="M12 11v5.5M12 7.8h.01" stroke-width="2.4"/></svg>',
+const STATUS_TEXT = {
+  MATCH: "해당 가능성", REQUIRED: "의무", REVIEW: "검토 필요", CONDITIONAL: "조건부 의무",
+  SHOULD: "노력 의무", OPPORTUNITY: "지원 가능", OUT_OF_SCOPE: "적용 제외", INFO: "참고",
 };
-const STATUS_TEXT = { OUT_OF_SCOPE: "OUT OF SCOPE" };
-const OBLIGATION_KO = { MUST: "MUST · 하여야 한다", SHOULD: "SHOULD · 노력하여야 한다", MAY: "MAY · 할 수 있다", MUST_NOT: "MUST_NOT · 하여서는 아니 된다" };
+const OBLIGATION_KO = { MUST: "하여야 한다", SHOULD: "노력하여야 한다", MAY: "할 수 있다", MUST_NOT: "하여서는 아니 된다" };
+const CONDITION_KO = {
+  "IF HIGH_IMPACT_AI": "고영향 AI에 해당하면",
+  "IF 완전히 자동화된 결정": "완전히 자동화된 결정이면",
+  "IF 적용 제외 대상이 아니면": "적용 제외 대상이 아니면",
+  "IF 실제와 구분 어려운 결과물": "실제와 구분하기 어려운 결과물이면",
+  "IF 정보주체가 거부·설명 요구": "정보주체가 거부·설명을 요구하면",
+  "IF 정보주체 요구": "정보주체가 요구하면",
+  "IF 자동화평가 · 정보주체 요구": "자동화평가에 해당하고 정보주체가 요구하면",
+  "IF 민감정보 해당": "민감정보에 해당하면",
+};
+function conditionText(condition) { return CONDITION_KO[condition] || condition.replace(/^IF /, ""); }
+function itemLabel(it) { return it.label === "HIGH_IMPACT_AI" ? "고영향 AI 해당 여부" : it.label; }
+function statusText(it) {
+  return it.status === "CONDITIONAL" && it.obligation === "SHOULD" ? "조건부 노력 의무" : STATUS_TEXT[it.status] || it.status;
+}
 
 // ── 공통 유틸 ─────────────────────────────────────
 function esc(s) {
@@ -44,25 +51,6 @@ function saveChecks() {
   try { localStorage.setItem("jomun.checks", JSON.stringify([...state.checks])); } catch { /* 저장 불가 환경 무시 */ }
 }
 
-// ── Python 코드 하이라이트 (디컴파일 탭) ────────────
-const TOKEN = /(#.*$)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(@\w+)|\b(def|class|if|elif|else|return|not|in|and|or|for|while|raise|import|from|lambda|None|True|False|pass|with|as|is)\b(\s+[A-Za-z_]\w*)?|\b(\d[\d_]*)\b/g;
-function highlight(line) {
-  let out = "", last = 0;
-  line.replace(TOKEN, (m, com, str, dec, kw, name, num, idx) => {
-    out += esc(line.slice(last, idx));
-    if (com) out += `<span class="tok-com">${esc(com)}</span>`;
-    else if (str) out += `<span class="tok-str">${esc(str)}</span>`;
-    else if (dec) out += `<span class="tok-dec">${esc(dec)}</span>`;
-    else if (kw) {
-      out += `<span class="tok-kw">${kw}</span>`;
-      if (name) out += (kw === "def" || kw === "class") ? `<span class="tok-fn">${esc(name)}</span>` : esc(name);
-    } else if (num) out += `<span class="tok-num">${num}</span>`;
-    last = idx + m.length;
-    return m;
-  });
-  return out + esc(line.slice(last));
-}
-
 // ── API ───────────────────────────────────────────
 async function runBuild({ keepSelection = false } = {}) {
   const spec = $("#spec").value.trim();
@@ -71,8 +59,7 @@ async function runBuild({ keepSelection = false } = {}) {
 
   const btn = $("#run");
   btn.disabled = true;
-  setStatus("running", "빌드 중…", "");
-  const t0 = performance.now();
+  setStatus("running", "점검 중…", "");
   try {
     const res = await fetch("/api/build", {
       method: "POST",
@@ -81,7 +68,6 @@ async function runBuild({ keepSelection = false } = {}) {
     });
     if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
     const data = await res.json();
-    const sec = Math.max(0.1, (performance.now() - t0) / 1000);
     state.result = data;
     state.builtSpec = spec;
     if (!keepSelection || !data.items.some((i) => i.key === state.selectedKey)) {
@@ -89,12 +75,12 @@ async function runBuild({ keepSelection = false } = {}) {
       state.selectedKey = (firstQuestion || data.items[0] || {}).key;
     }
     setAiNotice(data.mode.feature_extractor);
-    const ragNote = data.rag.mode === "chroma" ? `RAG 후보 ${data.rag.n_candidates}` : "규칙만 모드";
-    setStatus("done", "빌드 완료", `${sec.toFixed(1)}초 · ${ragNote}`);
+    const sourceNote = data.rag.mode === "chroma" ? "6종 문서 기준" : "규칙만 모드";
+    setStatus("done", "점검 완료", sourceNote);
     renderAll(!keepSelection);
   } catch (err) {
-    setStatus("error", "빌드 실패", "");
-    toast(`빌드 실패: ${err.message}`);
+    setStatus("error", "점검 실패", "");
+    toast(`점검 실패: ${err.message}`);
   } finally {
     btn.disabled = false;
   }
@@ -117,37 +103,24 @@ function setStatus(kind, label, time) {
 // ── 렌더링 ────────────────────────────────────────
 function renderAll(animate) {
   renderLog(animate);
-  renderSummary();
   renderInspect();
   renderTodo();
-}
-
-function badge(status) {
-  return `<span class="badge b-${status}">${BADGE_ICON[status] || ""}${STATUS_TEXT[status] || status}</span>`;
 }
 
 function renderLog(animate) {
   const items = state.result?.items || [];
   $("#log").innerHTML = items.map((it, i) => {
-    const cond = it.condition ? `<span class="cond">${esc(it.condition)} → </span>` : "";
-    const ask = it.question && !it.question.answer ? '<span class="q">질문</span>' : "";
-    const doc = it.doc !== "AIACT" ? `<span class="doc">${esc(it.doc_short)}</span>` : "";
+    const cond = it.condition ? `${esc(conditionText(it.condition))}, ` : "";
+    const doc = it.doc !== "AIACT" ? `${esc(it.doc_short)} · ` : "";
     return `
-      <li class="log-row ${it.key === state.selectedKey ? "selected" : ""}" data-key="${it.key}"
+      <li class="log-row ${it.key === state.selectedKey ? "selected" : ""} ${it.status === "REQUIRED" || it.status === "REVIEW" ? "priority" : ""}" data-key="${esc(it.key)}"
           style="animation-delay:${animate ? i * 45 : 0}ms; ${animate ? "" : "animation:none"}">
-        ${badge(it.status)}
-        <span class="ref">${esc(it.label)}</span>
-        <span class="desc" title="${esc((it.doc !== "AIACT" ? it.doc_short + " · " : "") + (it.condition ? it.condition + " → " : "") + it.summary)}">${doc}${ask}${cond}${esc(it.summary)}</span>
+        <span class="ref">${doc}${esc(itemLabel(it))}</span>
+        <span class="desc"><span class="status-word">${esc(statusText(it))}</span><span class="sep"> — </span>${cond}${esc(it.summary)}</span>
         <svg><use href="#i-chevron"/></svg>
       </li>`;
   }).join("") || '<li class="log-empty">적용되는 항목이 없어요.</li>';
-}
-
-function renderSummary() {
-  const r = state.result;
-  const pending = r.pending_questions.length;
-  $("#summary-text").innerHTML = esc(r.summary.text || "-") +
-    (pending ? ` · <span class="ask" id="ask-link">확인 질문 ${pending}건</span>` : "");
+  $("#ask-link").hidden = !state.result?.pending_questions?.length;
 }
 
 function selectedItem() {
@@ -161,21 +134,8 @@ function renderInspect() {
   const box = $("#tab-content");
   if (!it) { box.innerHTML = '<p class="muted">빌드 로그에서 항목을 선택하면 근거가 여기에 표시돼요.</p>'; return; }
   if (state.tab === "original") box.innerHTML = renderOriginal(it);
-  else if (state.tab === "checklist") box.innerHTML = renderImpl(it);
-  else box.innerHTML = renderDecompiled(it);
+  else box.innerHTML = renderImpl(it);
   box.scrollTop = 0;
-}
-
-function renderDecompiled(it) {
-  if (!it.decompiled?.code) return '<p class="muted">이 항목에는 디컴파일 코드가 없어요.</p>';
-  const lines = it.decompiled.code.replace(/\n$/, "").split("\n");
-  return `
-    <div class="code-head">
-      <h3>분석 로직 (일부)</h3>
-      <span class="lang">Python <button id="copy-code" title="코드 복사"><svg><use href="#i-copy"/></svg></button></span>
-    </div>
-    <div class="code">${lines.map((l) => `<span class="ln">${highlight(l) || " "}</span>`).join("")}</div>
-    <p class="code-note">이해를 돕는 비유 코드이며 법률 해석이 아니에요 · ${esc(it.decompiled.filename)}</p>`;
 }
 
 function renderQuestion(q) {
@@ -189,14 +149,24 @@ function renderQuestion(q) {
     </div>`;
 }
 
+function renderDeveloperBrief(it) {
+  const condition = it.condition ? `<p class="dev-condition">적용 조건: ${esc(conditionText(it.condition))}</p>` : "";
+  const actions = it.checklist || [];
+  const preview = actions.length ? `
+    <h4>${it.condition ? "조건이 충족되면 반영할 작업" : "제품에 반영할 작업"}</h4>
+    <ol class="dev-actions">${actions.slice(0, 3).map((action) => `<li>${esc(action)}</li>`).join("")}</ol>
+    <button class="dev-more" data-open-checklist>전체 작업 ${actions.length}개 보기</button>` : "";
+  const prompt = it.question ? `<h4>설계에서 먼저 결정할 사항</h4>${renderQuestion(it.question)}` : "";
+  if (!condition && !preview && !prompt) return "";
+  return `<section class="dev-brief"><h3>개발 관점</h3>${condition}${prompt}${preview}</section>`;
+}
+
 function renderOriginal(it) {
   const r = state.result;
   const first = it.records[0];
-  const chips = [];
-  if (it.obligation) chips.push(`<span class="chip ${it.obligation === "SHOULD" ? "should" : it.obligation === "MAY" ? "may" : "must"}">${OBLIGATION_KO[it.obligation] || it.obligation}</span>`);
-  if (first) chips.push(`<span class="chip">수범자 · ${esc(first.addressee_ko)}</span>`);
-  if (it.chain) chips.push(`<span class="chip ${it.chain.type.toLowerCase()}">penalty · ${it.chain.type}</span>`);
-  if (it.externals.length) chips.push('<span class="chip ext">◈ EXTERNAL</span>');
+  const details = [];
+  if (first) details.push(`수범자: ${esc(first.addressee_ko)}`);
+  if (it.obligation) details.push(`조문의 표현: ${esc(OBLIGATION_KO[it.obligation] || it.obligation)}`);
 
   const texts = it.records.map((rec) => `
     <div class="law-text ${rec.verbatim ? "" : "summary"} k-${rec.doc_kind.toLowerCase()}">
@@ -217,16 +187,19 @@ function renderOriginal(it) {
   const retrieved = renderFoundBy(it, r.rag);
 
   return `
-    ${it.question ? renderQuestion(it.question) : ""}
-    <div class="art-head"><h3>${esc(it.label)}</h3><span class="art-title">${esc(it.summary)}</span></div>
-    <div class="chips">${chips.join("")}</div>
+    <div class="art-head"><h3>${esc(itemLabel(it))}</h3><span class="art-title">${esc(it.summary)}</span></div>
+    ${renderDeveloperBrief(it)}
+    ${details.length ? `<p class="legal-meta">${details.join(" · ")}</p>` : ""}
+    ${it.notes.length ? `<p class="sub-title">판정 이유</p><ul class="notes">${it.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
+    <p class="sub-title">근거 조문</p>
     ${texts || '<p class="muted">데이터 범위(6종) 밖의 항목이라 원문이 없어요.</p>'}
-    ${it.notes.length ? `<p class="sub-title">판정 근거</p><ul class="notes">${it.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
     ${it.externals.length ? `<p class="sub-title">하위 규정 의존</p><div class="ext-box"><b>◈ EXTERNAL</b>${it.externals.map(esc).join("<br>")}<br>→ 이번 데이터 6종만으로는 확정되지 않아요. 해당 규정 확인 필요</div>` : ""}
-    ${chain}
-    ${retrieved}
-    <p class="sub-title">추출된 서비스 특성 (${esc(r.mode.feature_extractor)})</p>
-    <ul class="notes">${(r.features.evidence.length ? r.features.evidence : ["근거 문구 없음"]).map((e) => `<li>${esc(e)}</li>`).join("")}</ul>`;
+    <details class="technical-details"><summary>판단 과정 자세히</summary>
+      ${chain}
+      ${retrieved}
+      <p class="sub-title">서비스 설명에서 확인한 표현</p>
+      <ul class="notes">${(r.features.evidence.length ? r.features.evidence : ["근거 문구 없음"]).map((e) => `<li>${esc(e)}</li>`).join("")}</ul>
+    </details>`;
 }
 
 // 이 항목이 빌드 로그에 오른 경로: RAG 검색 → (참조 확장) → 규칙 검증 / 기본 규칙
@@ -317,8 +290,7 @@ function bindEvents() {
     renderInspect();
   });
 
-  $("#summary").addEventListener("click", (e) => {
-    if (e.target.id !== "ask-link") return;
+  $("#ask-link").addEventListener("click", () => {
     const it = state.result.items.find((i) => i.question && !i.question.answer);
     if (!it) return;
     state.selectedKey = it.key;
@@ -339,11 +311,9 @@ function bindEvents() {
       await runBuild({ keepSelection: true });
       return;
     }
-    if (e.target.closest("#copy-code")) {
-      try {
-        await navigator.clipboard.writeText(selectedItem().decompiled.code);
-        toast("코드를 복사했어요.");
-      } catch { toast("복사할 수 없는 환경이에요."); }
+    if (e.target.closest("[data-open-checklist]")) {
+      state.tab = "checklist";
+      renderInspect();
     }
   });
 

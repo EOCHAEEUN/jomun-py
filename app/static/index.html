@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>조문.py — AI Legal Build Checker</title>
+  <title>조문.py — 법령 사전 점검</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232f3540'/><text x='16' y='22' font-size='15' text-anchor='middle' fill='white' font-family='monospace'>§</text></svg>" />
   <link rel="stylesheet" href="/static/css/style.css" />
 </head>
@@ -47,13 +47,11 @@
         <div class="topbar-left">
           <h1 class="logo">조문.py</h1>
           <span class="divider"></span>
-          <span class="product">AI Legal Build Checker</span>
+          <span class="product">법령 사전 점검</span>
           <span class="dash">—</span>
-          <span class="tagline">좋은 기술이 좋은 세상을 만듭니다. 조문.py 가 함께합니다.</span>
+          <span class="tagline">서비스 출시 전, 관련 법령을 미리 점검하세요.</span>
         </div>
         <div class="topbar-right">
-          <span class="slogan">AI로 만드는 더 안전한 서비스</span>
-          <span class="divider"></span>
           <button class="icon-btn" id="bell" aria-label="알림"><svg><use href="#i-bell"/></svg></button>
           <span class="avatar"><svg><use href="#i-user"/></svg></span>
         </div>
@@ -65,8 +63,8 @@
           <div class="panel-head">
             <svg class="panel-icon"><use href="#i-doc"/></svg>
             <div>
-              <h2><span class="step">01</span> SPEC</h2>
-              <p>서비스 설명을 입력하면 관련 법령을 분석해요.</p>
+              <h2><span class="step">01</span> 서비스 설명</h2>
+              <p>서비스 내용을 입력하면 관련 법령을 확인합니다.</p>
             </div>
           </div>
 
@@ -79,13 +77,13 @@
               <textarea id="spec" maxlength="500" placeholder="개발할 AI 서비스를 한두 문장으로 설명해 주세요.&#10;예: 얼굴 인식으로 면접 영상을 분석해서 지원자의 채용 점수를 추천하는 AI"></textarea>
               <span class="counter" id="counter">0/500</span>
             </div>
-            <button class="run-btn" id="run"><svg><use href="#i-play"/></svg><span>법 빌드 실행</span></button>
+            <button class="run-btn" id="run"><svg><use href="#i-play"/></svg><span>법령 점검</span></button>
             <p class="disclaimer"><svg><use href="#i-info"/></svg><span>법률 자문 아님 / AI기본법·시행령 등 6종 기반 점검<br /><span id="ai-notice">자동화된 법령 분석 도구예요</span></span></p>
           </div>
 
-          <div class="spec-illust">
-            <blockquote class="quote">좋은 아이디어가<br />더 멀리 갈 수 있도록,<br />법과 함께 점검해요.</blockquote>
-            <img src="/static/img/capybara-judge.png" alt="판사 옷을 입은 카피바라" />
+          <div class="scope-note">
+            <h3>점검 범위</h3>
+            <p>AI기본법·시행령과 연결 법률 등 6종 문서를 기준으로 확인합니다. 서비스의 구체적인 운영 방식에 따라 추가 검토가 필요할 수 있습니다.</p>
           </div>
         </section>
 
@@ -94,27 +92,19 @@
           <div class="panel-head">
             <svg class="panel-icon"><use href="#i-gear"/></svg>
             <div>
-              <h2><span class="step">02</span> BUILD</h2>
-              <p>입력한 서비스에 적용되는 법령을 분석하고 체크해요.</p>
+              <h2><span class="step">02</span> 점검 결과</h2>
+              <p>관련 조문과 확인할 사항을 살펴보세요.</p>
             </div>
             <div class="status-pill idle" id="status"><i></i><b>대기 중</b><span></span></div>
           </div>
 
           <div class="card log-card">
-            <h3 class="log-title">빌드 로그</h3>
+            <div class="log-heading"><h3 class="log-title">관련 조문</h3><button class="question-link" id="ask-link" hidden>확인할 사항 보기</button></div>
             <ul class="log" id="log">
-              <li class="log-empty">법 빌드 실행을 누르면 결과가 여기에 표시돼요.</li>
+              <li class="log-empty">법 빌드 실행을 누르면 관련 조문이 여기에 표시됩니다.</li>
             </ul>
-            <div class="log-summary" id="summary">
-              <svg><use href="#i-bars"/></svg>
-              <span><b>Build Summary</b> : <em id="summary-text">-</em></span>
-            </div>
           </div>
 
-          <div class="robot-card">
-            <blockquote>AI 서비스가 더 안전하게 만들어질 수 있도록<br />관련 법령을 꼼꼼히 확인하고 있어요.</blockquote>
-            <img src="/static/img/robot.png" alt="노트북을 쓰는 로봇" />
-          </div>
         </section>
 
         <!-- ── 03 INSPECT ── -->
@@ -122,15 +112,14 @@
           <div class="panel-head">
             <svg class="panel-icon"><use href="#i-inspect"/></svg>
             <div>
-              <h2><span class="step">03</span> INSPECT</h2>
-              <p>분석 근거를 확인하고, 적용 사항을 점검해요.</p>
+              <h2><span class="step">03</span> 적용 가이드</h2>
+              <p>서비스에 반영할 작업과 근거 조문을 확인하세요.</p>
             </div>
           </div>
 
           <div class="tabs" role="tablist">
-            <button class="tab" data-tab="original" role="tab">원문<i class="tab-dot" hidden></i></button>
-            <button class="tab active" data-tab="decompiled" role="tab">디컴파일</button>
-            <button class="tab" data-tab="checklist" role="tab">체크리스트</button>
+            <button class="tab active" data-tab="original" role="tab">적용과 근거<i class="tab-dot" hidden></i></button>
+            <button class="tab" data-tab="checklist" role="tab">작업 체크리스트</button>
           </div>
 
           <div class="card tab-card" id="tab-content">
