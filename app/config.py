@@ -32,6 +32,7 @@ EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "local").lower()  # local |
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "law_articles")
 RETRIEVAL_TOP_K = int(os.getenv("RETRIEVAL_TOP_K", "5"))
+BUILD_RETRIEVAL_MODE = os.getenv("BUILD_RETRIEVAL_MODE", "bm25").strip().lower()  # chroma | bm25 | hybrid
 
 # ── /ask: Qdrant 기반 AI 기본법 QA ───────────────────────────
 QDRANT_URL = os.getenv("QDRANT_URL", "").strip()  # 비우면 WSL 로컬 Qdrant

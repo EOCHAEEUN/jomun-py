@@ -2,25 +2,26 @@
 #
 #   서비스 설명 + 추출된 특성
 #     → ① 쿼리 만들기: 원문 그대로(naive) + 특성을 법률 용어로 바꾼 쿼리(feature-enriched)
-#     → ② Chroma 검색: 쿼리마다 top-k, 문서·수범자 메타데이터 필터
+#     → ② BM25 기본 검색: 쿼리마다 top-k, 문서·수범자 필터 (Chroma·RRF 선택 가능)
 #     → ③ 참조 그래프 확장: 찾은 조문의 상위 조문, refs, '고영향이면 적용되는 조문'
 #     → 후보 집합 (Rule Engine이 이 후보들의 적용 조건을 검증한다)
 #
-# Chroma가 아직 적재되지 않았으면 None을 돌려주고, 파이프라인은 '규칙만' 모드로 동작한다.
+# 선택한 검색 인덱스가 없으면 파이프라인은 '규칙만' 모드로 동작한다.
 import logging
 from dataclasses import dataclass, field
 
-from app.config import RETRIEVAL_TOP_K
+from app.config import BUILD_RETRIEVAL_MODE, RETRIEVAL_TOP_K
 from app.engine.law import get_lawbook
+from app.rag.bm25 import EXCLUDED_ADDRESSEES, SEARCHABLE_DOCS, get_index, search as bm25_search
 from app.schemas import ServiceFeatures
 
 log = logging.getLogger(__name__)
 
 # 검색 대상: 판정에 쓰는 문서만 (영문 번역은 화면 병기용이라 제외)
 SEARCH_FILTER = {"$and": [
-    {"doc": {"$in": ["AIACT", "DECREE", "PIPA", "CREDIT", "BKL"]}},
+    {"doc": {"$in": list(SEARCHABLE_DOCS)}},
     {"kind": {"$ne": "COMMENTARY_PDF"}},
-    {"addressee": {"$nin": ["GOVERNMENT", "COMMITTEE"]}},
+    {"addressee": {"$nin": list(EXCLUDED_ADDRESSEES)}},
 ]}
 
 # 특성 → 법률 용어 쿼리 (서비스 설명의 일상어를 법조문의 단어로 옮긴다)
@@ -120,23 +121,66 @@ def _expand(hits: dict) -> dict:
     return expanded
 
 
-def retrieve_candidates(spec: str, f: ServiceFeatures, k: int = RETRIEVAL_TOP_K) -> Retrieval:
-    try:
-        from app.rag.store import get_collection, search
-        if get_collection() is None:
-            return Retrieval(mode="off")
-    except Exception as e:      # chromadb 미설치·DB 손상 등
-        log.warning("검색 건너뜀: %s", e)
+def resolve_strategy(strategy: str | None = None) -> str:
+    """Return the available search mode, falling back when one index is missing."""
+    requested = strategy or BUILD_RETRIEVAL_MODE
+    if requested not in {"chroma", "bm25", "hybrid"}:
+        raise ValueError(f"Unknown build retrieval mode: {requested}")
+    dense_ready = sparse_ready = False
+    if requested in {"chroma", "hybrid"}:
+        try:
+            from app.rag.store import get_collection
+            dense_ready = get_collection() is not None
+        except Exception as exc:
+            log.warning("Chroma 검색 불가: %s", exc)
+    if requested in {"bm25", "hybrid"}:
+        try:
+            sparse_ready = get_index() is not None
+        except Exception as exc:
+            log.warning("BM25 검색 불가: %s", exc)
+    if requested == "hybrid":
+        return "hybrid" if dense_ready and sparse_ready else "chroma" if dense_ready else "bm25" if sparse_ready else "off"
+    return requested if (dense_ready if requested == "chroma" else sparse_ready) else "off"
+
+
+def _rrf(dense: list[dict], sparse: list[dict], k: int) -> list[dict]:
+    """Reciprocal rank fusion; raw cosine and BM25 scores are incomparable."""
+    fused: dict[str, dict] = {}
+    for hits in (dense, sparse):
+        for rank, hit in enumerate(hits, start=1):
+            entry = fused.setdefault(hit["id"], {**hit, "score": 0.0})
+            entry["score"] += 1 / (60 + rank)
+    return sorted(fused.values(), key=lambda hit: (-hit["score"], hit["id"]))[:k]
+
+
+def search_candidates(query: str, k: int, strategy: str) -> list[dict]:
+    if strategy == "bm25":
+        return bm25_search(query, k=k)
+    if strategy == "off":
+        return []
+    from app.rag.store import search as chroma_search
+    if strategy == "chroma":
+        return chroma_search(query, k=k, where=SEARCH_FILTER)
+    if strategy == "hybrid":
+        depth = max(k * 4, 20)
+        return _rrf(chroma_search(query, k=depth, where=SEARCH_FILTER), bm25_search(query, k=depth), k)
+    raise ValueError(f"Unknown search mode: {strategy}")
+
+
+def retrieve_candidates(spec: str, f: ServiceFeatures, k: int = RETRIEVAL_TOP_K,
+                        strategy: str | None = None) -> Retrieval:
+    mode = resolve_strategy(strategy)
+    if mode == "off":
         return Retrieval(mode="off")
 
     queries, hits = build_queries(spec, f), {}
     for q in queries:
-        found = search(q["text"], k=k, where=SEARCH_FILTER)
+        found = search_candidates(q["text"], k=k, strategy=mode)
         q["hits"] = [h["id"] for h in found]
         for h in found:
             if h["id"] not in hits or h["score"] > hits[h["id"]]["score"]:
                 hits[h["id"]] = {"score": h["score"], "query": q["label"], "ref_label": h["ref_label"],
                                  "doc_short": h["doc_short"]}
     expanded = _expand(hits)
-    return Retrieval(mode="chroma", queries=queries, hits=hits, expanded=expanded,
+    return Retrieval(mode=mode, queries=queries, hits=hits, expanded=expanded,
                      candidates=set(hits) | set(expanded))

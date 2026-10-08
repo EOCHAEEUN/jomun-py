@@ -103,7 +103,7 @@ pip install -r requirements.txt
 copy .env.example .env         # Windows
 # cp .env.example .env         # Mac / Linux
 
-# 4. PDF 6종 → Docling 변환·청킹 → Chroma 임베딩 (안 하면 '규칙만 모드')
+# 4. PDF 6종 → Docling 변환·청킹 → BM25용 chunks.json + Chroma 임베딩
 python -m scripts.ingest
 
 # 5. 서버 실행 → 브라우저에서 http://127.0.0.1:8000
@@ -160,7 +160,7 @@ API 키가 없으면 키워드 규칙 기반 추출기와 로컬 해싱 임베�
 ```
 SERVICE SPEC
    ↓  ① 특성 추출 (LLM 또는 규칙) — 판정하지 않고 사실만 뽑는다
-   ↓  ② RAG 후보 검색 — 설명 그대로(naive) + 특성을 법률 용어로 바꾼 쿼리, 쿼리마다 Chroma top-5
+   ↓  ② RAG 후보 검색 — 설명 그대로(naive) + 특성을 법률 용어로 바꾼 쿼리, 쿼리마다 BM25 top-5 (기본값)
    │                   → 참조 그래프 1단계 확장 (상위 조문 · refs · 고영향이면 적용되는 조문)
    ↓  ③ Rule Engine 검증 — 후보 조문마다 적용 조건 확인 → MATCH / REQUIRED / CONDITIONAL / REVIEW …
    │                   후보에 없는 조문은 판정하지 않는다 · 맞지 않는 후보는 이유와 함께 기각
@@ -170,10 +170,10 @@ SERVICE SPEC
 ```
 
 핵심 설계
-- **LLM은 서비스 특성만 추출하고, Chroma는 후보 조문을 찾고, Rule Engine이 적용 여부를 판정한다.** 문법 파서와 정적 템플릿이 법률 문법을 개발자 언어로 변환한다. LLM 기반 쉬운 말 표현은 Plain 모드에서 확장한다.
+- **LLM은 서비스 특성만 추출하고, BM25는 후보 조문을 찾고, Rule Engine이 적용 여부를 판정한다.** Chroma와 RRF 결합은 설정으로 선택할 수 있다. 문법 파서와 정적 템플릿이 법률 문법을 개발자 언어로 변환한다. LLM 기반 쉬운 말 표현은 Plain 모드에서 확장한다.
 - **RAG는 후보를 찾고, 규칙은 검증한다.** 검색이 놓친 조문은 빌드 로그에 오르지 않는다. 그래서 검색 성능이 최종 결과에 그대로 드러나고, 평가도 단계별로 따로 잰다.
 - **검색 누락을 '해당 없음'으로 넘기지 않는다.** 특성은 고영향 영역(예: 사목)을 가리키는데 그 조문이 후보에 없으면 `REVIEW · 고영향 영역 조문 검색 누락`으로 올린다.
-- Chroma가 비어 있으면 **규칙만 모드**로 모든 규칙을 평가한다 (평가의 ② 규칙 판정 정확도도 이 모드로 잰다).
+- 기본 BM25는 `chunks.json`이 없을 때 **규칙만 모드**로 평가한다. hybrid는 한쪽 인덱스가 없으면 사용 가능한 검색으로 동작한다 (평가의 ② 규칙 판정 정확도는 검색 없이 잰다).
 
 | 컴포넌트 | 파일 |
 | --- | --- |
@@ -186,6 +186,7 @@ SERVICE SPEC
 | RAG 후보 검색 (쿼리 생성 · 참조 확장) | `app/rag/retriever.py` |
 | Docling PDF 변환·청킹 (국문 법령·영문·해설 원문) | `app/rag/preprocess.py` |
 | Chroma 적재·검색, 로컬 임베딩 | `app/rag/store.py`, `app/rag/embeddings.py` |
+| BM25 적재·검색 | `app/rag/bm25.py` |
 
 ### 핵심 데이터: `data/tagged/articles.json`
 
@@ -217,32 +218,34 @@ SERVICE SPEC
 python -m scripts.ingest                # 먼저 적재
 python -m scripts.evaluate              # 결과 → data/eval/results.json
 python -m scripts.evaluate --snapshot   # docs/eval_snapshot.json 갱신
+python -m scripts.compare_build_retrieval  # Chroma/BM25/RRF 비교
 ```
 
 | 평가셋 | 파일 | 성격 |
 | --- | --- | --- |
 | dev 11개 | `data/eval/cases.json` | 규칙을 만들면서 본 케이스 (바목 함정, 경찰 얼굴 인식 대조군, 생성형 표시 의무, 영화 추천 오탐 방지, 해외 기업, 국방 전용, 외부 LLM API, 사람이 최종 결정하는 채용 AI 등) |
-| held-out 11개 | `data/eval/heldout_cases.json` | 엔진 수정 전에 따로 써 둔 케이스. **결과를 보고 엔진을 고치지 않는다** |
+| held-out v1 11개 | `data/eval/heldout_cases.json` | 엔진 수정 전에 따로 써 둔 케이스. BM25 방식을 dev로 선택한 뒤 한 번 검증했으므로 향후 새 독립 평가셋이 필요하다 |
 
-로컬 해싱 임베딩 · 규칙 기반 특성 추출 · 청크 1,736개 기준 ([상세](docs/evaluation.md), [스냅샷](docs/eval_snapshot.json)):
+BM25 기본 검색 · 규칙 기반 특성 추출 · 검색 대상 청크 1,189개 기준 ([상세](docs/evaluation.md), [스냅샷](docs/eval_snapshot.json), [방식 비교](docs/build_retrieval_compare.json)):
 
 | 지표 | dev | held-out |
 | --- | --- | --- |
-| ① 검색 Hit@3 — 설명 그대로 (naive) | 0.28 | 0.07 |
+| ① 검색 Hit@3 — 설명 그대로 (naive) | 0.33 | 0.07 |
 | ① 검색 Hit@3 — 특성 쿼리 (enriched) | 0.83 | 0.80 |
+| ① 후보 재현율 | 0.94 | 0.93 |
 | ② 규칙 판정 정확도 (검색 없이) | 1.00 | 0.69 |
-| ③ 최종 빌드 정확도 (RAG → 규칙) | 1.00 | **0.61** |
-| ③ 케이스 완전 일치 | 1.00 | 0.36 |
+| ③ 최종 빌드 정확도 (RAG → 규칙) | 1.00 | **0.69** |
+| ③ 케이스 완전 일치 | 1.00 | 0.45 |
 
 - **검색**: 서비스 설명을 그대로 넣으면 개인정보 보호법·신용정보법 청크에 묻혀 정답 조문을 거의 못 찾는다. 특성을 법률 용어 쿼리로 바꾸면 0.80까지 오른다.
-- **dev 1.00은 실력이 아니다.** 규칙을 만들며 본 케이스라서다. 지금 실력은 held-out ③ 0.61이다.
-- **held-out에서 틀린 14개 점검의 원인**: 검색 3개(에너지 영역 가목을 후보로 못 찾음), 특성 추출 8개(“판독”, “스스로 결정”, “사람 검토 없이 산출”, “실제 사람 목소리처럼” 같은 표현을 못 읽음), 규칙 범위 3개(시행령 제23조④ 내부 업무 예외, 설명 속 이용자 수를 시행령 기준과 비교). 고치면 이 held-out은 '본 데이터'가 되므로, 새 held-out을 먼저 쓰고 고친다.
+- **dev 1.00은 실력이 아니다.** 규칙을 만들며 본 케이스라서다. held-out v1의 최종 정확도는 0.69이며, 독립 평가를 위해 새 보류셋이 필요하다.
+- **BM25가 검색 누락 3건을 해결했다.** 기존 Chroma의 held-out 최종 정확도는 0.61(22/36), BM25는 0.69(25/36)였다. 남은 오류 11건은 특성 추출·규칙 범위에 있다. `BUILD_RETRIEVAL_MODE=chroma|bm25|hybrid`로 방식을 변경할 수 있다.
 
 이전 버전의 `rule_hit = 1.0`은 규칙이 직접 넣은 근거 레코드에 정답이 있는지 본 순환 지표라서 뺐습니다.
 
 **평가 운영 규칙** (데이터 누수 방지)
 - merge 기준은 **dev 회귀 1.0 유지**뿐입니다 (`test_rules.py`, `test_rag.py`의 dev 케이스).
-- held-out은 **보고용**입니다. held-out 점수를 올리려고 규칙·쿼리·키워드를 고치지 않습니다.
+- held-out v1은 **보고용**입니다. 이번 비교에서 결과를 이미 확인했으므로 향후 독립적인 성능 수치에는 새 평가셋을 사용합니다.
 - held-out 실패를 고치고 싶으면 ① 새 held-out(v2)을 먼저 쓰고 ② v1을 dev로 옮긴 뒤 ③ 고치고 ④ v2로 다시 잽니다.
 - 판정 정책이 바뀌어 dev 정답을 고칠 때는 이유를 케이스의 `point`에 남깁니다 (예: dev 11 — 사람 최종 결정 시 고영향 `REVIEW` 유지).
 
@@ -262,6 +265,7 @@ GitHub Actions(`.github/workflows/test.yml`)가 push·PR마다 Python 3.11에서
 | `tests/test_preprocess.py` | 6개 PDF 청킹, 제33조① 절 분리, 시행령 제29조 수치 보존, 줄바꿈 이어 붙이기, 개정 표시 제거, 영문 매핑, 해설 원문·요약 분리 |
 | `tests/test_rules.py` | 문법 파서, 특성 추출('해외' 단독 언급은 미확정), 판정 엔진(규칙만 모드), 사람 최종 결정이 법마다 다르게 작동, 제37조의2 ④공개/③대응 분리, 신용정보법 권리를 사업자 의무로 쓰지 않음, OPPORTUNITY 조건, RAG 후보 검증(후보에 없으면 판정 안 함 · 기본 규칙 유지 · 검색 누락은 REVIEW · 영역 후보 기각 이유), 제재 경로, dev 11개 |
 | `tests/test_rag.py` | 임시 Chroma 적재, 검색 필터, 특성 쿼리, 사목 검색·참조 확장, 파이프라인이 RAG 후보를 쓰는지, 규칙만 모드 폴백, dev 11개(RAG 모드), **평가 결과 = 커밋된 스냅샷** |
+| `tests/test_bm25.py` | BM25 검색 대상·법률 어휘 검색, RRF 순위 결합, 기존 검색이 놓친 에너지 조문 회수 |
 | `tests/test_api.py` | `/`, `/api/sources`(6종), `/api/examples`, `/api/build` 스키마·답변 반영, 잘못된 입력 422, `/api/articles/{id}` |
 
 > 참고: `한다`의 첫 글자는 `하`가 아니라 `한`이고, 시행령은 `해야 한다`·`포함되어야 한다`처럼 어미가 다릅니다. `grammar.py`는 `(어|여|해)야\s*(한|하)`로 모두 MUST로 잡습니다.
@@ -298,7 +302,7 @@ jomun-py/
 │   ├── config.py             # 설정 모음
 │   ├── schemas.py            # ServiceFeatures, BuildRequest
 │   ├── engine/               # 특성 추출 · 문법 파서 · Rule Engine · Penalty Graph
-│   ├── rag/                  # PDF 전처리 · 임베딩 · Chroma · 후보 검색(retriever)
+│   ├── rag/                  # PDF 전처리 · BM25 · 임베딩 · Chroma · 후보 검색(retriever)
 │   └── static/               # index.html, css, js, img, fonts
 ├── data/
 │   ├── sources.json          # 데이터 6종 목록

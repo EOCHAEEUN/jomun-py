@@ -50,8 +50,8 @@ def _rag_info(rag: Retrieval, items: list[RuleItem]) -> dict:
     top = sorted(rag.hits.items(), key=lambda kv: -kv[1]["score"])
     used = {r for i in items for r in i.records}
     return {
-        "mode": "chroma" if rag.candidates is not None else "rules-only",
-        "embedding": EMBEDDING_PROVIDER if rag.candidates is not None else None,
+        "mode": rag.mode if rag.candidates is not None else "rules-only",
+        "embedding": EMBEDDING_PROVIDER if rag.mode in {"chroma", "hybrid"} else None,
         "top_k": RETRIEVAL_TOP_K,
         "queries": [{"label": q["label"], "text": q["text"],
                      "hits": [{"id": h, "ref_label": rag.hits[h]["ref_label"], "doc_short": rag.hits[h]["doc_short"]}
@@ -69,13 +69,14 @@ def _rag_info(rag: Retrieval, items: list[RuleItem]) -> dict:
     }
 
 
-def run_build(spec: str, answers: dict | None = None, use_rag: bool = True) -> dict:
+def run_build(spec: str, answers: dict | None = None, use_rag: bool = True,
+              retrieval_strategy: str | None = None) -> dict:
     started = time.perf_counter()
     answers = answers or {}
 
     features, extractor = extract(spec)
     features = apply_answers(features, answers)
-    rag = retrieve_candidates(spec, features) if use_rag else Retrieval(mode="off")
+    rag = retrieve_candidates(spec, features, strategy=retrieval_strategy) if use_rag else Retrieval(mode="off")
     items = evaluate(features, answers, candidates=rag.candidates)
 
     counts = {s: sum(1 for i in items if i.status == s) for s in SUMMARY_ORDER}
@@ -92,7 +93,9 @@ def run_build(spec: str, answers: dict | None = None, use_rag: bool = True) -> d
         "spec": spec,
         "elapsed_ms": round((time.perf_counter() - started) * 1000),
         "mode": {"feature_extractor": extractor,
-                 "retriever": f"chroma ({EMBEDDING_PROVIDER})" if rag_info["mode"] == "chroma" else "rules-only"},
+                 "retriever": (f"chroma ({EMBEDDING_PROVIDER})" if rag.mode == "chroma"
+                               else f"hybrid (chroma {EMBEDDING_PROVIDER} + bm25)" if rag.mode == "hybrid"
+                               else rag.mode if rag.mode == "bm25" else "rules-only")},
         "features": features.model_dump(),
         "items": [_item_to_dict(i, rag) for i in items],
         "summary": {"counts": counts, "text": summary_text},

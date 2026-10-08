@@ -1,23 +1,24 @@
 {
   "meta": {
     "date": "2026-10-08",
-    "embedding": "local",
+    "search_mode": "bm25",
+    "embedding": null,
     "top_k": 5,
     "hit_k": 3,
-    "chunks": 1769,
+    "chunks": 1189,
     "feature_extractor": "heuristic"
   },
   "dev": {
     "summary": {
       "cases": 11,
-      "retrieval_hit@3_naive": 0.28,
+      "retrieval_hit@3_naive": 0.33,
       "retrieval_hit@3_enriched": 0.83,
-      "candidate_recall": 0.89,
-      "avg_candidates": 26.5,
+      "candidate_recall": 0.94,
+      "avg_candidates": 27.2,
       "rule_accuracy": 1.0,
       "final_accuracy": 1.0,
       "final_case_exact": 1.0,
-      "domain_acc_naive": 0.55,
+      "domain_acc_naive": 0.73,
       "domain_acc_final": 1.0,
       "checks": 47,
       "errors_by_cause": {
@@ -44,16 +45,16 @@
       "cases": 11,
       "retrieval_hit@3_naive": 0.07,
       "retrieval_hit@3_enriched": 0.8,
-      "candidate_recall": 0.87,
-      "avg_candidates": 27.2,
+      "candidate_recall": 0.93,
+      "avg_candidates": 28.6,
       "rule_accuracy": 0.69,
-      "final_accuracy": 0.61,
-      "final_case_exact": 0.36,
+      "final_accuracy": 0.69,
+      "final_case_exact": 0.45,
       "domain_acc_naive": 0.55,
-      "domain_acc_final": 0.91,
+      "domain_acc_final": 1.0,
       "checks": 36,
       "errors_by_cause": {
-        "검색": 3,
+        "검색": 0,
         "특성·규칙": 11
       }
     },
@@ -63,11 +64,7 @@
         "제34조①",
         "제31조①"
       ],
-      "H02": [
-        "제2조4호가목",
-        "HIGH_IMPACT_AI",
-        "제34조①"
-      ],
+      "H02": [],
       "H03": [
         "HIGH_IMPACT_AI",
         "제34조①"

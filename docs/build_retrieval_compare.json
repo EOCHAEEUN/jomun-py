@@ -1,0 +1,844 @@
+{
+  "date": "2026-10-08",
+  "scope": "/api/build legal-clause retrieval",
+  "selection": "BM25 selected using dev only; heldout used once for verification",
+  "top_k_per_query": 5,
+  "hit_k_per_query": 3,
+  "rrf_rank_constant": 60,
+  "rrf_input_depth": "max(4 * requested_k, 20)",
+  "chroma_chunks": 1769,
+  "bm25_searchable_chunks": 1189,
+  "modes": {
+    "chroma": {
+      "dev": {
+        "summary": {
+          "cases": 11,
+          "retrieval_hit@3_naive": 0.28,
+          "retrieval_hit@3_enriched": 0.83,
+          "candidate_recall": 0.89,
+          "avg_candidates": 26.5,
+          "rule_accuracy": 1.0,
+          "final_accuracy": 1.0,
+          "final_case_exact": 1.0,
+          "domain_acc_naive": 0.55,
+          "domain_acc_final": 1.0,
+          "checks": 47,
+          "errors_by_cause": {
+            "검색": 0,
+            "특성·규칙": 0
+          }
+        },
+        "cases": {
+          "01": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA"
+            ],
+            "failed_checks": []
+          },
+          "02": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_BA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_BA"
+            ],
+            "failed_checks": []
+          },
+          "03": {
+            "gold_retrieval": [
+              "ARTICLE_31_2",
+              "ARTICLE_2_5"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "04": {
+            "gold_retrieval": [
+              "ARTICLE_31_3_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_3_A"
+            ],
+            "failed_checks": []
+          },
+          "05": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA",
+              "CREDIT_36-2_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA",
+              "CREDIT_36-2_1"
+            ],
+            "failed_checks": []
+          },
+          "06": {
+            "gold_retrieval": [
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [],
+            "failed_checks": []
+          },
+          "07": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_CHA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_CHA"
+            ],
+            "failed_checks": []
+          },
+          "08": {
+            "gold_retrieval": [
+              "ARTICLE_4_1",
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_4_1",
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "failed_checks": []
+          },
+          "09": {
+            "gold_retrieval": [
+              "ARTICLE_4_2",
+              "DECREE_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_4_2",
+              "DECREE_2"
+            ],
+            "failed_checks": []
+          },
+          "10": {
+            "gold_retrieval": [
+              "ARTICLE_31_1",
+              "ARTICLE_31_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_1",
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "11": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA",
+              "BKL_RECRUIT"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA",
+              "BKL_RECRUIT"
+            ],
+            "failed_checks": []
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "cases": 11,
+          "retrieval_hit@3_naive": 0.07,
+          "retrieval_hit@3_enriched": 0.8,
+          "candidate_recall": 0.87,
+          "avg_candidates": 27.2,
+          "rule_accuracy": 0.69,
+          "final_accuracy": 0.61,
+          "final_case_exact": 0.36,
+          "domain_acc_naive": 0.55,
+          "domain_acc_final": 0.91,
+          "checks": 36,
+          "errors_by_cause": {
+            "검색": 3,
+            "특성·규칙": 11
+          }
+        },
+        "cases": {
+          "H01": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_RA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_RA"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제34조①",
+              "제31조①"
+            ]
+          },
+          "H02": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_GA"
+            ],
+            "candidate_hits": [],
+            "failed_checks": [
+              "제2조4호가목",
+              "HIGH_IMPACT_AI",
+              "제34조①"
+            ]
+          },
+          "H03": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_A"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제34조①"
+            ]
+          },
+          "H04": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_JA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_JA"
+            ],
+            "failed_checks": []
+          },
+          "H05": {
+            "gold_retrieval": [
+              "ARTICLE_31_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "H06": {
+            "gold_retrieval": [
+              "DECREE_23_4",
+              "ARTICLE_31_1"
+            ],
+            "candidate_hits": [
+              "DECREE_23_4",
+              "ARTICLE_31_1"
+            ],
+            "failed_checks": [
+              "제31조①",
+              "제31조②"
+            ]
+          },
+          "H07": {
+            "gold_retrieval": [
+              "ARTICLE_31_3_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_3_A"
+            ],
+            "failed_checks": [
+              "제31조③"
+            ]
+          },
+          "H08": {
+            "gold_retrieval": [
+              "CREDIT_36-2_1",
+              "ARTICLE_2_4_SA"
+            ],
+            "candidate_hits": [
+              "CREDIT_36-2_1",
+              "ARTICLE_2_4_SA"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제37조의2"
+            ]
+          },
+          "H09": {
+            "gold_retrieval": [
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "failed_checks": [
+              "제36조①"
+            ]
+          },
+          "H10": {
+            "gold_retrieval": [
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [],
+            "failed_checks": []
+          },
+          "H11": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_BA",
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_BA",
+              "ARTICLE_33_1_A"
+            ],
+            "failed_checks": []
+          }
+        }
+      }
+    },
+    "bm25": {
+      "dev": {
+        "summary": {
+          "cases": 11,
+          "retrieval_hit@3_naive": 0.33,
+          "retrieval_hit@3_enriched": 0.83,
+          "candidate_recall": 0.94,
+          "avg_candidates": 27.2,
+          "rule_accuracy": 1.0,
+          "final_accuracy": 1.0,
+          "final_case_exact": 1.0,
+          "domain_acc_naive": 0.73,
+          "domain_acc_final": 1.0,
+          "checks": 47,
+          "errors_by_cause": {
+            "검색": 0,
+            "특성·규칙": 0
+          }
+        },
+        "cases": {
+          "01": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA"
+            ],
+            "failed_checks": []
+          },
+          "02": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_BA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_BA"
+            ],
+            "failed_checks": []
+          },
+          "03": {
+            "gold_retrieval": [
+              "ARTICLE_31_2",
+              "ARTICLE_2_5"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_2",
+              "ARTICLE_2_5"
+            ],
+            "failed_checks": []
+          },
+          "04": {
+            "gold_retrieval": [
+              "ARTICLE_31_3_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_3_A"
+            ],
+            "failed_checks": []
+          },
+          "05": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA",
+              "CREDIT_36-2_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA",
+              "CREDIT_36-2_1"
+            ],
+            "failed_checks": []
+          },
+          "06": {
+            "gold_retrieval": [
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [],
+            "failed_checks": []
+          },
+          "07": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_CHA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_CHA"
+            ],
+            "failed_checks": []
+          },
+          "08": {
+            "gold_retrieval": [
+              "ARTICLE_4_1",
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_4_1",
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "failed_checks": []
+          },
+          "09": {
+            "gold_retrieval": [
+              "ARTICLE_4_2",
+              "DECREE_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_4_2",
+              "DECREE_2"
+            ],
+            "failed_checks": []
+          },
+          "10": {
+            "gold_retrieval": [
+              "ARTICLE_31_1",
+              "ARTICLE_31_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_1",
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "11": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA",
+              "BKL_RECRUIT"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA",
+              "BKL_RECRUIT"
+            ],
+            "failed_checks": []
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "cases": 11,
+          "retrieval_hit@3_naive": 0.07,
+          "retrieval_hit@3_enriched": 0.8,
+          "candidate_recall": 0.93,
+          "avg_candidates": 28.6,
+          "rule_accuracy": 0.69,
+          "final_accuracy": 0.69,
+          "final_case_exact": 0.45,
+          "domain_acc_naive": 0.55,
+          "domain_acc_final": 1.0,
+          "checks": 36,
+          "errors_by_cause": {
+            "검색": 0,
+            "특성·규칙": 11
+          }
+        },
+        "cases": {
+          "H01": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_RA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_RA"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제34조①",
+              "제31조①"
+            ]
+          },
+          "H02": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_GA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_GA"
+            ],
+            "failed_checks": []
+          },
+          "H03": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_A"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제34조①"
+            ]
+          },
+          "H04": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_JA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_JA"
+            ],
+            "failed_checks": []
+          },
+          "H05": {
+            "gold_retrieval": [
+              "ARTICLE_31_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "H06": {
+            "gold_retrieval": [
+              "DECREE_23_4",
+              "ARTICLE_31_1"
+            ],
+            "candidate_hits": [
+              "DECREE_23_4",
+              "ARTICLE_31_1"
+            ],
+            "failed_checks": [
+              "제31조①",
+              "제31조②"
+            ]
+          },
+          "H07": {
+            "gold_retrieval": [
+              "ARTICLE_31_3_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_3_A"
+            ],
+            "failed_checks": [
+              "제31조③"
+            ]
+          },
+          "H08": {
+            "gold_retrieval": [
+              "CREDIT_36-2_1",
+              "ARTICLE_2_4_SA"
+            ],
+            "candidate_hits": [
+              "CREDIT_36-2_1",
+              "ARTICLE_2_4_SA"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제37조의2"
+            ]
+          },
+          "H09": {
+            "gold_retrieval": [
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "failed_checks": [
+              "제36조①"
+            ]
+          },
+          "H10": {
+            "gold_retrieval": [
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [],
+            "failed_checks": []
+          },
+          "H11": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_BA",
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_BA",
+              "ARTICLE_33_1_A"
+            ],
+            "failed_checks": []
+          }
+        }
+      }
+    },
+    "hybrid": {
+      "dev": {
+        "summary": {
+          "cases": 11,
+          "retrieval_hit@3_naive": 0.33,
+          "retrieval_hit@3_enriched": 0.83,
+          "candidate_recall": 0.89,
+          "avg_candidates": 26.7,
+          "rule_accuracy": 1.0,
+          "final_accuracy": 1.0,
+          "final_case_exact": 1.0,
+          "domain_acc_naive": 0.64,
+          "domain_acc_final": 1.0,
+          "checks": 47,
+          "errors_by_cause": {
+            "검색": 0,
+            "특성·규칙": 0
+          }
+        },
+        "cases": {
+          "01": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA"
+            ],
+            "failed_checks": []
+          },
+          "02": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_BA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_BA"
+            ],
+            "failed_checks": []
+          },
+          "03": {
+            "gold_retrieval": [
+              "ARTICLE_31_2",
+              "ARTICLE_2_5"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "04": {
+            "gold_retrieval": [
+              "ARTICLE_31_3_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_3_A"
+            ],
+            "failed_checks": []
+          },
+          "05": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA",
+              "CREDIT_36-2_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA",
+              "CREDIT_36-2_1"
+            ],
+            "failed_checks": []
+          },
+          "06": {
+            "gold_retrieval": [
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [],
+            "failed_checks": []
+          },
+          "07": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_CHA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_CHA"
+            ],
+            "failed_checks": []
+          },
+          "08": {
+            "gold_retrieval": [
+              "ARTICLE_4_1",
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_4_1",
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "failed_checks": []
+          },
+          "09": {
+            "gold_retrieval": [
+              "ARTICLE_4_2",
+              "DECREE_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_4_2",
+              "DECREE_2"
+            ],
+            "failed_checks": []
+          },
+          "10": {
+            "gold_retrieval": [
+              "ARTICLE_31_1",
+              "ARTICLE_31_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_1",
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "11": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_SA",
+              "BKL_RECRUIT"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_SA",
+              "BKL_RECRUIT"
+            ],
+            "failed_checks": []
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "cases": 11,
+          "retrieval_hit@3_naive": 0.07,
+          "retrieval_hit@3_enriched": 0.87,
+          "candidate_recall": 0.93,
+          "avg_candidates": 28.5,
+          "rule_accuracy": 0.69,
+          "final_accuracy": 0.69,
+          "final_case_exact": 0.45,
+          "domain_acc_naive": 0.55,
+          "domain_acc_final": 1.0,
+          "checks": 36,
+          "errors_by_cause": {
+            "검색": 0,
+            "특성·규칙": 11
+          }
+        },
+        "cases": {
+          "H01": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_RA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_RA"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제34조①",
+              "제31조①"
+            ]
+          },
+          "H02": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_GA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_GA"
+            ],
+            "failed_checks": []
+          },
+          "H03": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_A"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제34조①"
+            ]
+          },
+          "H04": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_JA"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_JA"
+            ],
+            "failed_checks": []
+          },
+          "H05": {
+            "gold_retrieval": [
+              "ARTICLE_31_2"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_2"
+            ],
+            "failed_checks": []
+          },
+          "H06": {
+            "gold_retrieval": [
+              "DECREE_23_4",
+              "ARTICLE_31_1"
+            ],
+            "candidate_hits": [
+              "DECREE_23_4",
+              "ARTICLE_31_1"
+            ],
+            "failed_checks": [
+              "제31조①",
+              "제31조②"
+            ]
+          },
+          "H07": {
+            "gold_retrieval": [
+              "ARTICLE_31_3_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_31_3_A"
+            ],
+            "failed_checks": [
+              "제31조③"
+            ]
+          },
+          "H08": {
+            "gold_retrieval": [
+              "CREDIT_36-2_1",
+              "ARTICLE_2_4_SA"
+            ],
+            "candidate_hits": [
+              "CREDIT_36-2_1",
+              "ARTICLE_2_4_SA"
+            ],
+            "failed_checks": [
+              "HIGH_IMPACT_AI",
+              "제37조의2"
+            ]
+          },
+          "H09": {
+            "gold_retrieval": [
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "candidate_hits": [
+              "ARTICLE_36_1",
+              "DECREE_29_1"
+            ],
+            "failed_checks": [
+              "제36조①"
+            ]
+          },
+          "H10": {
+            "gold_retrieval": [
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [],
+            "failed_checks": []
+          },
+          "H11": {
+            "gold_retrieval": [
+              "ARTICLE_2_4_BA",
+              "ARTICLE_33_1_A"
+            ],
+            "candidate_hits": [
+              "ARTICLE_2_4_BA",
+              "ARTICLE_33_1_A"
+            ],
+            "failed_checks": []
+          }
+        }
+      }
+    }
+  }
+}

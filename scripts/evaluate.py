@@ -23,11 +23,12 @@ import argparse
 import json
 from datetime import date
 
-from app.config import DATA_DIR, EMBEDDING_PROVIDER, EVAL_PATH, RETRIEVAL_TOP_K
+from app.config import BUILD_RETRIEVAL_MODE, DATA_DIR, EMBEDDING_PROVIDER, EVAL_PATH, RETRIEVAL_TOP_K
 from app.engine.features import extract
 from app.engine.pipeline import run_build
-from app.rag.retriever import SEARCH_FILTER, retrieve_candidates
-from app.rag.store import get_collection, search
+from app.rag.retriever import resolve_strategy, retrieve_candidates, search_candidates
+from app.rag.bm25 import get_index
+from app.rag.store import get_collection
 
 HELDOUT_PATH = DATA_DIR / "eval" / "heldout_cases.json"
 SNAPSHOT_PATH = DATA_DIR.parent / "docs" / "eval_snapshot.json"
@@ -57,14 +58,15 @@ def _checks(gold: dict, view: dict) -> list[dict]:
     return out
 
 
-def evaluate_case(case: dict) -> dict:
+def evaluate_case(case: dict, strategy: str | None = None) -> dict:
     spec, gold = case["spec"], case["gold"]
     features, _ = extract(spec)
 
     # ① 검색
-    naive_ids = [h["id"] for h in search(spec, k=K, where=SEARCH_FILTER)]
-    enriched = retrieve_candidates(spec, features, k=K)
-    pipeline_rag = retrieve_candidates(spec, features, k=RETRIEVAL_TOP_K)
+    mode = resolve_strategy(strategy)
+    naive_ids = [h["id"] for h in search_candidates(spec, k=K, strategy=mode)]
+    enriched = retrieve_candidates(spec, features, k=K, strategy=mode)
+    pipeline_rag = retrieve_candidates(spec, features, k=RETRIEVAL_TOP_K, strategy=mode)
     g = gold["retrieval"]
     retrieval = {
         "gold": g,
@@ -77,7 +79,7 @@ def evaluate_case(case: dict) -> dict:
 
     # ② 규칙만 / ③ RAG → 규칙
     rules_only = _build_view(run_build(spec, use_rag=False))
-    final = _build_view(run_build(spec))
+    final = _build_view(run_build(spec, retrieval_strategy=mode))
     rule_checks, final_checks = _checks(gold, rules_only), _checks(gold, final)
     for rc, fc in zip(rule_checks, final_checks):
         fc["cause"] = None if fc["ok"] else ("검색" if rc["ok"] else "특성·규칙")
@@ -116,10 +118,10 @@ def summarize(rows: list[dict]) -> dict:
     }
 
 
-def run(split_paths: dict) -> dict:
+def run(split_paths: dict, strategy: str | None = None) -> dict:
     out = {}
     for split, path in split_paths.items():
-        rows = [evaluate_case(c) for c in json.loads(path.read_text(encoding="utf-8"))]
+        rows = [evaluate_case(c, strategy=strategy) for c in json.loads(path.read_text(encoding="utf-8"))]
         out[split] = {"summary": summarize(rows), "rows": rows}
     return out
 
@@ -151,16 +153,21 @@ def print_report(results: dict) -> None:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--snapshot", action="store_true", help="docs/eval_snapshot.json 갱신")
+    ap.add_argument("--strategy", choices=("chroma", "bm25", "hybrid"), default=BUILD_RETRIEVAL_MODE)
     args = ap.parse_args()
-    col = get_collection()
-    if col is None:
-        raise SystemExit("Chroma가 비어 있습니다. 먼저 `python -m scripts.ingest`를 실행하세요.")
+    mode = resolve_strategy(args.strategy)
+    if mode != args.strategy:
+        raise SystemExit(f"{args.strategy} 인덱스가 준비되지 않았습니다 (사용 가능: {mode}).")
+    col = get_collection() if mode in {"chroma", "hybrid"} else None
+    index = get_index() if mode in {"bm25", "hybrid"} else None
 
-    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH})
+    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH}, strategy=mode)
     print_report(results)
 
-    meta = {"date": date.today().isoformat(), "embedding": EMBEDDING_PROVIDER, "top_k": RETRIEVAL_TOP_K,
-            "hit_k": K, "chunks": col.count(), "feature_extractor": run_build("AI", use_rag=False)["mode"]["feature_extractor"]}
+    meta = {"date": date.today().isoformat(), "search_mode": mode,
+            "embedding": EMBEDDING_PROVIDER if col else None, "top_k": RETRIEVAL_TOP_K,
+            "hit_k": K, "chunks": col.count() if col else len(index.chunks),
+            "feature_extractor": run_build("AI", use_rag=False)["mode"]["feature_extractor"]}
     out = DATA_DIR / "eval" / "results.json"
     out.write_text(json.dumps({"meta": meta, **results}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\n상세 결과 → data/eval/{out.name}")

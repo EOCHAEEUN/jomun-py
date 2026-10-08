@@ -1,0 +1,1065 @@
+{
+  "meta": {
+    "date": "2026-10-08",
+    "questions": 12,
+    "chunks": 395,
+    "bm25": {
+      "k1": 1.2,
+      "b": 0.75
+    },
+    "hybrid": "Qdrant dense 상위 50 + sparse 상위 50, RRF k=60",
+    "kiwi": true
+  },
+  "rows": {
+    "current_sparse": {
+      "hit@1": 0.417,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.667
+    },
+    "bm25_word_sparse": {
+      "hit@1": 0.417,
+      "hit@3": 0.583,
+      "hit@5": 0.667,
+      "mrr": 0.493
+    },
+    "bm25_bigram_sparse": {
+      "hit@1": 0.333,
+      "hit@3": 0.917,
+      "hit@5": 1.0,
+      "mrr": 0.614
+    },
+    "bm25_kiwi_sparse": {
+      "hit@1": 0.833,
+      "hit@3": 0.917,
+      "hit@5": 0.917,
+      "mrr": 0.861
+    },
+    "current_hybrid": {
+      "hit@1": 0.667,
+      "hit@3": 0.917,
+      "hit@5": 0.917,
+      "mrr": 0.778
+    },
+    "bm25_word_hybrid": {
+      "hit@1": 0.25,
+      "hit@3": 0.75,
+      "hit@5": 0.833,
+      "mrr": 0.493
+    },
+    "bm25_bigram_hybrid": {
+      "hit@1": 0.667,
+      "hit@3": 0.917,
+      "hit@5": 0.917,
+      "mrr": 0.778
+    },
+    "bm25_kiwi_hybrid": {
+      "hit@1": 0.583,
+      "hit@3": 0.917,
+      "hit@5": 0.917,
+      "mrr": 0.75
+    },
+    "dense": {
+      "hit@1": 0.5,
+      "hit@3": 0.833,
+      "hit@5": 0.833,
+      "mrr": 0.653
+    }
+  },
+  "cases": [
+    {
+      "id": "definition_high_impact",
+      "question": "고영향 인공지능이란 무엇인가요?",
+      "gold_ids": [
+        "ARTICLE_2_4"
+      ],
+      "ranks": {
+        "current_sparse": 3,
+        "bm25_word_sparse": null,
+        "bm25_bigram_sparse": 2,
+        "bm25_kiwi_sparse": null,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": null,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 2,
+        "dense": 2
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_1_B",
+          "ARTICLE_2_4",
+          "ARTICLE_33_3",
+          "ARTICLE_35_2"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3",
+          "ARTICLE_35_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_2"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_33_1_A",
+          "ARTICLE_2_4",
+          "ARTICLE_34_1",
+          "DECREE_25_2",
+          "ARTICLE_35_2"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_35_1",
+          "DECREE_28_2",
+          "ARTICLE_35_3",
+          "ARTICLE_35_2",
+          "DECREE_28_3"
+        ],
+        "current_hybrid": [
+          "ARTICLE_2_4",
+          "ARTICLE_35_1",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_3",
+          "ARTICLE_34_1"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_35_1",
+          "ARTICLE_33_3",
+          "ARTICLE_35_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_8_1_10"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_2_4",
+          "ARTICLE_34_1",
+          "ARTICLE_35_1",
+          "ARTICLE_33_1_A",
+          "DECREE_25_2"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_35_1",
+          "ARTICLE_2_4",
+          "DECREE_28_2",
+          "ARTICLE_33_3",
+          "ARTICLE_35_2"
+        ],
+        "dense": [
+          "ARTICLE_35_1",
+          "ARTICLE_2_4",
+          "ARTICLE_34_1",
+          "ARTICLE_8_1_10",
+          "ARTICLE_33_3"
+        ]
+      }
+    },
+    {
+      "id": "definition_system",
+      "question": "인공지능시스템은 법에서 어떻게 정의하나요?",
+      "gold_ids": [
+        "ARTICLE_2_2"
+      ],
+      "ranks": {
+        "current_sparse": 3,
+        "bm25_word_sparse": null,
+        "bm25_bigram_sparse": 3,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 4,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 1
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_2",
+          "ARTICLE_2_4",
+          "ARTICLE_2_2",
+          "ARTICLE_31_3_A",
+          "DECREE_24_1"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_2",
+          "ARTICLE_22-2_9",
+          "ARTICLE_5_1",
+          "ARTICLE_40_2"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_2",
+          "ARTICLE_2_4",
+          "ARTICLE_2_2",
+          "ARTICLE_31_3_A",
+          "DECREE_24_1"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_2_2",
+          "ARTICLE_2_4",
+          "ARTICLE_2",
+          "ARTICLE_2_5",
+          "ARTICLE_12_2"
+        ],
+        "current_hybrid": [
+          "ARTICLE_2_2",
+          "ARTICLE_2",
+          "ARTICLE_2_5",
+          "ARTICLE_2_4",
+          "ARTICLE_31_3_A"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_2",
+          "ARTICLE_5_1",
+          "ARTICLE_22-2_9",
+          "ARTICLE_2_2",
+          "ARTICLE_2_5"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_2_2",
+          "ARTICLE_2",
+          "ARTICLE_2_5",
+          "ARTICLE_2_4",
+          "ARTICLE_31_3_A"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_2_2",
+          "ARTICLE_2_5",
+          "ARTICLE_2_4",
+          "ARTICLE_2",
+          "ARTICLE_2_1"
+        ],
+        "dense": [
+          "ARTICLE_2_2",
+          "ARTICLE_2_5",
+          "ARTICLE_2_1",
+          "ARTICLE_2_3",
+          "ARTICLE_2"
+        ]
+      }
+    },
+    {
+      "id": "definition_generative",
+      "question": "생성형 인공지능의 법적 정의가 궁금합니다.",
+      "gold_ids": [
+        "ARTICLE_2_5"
+      ],
+      "ranks": {
+        "current_sparse": 2,
+        "bm25_word_sparse": 3,
+        "bm25_bigram_sparse": 2,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 2,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 1
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_31_2",
+          "ARTICLE_2_5",
+          "ARTICLE_2_12",
+          "DECREE_23_2",
+          "ARTICLE_31_1"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_31_2",
+          "ARTICLE_31_1",
+          "ARTICLE_2_5",
+          "ARTICLE_33_3",
+          "DECREE_23_2"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_31_2",
+          "ARTICLE_2_5",
+          "DECREE_23_2",
+          "ARTICLE_31_1",
+          "ARTICLE_2_12"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_2_5",
+          "ARTICLE_2",
+          "ARTICLE_31_2",
+          "DECREE_23_2",
+          "ARTICLE_2_12"
+        ],
+        "current_hybrid": [
+          "ARTICLE_2_5",
+          "ARTICLE_31_2",
+          "ARTICLE_2",
+          "ARTICLE_2_11",
+          "ARTICLE_31_1"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_31_2",
+          "ARTICLE_2_5",
+          "ARTICLE_31_1",
+          "ARTICLE_29_2",
+          "ARTICLE_13_2_7"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_2_5",
+          "ARTICLE_31_2",
+          "ARTICLE_2_11",
+          "ARTICLE_31_1",
+          "ARTICLE_6_2_4-2"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_2_5",
+          "ARTICLE_31_2",
+          "ARTICLE_2",
+          "ARTICLE_2_4",
+          "ARTICLE_2_1"
+        ],
+        "dense": [
+          "ARTICLE_2_5",
+          "ARTICLE_31_2",
+          "ARTICLE_16_3_B",
+          "ARTICLE_2_4",
+          "ARTICLE_2_6"
+        ]
+      }
+    },
+    {
+      "id": "recruitment_domain",
+      "question": "채용 지원자 평가에 쓰는 AI는 고영향 영역에 들어가나요?",
+      "gold_ids": [
+        "ARTICLE_2_4_SA"
+      ],
+      "ranks": {
+        "current_sparse": 1,
+        "bm25_word_sparse": 1,
+        "bm25_bigram_sparse": 5,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": null,
+        "bm25_word_hybrid": null,
+        "bm25_bigram_hybrid": null,
+        "bm25_kiwi_hybrid": null,
+        "dense": null
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_2_4_SA",
+          "DECREE_28_3",
+          "ARTICLE_35_1",
+          "DECREE_28_2",
+          "ARTICLE_35_2"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_2_4_SA",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3",
+          "ARTICLE_35_2",
+          "ARTICLE_33_1_A"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_35_1",
+          "DECREE_28_3",
+          "DECREE_28_1",
+          "ARTICLE_2_4",
+          "ARTICLE_2_4_SA"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_2_4_SA",
+          "ARTICLE_2_4_KA",
+          "ARTICLE_35_1",
+          "DECREE_28_2",
+          "ARTICLE_35_3"
+        ],
+        "current_hybrid": [
+          "DECREE_28_2",
+          "ARTICLE_35_1",
+          "DECREE_28_3",
+          "ARTICLE_35_2",
+          "DECREE_25_2"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_35_2",
+          "ARTICLE_33_1_B",
+          "ARTICLE_35_1",
+          "DECREE_25_5",
+          "DECREE_28_2"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_35_1",
+          "DECREE_25_2",
+          "DECREE_28_3",
+          "DECREE_28_2",
+          "ARTICLE_35_2"
+        ],
+        "bm25_kiwi_hybrid": [
+          "DECREE_28_2",
+          "ARTICLE_35_1",
+          "ARTICLE_35_2",
+          "DECREE_25_2",
+          "DECREE_28_3"
+        ],
+        "dense": [
+          "DECREE_28_2",
+          "DECREE_25_2",
+          "ARTICLE_35_1",
+          "ARTICLE_35_2",
+          "DECREE_25_5"
+        ]
+      }
+    },
+    {
+      "id": "biometric_domain",
+      "question": "범죄 수사용 생체인식정보 분석은 어떤 고영향 영역인가요?",
+      "gold_ids": [
+        "ARTICLE_2_4_BA"
+      ],
+      "ranks": {
+        "current_sparse": 1,
+        "bm25_word_sparse": 1,
+        "bm25_bigram_sparse": 1,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 1,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 1
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_2_4_BA",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3",
+          "DECREE_25_2",
+          "DECREE_28_1"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_2_4_BA",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3",
+          "ARTICLE_35_2",
+          "ARTICLE_33_1_A"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_2_4_BA",
+          "DECREE_25_2",
+          "DECREE_28_1",
+          "DECREE_25_1",
+          "ARTICLE_2_4"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_2_4_BA",
+          "ARTICLE_2_4_KA",
+          "ARTICLE_2_4",
+          "DECREE_25_2",
+          "DECREE_2_3"
+        ],
+        "current_hybrid": [
+          "ARTICLE_2_4_BA",
+          "DECREE_25_2",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3",
+          "DECREE_28_1"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_2_4_BA",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3",
+          "ARTICLE_35_1",
+          "ARTICLE_33_2"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_2_4_BA",
+          "DECREE_25_2",
+          "ARTICLE_33_3",
+          "ARTICLE_33_1_B",
+          "DECREE_28_1"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_2_4_BA",
+          "DECREE_25_2",
+          "ARTICLE_33_3",
+          "ARTICLE_2_4",
+          "ARTICLE_33_1_B"
+        ],
+        "dense": [
+          "ARTICLE_2_4_BA",
+          "DECREE_25_2",
+          "ARTICLE_33_3",
+          "ARTICLE_33_1_B",
+          "ARTICLE_34_1"
+        ]
+      }
+    },
+    {
+      "id": "advance_notice",
+      "question": "이용자에게 AI 서비스임을 언제 고지해야 하나요?",
+      "gold_ids": [
+        "ARTICLE_31_1"
+      ],
+      "ranks": {
+        "current_sparse": 2,
+        "bm25_word_sparse": 3,
+        "bm25_bigram_sparse": 2,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 3,
+        "bm25_word_hybrid": 2,
+        "bm25_bigram_hybrid": 3,
+        "bm25_kiwi_hybrid": 2,
+        "dense": null
+      },
+      "top5": {
+        "current_sparse": [
+          "DECREE_23_1",
+          "ARTICLE_31_1",
+          "ARTICLE_4_1",
+          "DECREE_23_3",
+          "ARTICLE_2_8"
+        ],
+        "bm25_word_sparse": [
+          "DECREE_23_1",
+          "ARTICLE_4_1",
+          "ARTICLE_31_1"
+        ],
+        "bm25_bigram_sparse": [
+          "DECREE_23_1",
+          "ARTICLE_31_1",
+          "ARTICLE_4_1",
+          "DECREE_23_3",
+          "ARTICLE_2_8"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_31_1",
+          "DECREE_23_3",
+          "DECREE_23_1",
+          "ARTICLE_2_8",
+          "ARTICLE_31_3_A"
+        ],
+        "current_hybrid": [
+          "ARTICLE_2_8",
+          "DECREE_23_1",
+          "ARTICLE_31_1",
+          "DECREE_15-2_2",
+          "DECREE_23_3"
+        ],
+        "bm25_word_hybrid": [
+          "DECREE_23_1",
+          "ARTICLE_31_1",
+          "ARTICLE_2_8",
+          "ARTICLE_25_1",
+          "ARTICLE_4_1"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_2_8",
+          "DECREE_23_1",
+          "ARTICLE_31_1",
+          "DECREE_15-2_2",
+          "DECREE_23_3"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_2_8",
+          "ARTICLE_31_1",
+          "DECREE_23_3",
+          "DECREE_23_1",
+          "DECREE_15_4"
+        ],
+        "dense": [
+          "ARTICLE_2_8",
+          "ARTICLE_25_1",
+          "DECREE_15-2_2",
+          "ARTICLE_36_1",
+          "ARTICLE_25_2"
+        ]
+      }
+    },
+    {
+      "id": "generative_label",
+      "question": "생성형 AI로 만든 결과물에는 무엇을 표시해야 하나요?",
+      "gold_ids": [
+        "ARTICLE_31_2"
+      ],
+      "ranks": {
+        "current_sparse": 1,
+        "bm25_word_sparse": 1,
+        "bm25_bigram_sparse": 1,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 2,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 3
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_31_2",
+          "DECREE_23_2",
+          "DECREE_23_4",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_31_2",
+          "ARTICLE_31_1",
+          "ARTICLE_2_5",
+          "DECREE_23_2",
+          "DECREE_23_1"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_31_2",
+          "DECREE_23_2",
+          "DECREE_23_4",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_31_2",
+          "ARTICLE_31_3_A",
+          "DECREE_23_2",
+          "ARTICLE_2_5",
+          "DECREE_23_4"
+        ],
+        "current_hybrid": [
+          "ARTICLE_31_2",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B",
+          "ARTICLE_31_3_A",
+          "DECREE_23_2"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_2_5",
+          "ARTICLE_31_2",
+          "DECREE_23_2",
+          "DECREE_23_1",
+          "ARTICLE_31_3_B"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_31_2",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B",
+          "ARTICLE_31_3_A",
+          "DECREE_23_2"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_31_2",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B",
+          "ARTICLE_31_3_A",
+          "DECREE_23_2"
+        ],
+        "dense": [
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B",
+          "ARTICLE_31_2",
+          "ARTICLE_2_2",
+          "ARTICLE_2_4_BA"
+        ]
+      }
+    },
+    {
+      "id": "deepfake_label",
+      "question": "실제와 구분하기 어려운 AI 영상에는 어떤 표시가 필요한가요?",
+      "gold_ids": [
+        "ARTICLE_31_3_A"
+      ],
+      "ranks": {
+        "current_sparse": 1,
+        "bm25_word_sparse": 1,
+        "bm25_bigram_sparse": 1,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 1,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 1
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_31_3_A",
+          "DECREE_7_2",
+          "ARTICLE_9_2",
+          "ARTICLE_17-2_1",
+          "ARTICLE_31_4"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_31_3_A",
+          "DECREE_7_2",
+          "ARTICLE_17-2_1",
+          "ARTICLE_9_2",
+          "DECREE_15-2_1"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_31_3_A",
+          "DECREE_7_2",
+          "ARTICLE_9_2",
+          "ARTICLE_17-2_1",
+          "ARTICLE_31_4"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_31_3_A",
+          "ARTICLE_31_4",
+          "DECREE_23_3",
+          "ARTICLE_2_2",
+          "ARTICLE_2_5"
+        ],
+        "current_hybrid": [
+          "ARTICLE_31_3_A",
+          "ARTICLE_2_5",
+          "ARTICLE_31_4",
+          "ARTICLE_31_3_B",
+          "DECREE_23_3"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_31_3_A",
+          "ARTICLE_17-2_1",
+          "ARTICLE_31_3_B",
+          "DECREE_7_2",
+          "ARTICLE_2_5"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_31_3_A",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B",
+          "ARTICLE_31_4",
+          "DECREE_23_3"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_31_3_A",
+          "ARTICLE_2_5",
+          "ARTICLE_31_3_B",
+          "DECREE_23_3",
+          "ARTICLE_31_4"
+        ],
+        "dense": [
+          "ARTICLE_31_3_A",
+          "ARTICLE_31_3_B",
+          "ARTICLE_2_5",
+          "DECREE_23_2",
+          "ARTICLE_40_1"
+        ]
+      }
+    },
+    {
+      "id": "advance_review",
+      "question": "고영향 AI 해당 여부를 사전에 검토해야 하나요?",
+      "gold_ids": [
+        "ARTICLE_33_1_A"
+      ],
+      "ranks": {
+        "current_sparse": 2,
+        "bm25_word_sparse": 4,
+        "bm25_bigram_sparse": 2,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 2,
+        "bm25_word_hybrid": 2,
+        "bm25_bigram_hybrid": 2,
+        "bm25_kiwi_hybrid": 2,
+        "dense": 2
+      },
+      "top5": {
+        "current_sparse": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_2",
+          "ARTICLE_31_1",
+          "ARTICLE_33_1_B"
+        ],
+        "bm25_word_sparse": [
+          "DECREE_25_2",
+          "ARTICLE_33_2",
+          "ARTICLE_31_1",
+          "ARTICLE_33_1_A",
+          "ARTICLE_30_3"
+        ],
+        "bm25_bigram_sparse": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_2",
+          "ARTICLE_30_3",
+          "ARTICLE_31_1"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_33_1_A",
+          "DECREE_25_2",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_2",
+          "DECREE_25_1"
+        ],
+        "current_hybrid": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_2",
+          "ARTICLE_33_1_B",
+          "ARTICLE_35_1"
+        ],
+        "bm25_word_hybrid": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_2",
+          "ARTICLE_35_1",
+          "DECREE_25_1"
+        ],
+        "bm25_bigram_hybrid": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_2",
+          "ARTICLE_35_1",
+          "ARTICLE_33_1_B"
+        ],
+        "bm25_kiwi_hybrid": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_2",
+          "ARTICLE_35_1"
+        ],
+        "dense": [
+          "DECREE_25_2",
+          "ARTICLE_33_1_A",
+          "ARTICLE_35_1",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_2"
+        ]
+      }
+    },
+    {
+      "id": "safety_measures",
+      "question": "고영향 AI 사업자의 안전성 신뢰성 조치는 무엇인가요?",
+      "gold_ids": [
+        "ARTICLE_34_1"
+      ],
+      "ranks": {
+        "current_sparse": 1,
+        "bm25_word_sparse": 1,
+        "bm25_bigram_sparse": 1,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 1,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 1
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_29_5",
+          "DECREE_27_5",
+          "DECREE_27_2"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_30_4",
+          "ARTICLE_29_5",
+          "ARTICLE_29_7"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_29_5",
+          "ARTICLE_30_4",
+          "DECREE_27_5"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_34_3",
+          "ARTICLE_17_3",
+          "DECREE_27_5"
+        ],
+        "current_hybrid": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_30_4",
+          "DECREE_27_1",
+          "ARTICLE_34_2"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_30_4",
+          "ARTICLE_34_2",
+          "DECREE_27_1"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_30_4",
+          "ARTICLE_34_2",
+          "DECREE_27_1"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_34_1",
+          "ARTICLE_30_3",
+          "ARTICLE_34_2",
+          "ARTICLE_35_1",
+          "DECREE_27_1"
+        ],
+        "dense": [
+          "ARTICLE_34_1",
+          "DECREE_25_2",
+          "ARTICLE_30_3",
+          "DECREE_27_1",
+          "ARTICLE_35_1"
+        ]
+      }
+    },
+    {
+      "id": "impact_assessment",
+      "question": "고영향 AI의 기본권 영향평가는 의무인가요?",
+      "gold_ids": [
+        "ARTICLE_35_1"
+      ],
+      "ranks": {
+        "current_sparse": 2,
+        "bm25_word_sparse": null,
+        "bm25_bigram_sparse": 2,
+        "bm25_kiwi_sparse": 1,
+        "current_hybrid": 1,
+        "bm25_word_hybrid": 3,
+        "bm25_bigram_hybrid": 1,
+        "bm25_kiwi_hybrid": 1,
+        "dense": 1
+      },
+      "top5": {
+        "current_sparse": [
+          "DECREE_28_2",
+          "ARTICLE_35_1",
+          "ARTICLE_35_3",
+          "DECREE_28_1",
+          "DECREE_28_3"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_2_4_KA",
+          "DECREE_28_1",
+          "ARTICLE_13_2_7",
+          "ARTICLE_33_1_B",
+          "ARTICLE_33_3"
+        ],
+        "bm25_bigram_sparse": [
+          "DECREE_28_1",
+          "ARTICLE_35_1",
+          "ARTICLE_35_2",
+          "DECREE_28_2",
+          "ARTICLE_35_3"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_35_1",
+          "DECREE_28_1",
+          "ARTICLE_2_4_SA",
+          "DECREE_28_2",
+          "ARTICLE_35_3"
+        ],
+        "current_hybrid": [
+          "ARTICLE_35_1",
+          "DECREE_28_1",
+          "DECREE_28_2",
+          "ARTICLE_35_3",
+          "ARTICLE_35_2"
+        ],
+        "bm25_word_hybrid": [
+          "DECREE_28_1",
+          "ARTICLE_35_2",
+          "ARTICLE_35_1",
+          "ARTICLE_33_3",
+          "ARTICLE_33_1_B"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_35_1",
+          "DECREE_28_1",
+          "ARTICLE_35_2",
+          "ARTICLE_35_3",
+          "DECREE_28_2"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_35_1",
+          "DECREE_28_1",
+          "ARTICLE_35_3",
+          "ARTICLE_35_2",
+          "DECREE_28_2"
+        ],
+        "dense": [
+          "ARTICLE_35_1",
+          "DECREE_28_1",
+          "ARTICLE_35_2",
+          "ARTICLE_35_3",
+          "DECREE_28_3"
+        ]
+      }
+    },
+    {
+      "id": "domestic_agent",
+      "question": "국내 주소가 없는 해외 AI 사업자는 언제 국내대리인을 지정하나요?",
+      "gold_ids": [
+        "ARTICLE_36_1",
+        "DECREE_29_1"
+      ],
+      "ranks": {
+        "current_sparse": 3,
+        "bm25_word_sparse": null,
+        "bm25_bigram_sparse": 3,
+        "bm25_kiwi_sparse": 3,
+        "current_hybrid": 2,
+        "bm25_word_hybrid": 3,
+        "bm25_bigram_hybrid": 2,
+        "bm25_kiwi_hybrid": 2,
+        "dense": 2
+      },
+      "top5": {
+        "current_sparse": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_3",
+          "ARTICLE_36_1",
+          "DECREE_29_2",
+          "ARTICLE_43_1"
+        ],
+        "bm25_word_sparse": [
+          "ARTICLE_21_2",
+          "ARTICLE_4_1",
+          "ARTICLE_36_3",
+          "ARTICLE_43_1",
+          "ARTICLE_22_2"
+        ],
+        "bm25_bigram_sparse": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_3",
+          "ARTICLE_36_1",
+          "ARTICLE_43_1",
+          "DECREE_29_2"
+        ],
+        "bm25_kiwi_sparse": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_3",
+          "ARTICLE_36_1",
+          "DECREE_29_2",
+          "ARTICLE_21_2"
+        ],
+        "current_hybrid": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_1",
+          "ARTICLE_36_3",
+          "DECREE_29_1",
+          "ARTICLE_21_2"
+        ],
+        "bm25_word_hybrid": [
+          "ARTICLE_21_2",
+          "ARTICLE_36_3",
+          "ARTICLE_36_1",
+          "ARTICLE_4_1",
+          "DECREE_29_1"
+        ],
+        "bm25_bigram_hybrid": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_1",
+          "ARTICLE_36_3",
+          "DECREE_29_1",
+          "ARTICLE_21_2"
+        ],
+        "bm25_kiwi_hybrid": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_1",
+          "ARTICLE_36_3",
+          "DECREE_29_1",
+          "ARTICLE_21_2"
+        ],
+        "dense": [
+          "ARTICLE_36_2",
+          "ARTICLE_36_1",
+          "ARTICLE_36_3",
+          "DECREE_29_1",
+          "ARTICLE_21_2"
+        ]
+      }
+    }
+  ]
+}

@@ -48,7 +48,7 @@ def test_feature_queries_use_legal_vocabulary():
 
 def test_enriched_retrieval_finds_the_domain_article(chroma):
     rag = retrieve_candidates(DEMO, heuristic_extract(DEMO))
-    assert rag.mode == "chroma"
+    assert rag.mode == "bm25"
     assert "ARTICLE_2_4_SA" in rag.hits                               # 사목을 '검색'으로 찾는다
     assert "ARTICLE_34_1" in rag.expanded                             # 고영향이면 적용되는 조문은 참조 확장으로
     assert rag.candidates == set(rag.hits) | set(rag.expanded)
@@ -57,7 +57,7 @@ def test_enriched_retrieval_finds_the_domain_article(chroma):
 def test_pipeline_uses_rag_candidates(chroma):
     result = run_build(DEMO)
     items = by_key(result)
-    assert result["rag"]["mode"] == "chroma" and result["rag"]["n_candidates"] > 0
+    assert result["rag"]["mode"] == "bm25" and result["rag"]["n_candidates"] > 0
     assert items["art2_4"]["label"] == "제2조4호사목" and items["art2_4"]["status"] == "MATCH"
     # 사목은 RAG 검색이 찾았고, 규칙이 검증했다
     assert any(f["how"] == "search" and f["id"] == "ARTICLE_2_4_SA" for f in items["art2_4"]["found_by"])
@@ -71,7 +71,7 @@ def test_pipeline_uses_rag_candidates(chroma):
 
 def test_rules_only_fallback_when_vectorstore_is_empty(monkeypatch):
     monkeypatch.setattr(store, "get_collection", lambda: None)
-    result = run_build(DEMO)
+    result = run_build(DEMO, retrieval_strategy="chroma")
     assert result["rag"]["mode"] == "rules-only" and result["rag"]["n_candidates"] == 0
     assert by_key(result)["art2_4"]["status"] == "MATCH"              # 규칙만으로도 판정은 된다
     assert all(not i["found_by"] for i in result["items"])

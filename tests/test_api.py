@@ -35,7 +35,7 @@ def test_build_returns_build_log(chroma):
     assert {"items", "summary", "todo", "pending_questions", "rag", "features", "mode", "sources"} <= set(body)
     assert body["items"] and all(ITEM_KEYS <= set(i) for i in body["items"])
     assert all(i["status"] in STATUSES for i in body["items"])
-    assert body["rag"]["mode"] == "chroma"
+    assert body["rag"]["mode"] == "bm25"
     assert "high_impact" in body["pending_questions"]
 
 
