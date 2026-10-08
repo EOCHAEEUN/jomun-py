@@ -7,6 +7,39 @@
 
 - 기획·역할 문서: [기획안](docs/plan.md) · [역할 명세](docs/roles.md)
 
+## AI 기본법 QA 백엔드 (`POST /ask`)
+
+서비스 설명이 없는 법률 질문에는 조문의 의미와 개발 시 확인할 조건을 설명합니다. 서비스 설명을 주면 기존 특성 추출·Rule Engine의 사전 점검 결과를 추가해 적용 가능성을 설명합니다. 두 모드 모두 **인공지능기본법·시행령 원문**을 검색한 뒤 LLM이 답변하며, 실제 인용한 청크만 `sources`로 돌려줍니다. 서비스 설명이 없을 때는 특정 서비스의 의무를 확정하지 않습니다. 기존 화면과 `/api/build`는 그대로 사용할 수 있습니다.
+
+```
+AI 기본법·시행령 PDF → Docling 조·항·호·목 청킹 → 의미/어휘 임베딩 → Qdrant
+질문 → dense + sparse 검색/RRF → 법률 용어 확장·재정렬 → 원문 + (서비스 입력 시) Rule Engine → LLM → answer + sources
+```
+
+WSL에서 이 저장소로 이동한 뒤 실행합니다.
+
+```bash
+cd /mnt/c/Users/Admin/Desktop/jomun-py
+source /home/ai_fish/jomun-py/.venv/bin/activate  # 현재 작업 환경의 기존 WSL 가상환경
+~/.local/bin/uv pip install -r requirements.txt
+python -m scripts.ingest_qa
+uvicorn app.main:app --host 127.0.0.1 --port 8003
+```
+
+`/docs`에서 API 형식을 볼 수 있습니다. `.env`의 `MONOROUTER_API_KEY`, `MONOROUTER_BASE_URL`을 사용합니다. 현재 MonoRouter에서 허용되는 QA 기본 모델은 `gpt-4.1`이며 `QA_LLM_MODEL`로 변경할 수 있습니다. QA 임베딩은 키가 있으면 `text-embedding-3-small`(`QA_EMBEDDING_PROVIDER=monorouter`), 없으면 검색 실험용 로컬 해싱(`local`)을 사용합니다. 임베딩 제공자·모델을 바꾸면 `python -m scripts.ingest_qa`를 다시 실행해야 합니다. Qdrant는 기본적으로 `data/qdrant/` 로컬 모드이며 `QDRANT_URL`로 서버에 연결할 수 있습니다. 로컬 모드에서는 한 프로세스만 저장소를 열 수 있으므로 적재·평가 명령은 API 서버를 멈춘 상태에서 실행합니다.
+
+```bash
+curl -s http://127.0.0.1:8003/ask -H 'Content-Type: application/json' \
+  -d '{"question":"고영향 인공지능이란 무엇인가요?"}'
+
+curl -s http://127.0.0.1:8003/ask -H 'Content-Type: application/json' \
+  -d '{"question":"출시 전에 무엇을 확인해야 하나요?","service_description":"면접 영상을 분석해 채용 점수를 추천하는 AI"}'
+```
+
+응답은 `answer`, `sources`, `mode`를 포함합니다. 각 출처에는 답변의 `[S1]` 같은 표식과 연결되는 `source_id`, 조문 번호(`article`), 원문(`content`), 문서·페이지·PDF 파일명이 있습니다. 단일 `question` 안에 "우리 서비스는 ..."처럼 서비스 설명을 적어도 서비스 모드로 처리합니다.
+
+QA 골든 질문 12개는 `data/eval/qa_golden.jsonl`에 있습니다. `python -m scripts.evaluate_qa`는 dense 기준선과 hybrid·재정렬의 Hit@3/5, MRR을 비교하며, `--answers`를 붙이면 LLM 답변과 인용 조문을 저장해 정답성·관련성·근거 충실성·환각 여부를 사람이 검토할 수 있습니다. 현재 12문항의 검색 결과는 dense Hit@3 **0.833**, Hit@5 **0.833**, MRR **0.694**; hybrid·재정렬 Hit@3 **1.000**, Hit@5 **1.000**, MRR **0.917**입니다. 12개 답변 모두 골든 조문을 인용했습니다. 이 작은 개발용 셋은 일반화 성능이나 답변 정답률을 증명하지 않습니다.
+
 - **법률 자문이 아닙니다.** 아래 데이터 6종 안에서만 판정하는 사전 점검 도구입니다.
 
 ---

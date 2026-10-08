@@ -7,13 +7,16 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.config import EMBEDDING_PROVIDER, EVAL_PATH, STATIC_DIR, use_llm
+from app.config import (EMBEDDING_PROVIDER, EVAL_PATH, QA_EMBEDDING_MODEL,
+                        QA_EMBEDDING_PROVIDER, STATIC_DIR, use_llm)
 from app.engine.law import get_lawbook
 from app.engine.pipeline import run_build
 from app.schemas import BuildRequest
+from app.routers.ask import router as ask_router
 
 app = FastAPI(title="조문.py — AI Legal Build Checker", version="0.1.0")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+app.include_router(ask_router)
 
 
 @app.get("/", include_in_schema=False)
@@ -24,12 +27,15 @@ def index():
 @app.get("/api/health")
 def health():
     from app.rag.store import get_collection
+    from app.rag import qdrant_store
     col = get_collection()
     return {
         "status": "ok",
         "feature_extractor": "llm" if use_llm() else "heuristic",
         "vectorstore": {"ready": col is not None, "count": col.count() if col else 0,
                         "embedding": EMBEDDING_PROVIDER},
+        "qa_vectorstore": {"ready": qdrant_store.ready(), "count": qdrant_store.count(),
+                           "embedding": QA_EMBEDDING_PROVIDER, "model": QA_EMBEDDING_MODEL},
         "sources": get_lawbook().sources,
     }
 

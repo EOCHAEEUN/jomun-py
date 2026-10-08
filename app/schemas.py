@@ -48,3 +48,27 @@ class BuildRequest(BaseModel):
     spec: str = Field(..., max_length=500, description="서비스 설명")
     # 되묻기 질문에 대한 답 (예: {"high_impact": "assume", "domestic_office": "yes"})
     answers: dict[str, str] = Field(default_factory=dict)
+
+
+class AskRequest(BaseModel):
+    """일반 질문 또는 명시적인 서비스 설명을 곁들인 질문."""
+
+    question: str = Field(..., min_length=2, max_length=1000)
+    service_description: Optional[str] = Field(None, max_length=1000)
+    answers: dict[str, str] = Field(default_factory=dict)
+
+
+class AskSource(BaseModel):
+    source_id: str
+    article: str
+    content: str
+    document: str
+    page: int
+    chunk_id: str
+    source_file: str
+
+
+class AskResponse(BaseModel):
+    answer: str
+    sources: list[AskSource]
+    mode: Literal["general", "service"]

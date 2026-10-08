@@ -11,8 +11,10 @@ venv/
 
 # 실행하면 생기는 파일 (python -m scripts.ingest / evaluate)
 data/vectorstore/
+data/qdrant/
 data/processed/
 data/eval/results.json
+data/eval/qa_results.json
 
 # OS / 에디터
 .DS_Store

@@ -7,6 +7,8 @@ pypdf>=4.0             # 원문 대조 테스트
 docling-slim[format-pdf,feat-chunking]==2.135.0  # Docling native PDF 변환·청킹
 rtree>=1.4,<2.0        # Docling PDF 모듈 로딩에 필요
 chromadb>=1.0,<2.0
+qdrant-client>=1.12,<2.0   # /ask QA 인덱스 (로컬 모드 또는 Qdrant 서버)
+langchain-anthropic>=0.3   # MonoRouter/Claude 근거 기반 답변
 
 # ── LLM 특성 추출 ─────────────────────
 # .env에 OPENAI_API_KEY가 있을 때만 사용. 없으면 규칙 기반(heuristic) 추출기로 동작

@@ -33,6 +33,18 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "law_articles")
 RETRIEVAL_TOP_K = int(os.getenv("RETRIEVAL_TOP_K", "5"))
 
+# ── /ask: Qdrant 기반 AI 기본법 QA ───────────────────────────
+QDRANT_URL = os.getenv("QDRANT_URL", "").strip()  # 비우면 WSL 로컬 Qdrant
+QDRANT_PATH = DATA_DIR / "qdrant"
+QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION", "ai_basic_law_qa").strip()
+QA_TOP_K = int(os.getenv("QA_TOP_K", "5"))
+MONOROUTER_API_KEY = os.getenv("MONOROUTER_API_KEY", "").strip()
+MONOROUTER_BASE_URL = os.getenv("MONOROUTER_BASE_URL", "https://api.monorouter.com").strip()
+# 기존 LLM_MODEL=gpt-4o-mini는 이 MonoRouter의 현재 허용 목록에 없어 QA는 별도 기본값 사용.
+QA_LLM_MODEL = os.getenv("QA_LLM_MODEL", "gpt-4.1").strip()
+QA_EMBEDDING_PROVIDER = os.getenv("QA_EMBEDDING_PROVIDER", "monorouter" if MONOROUTER_API_KEY else "local").strip().lower()
+QA_EMBEDDING_MODEL = os.getenv("QA_EMBEDDING_MODEL", "text-embedding-3-small").strip()
+
 
 def use_llm() -> bool:
     """특성 추출에 LLM을 쓸지 결정"""

@@ -1,0 +1,12 @@
+{"id":"definition_high_impact","question":"고영향 인공지능이란 무엇인가요?","gold_ids":["ARTICLE_2_4"]}
+{"id":"definition_system","question":"인공지능시스템은 법에서 어떻게 정의하나요?","gold_ids":["ARTICLE_2_2"]}
+{"id":"definition_generative","question":"생성형 인공지능의 법적 정의가 궁금합니다.","gold_ids":["ARTICLE_2_5"]}
+{"id":"recruitment_domain","question":"채용 지원자 평가에 쓰는 AI는 고영향 영역에 들어가나요?","gold_ids":["ARTICLE_2_4_SA"]}
+{"id":"biometric_domain","question":"범죄 수사용 생체인식정보 분석은 어떤 고영향 영역인가요?","gold_ids":["ARTICLE_2_4_BA"]}
+{"id":"advance_notice","question":"이용자에게 AI 서비스임을 언제 고지해야 하나요?","gold_ids":["ARTICLE_31_1"]}
+{"id":"generative_label","question":"생성형 AI로 만든 결과물에는 무엇을 표시해야 하나요?","gold_ids":["ARTICLE_31_2"]}
+{"id":"deepfake_label","question":"실제와 구분하기 어려운 AI 영상에는 어떤 표시가 필요한가요?","gold_ids":["ARTICLE_31_3_A"]}
+{"id":"advance_review","question":"고영향 AI 해당 여부를 사전에 검토해야 하나요?","gold_ids":["ARTICLE_33_1_A"]}
+{"id":"safety_measures","question":"고영향 AI 사업자의 안전성 신뢰성 조치는 무엇인가요?","gold_ids":["ARTICLE_34_1"]}
+{"id":"impact_assessment","question":"고영향 AI의 기본권 영향평가는 의무인가요?","gold_ids":["ARTICLE_35_1"]}
+{"id":"domestic_agent","question":"국내 주소가 없는 해외 AI 사업자는 언제 국내대리인을 지정하나요?","gold_ids":["ARTICLE_36_1","DECREE_29_1"]}
