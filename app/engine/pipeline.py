@@ -13,6 +13,7 @@ from app.engine.law import get_lawbook, read_decompiled
 from app.engine.penalty import chain_for
 from app.engine.rules import RuleItem, evaluate
 from app.rag.retriever import Retrieval, retrieve_candidates
+from app.schemas import ServiceFeatures
 
 log = logging.getLogger(__name__)
 
@@ -69,11 +70,13 @@ def _rag_info(rag: Retrieval, items: list[RuleItem]) -> dict:
     }
 
 
-def run_build(spec: str, answers: dict | None = None, use_rag: bool = True) -> dict:
+def run_build(spec: str, answers: dict | None = None, use_rag: bool = True,
+              extracted: tuple[ServiceFeatures, str] | None = None) -> dict:
+    """extracted: 미리 뽑은 (특성, 추출기 이름). 평가에서 같은 특성으로 여러 단계를 비교할 때 쓴다"""
     started = time.perf_counter()
     answers = answers or {}
 
-    features, extractor = extract(spec)
+    features, extractor = extracted or extract(spec)
     features = apply_answers(features, answers)
     rag = retrieve_candidates(spec, features) if use_rag else Retrieval(mode="off")
     items = evaluate(features, answers, candidates=rag.candidates)

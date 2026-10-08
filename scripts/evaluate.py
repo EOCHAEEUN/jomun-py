@@ -1,7 +1,8 @@
 # evaluate.py — 단계별 평가: ① 검색 → ② 규칙 판정 → ③ 최종 빌드
 #
 # 실행:  python -m scripts.evaluate              (먼저 python -m scripts.ingest)
-#        python -m scripts.evaluate --snapshot   (docs/eval_snapshot.json 갱신)
+#        python -m scripts.evaluate --snapshot   (docs/eval_snapshot.json 갱신 — heuristic 추출기 기준)
+#        python -m scripts.evaluate --extractor llm --runs 3   (LLM 추출기 별도 기록 → docs/eval_llm.json)
 #
 # 평가셋
 #   dev      data/eval/cases.json          규칙을 만들면서 본 케이스 (개발용)
@@ -20,12 +21,18 @@
 #
 # 상태 점검 = gold.statuses(라벨별 상태) + gold.absent(나오면 안 되는 라벨) + gold.penalty(제재 경로)
 # ③에서 틀린 점검은 ②의 결과로 원인을 나눈다: ②도 틀림 → 특성·규칙 / ②는 맞음 → 검색
+#   그래서 케이스마다 특성은 한 번만 뽑아 ①②③에 같이 쓴다 (LLM은 호출마다 답이 다를 수 있다)
+#
+# --extractor llm: 호출이 실패해도 heuristic으로 대체하지 않는다 (섞인 결과가 'llm'으로 기록되지 않도록).
+#   MonoRouter 분당 요청 한도에 맞춰 호출 간격을 두고, 재시도 후에도 실패하면 평가를 멈춘다.
 import argparse
 import json
+import statistics
+import time
 from datetime import date
 
-from app.config import DATA_DIR, EMBEDDING_PROVIDER, EVAL_PATH, RETRIEVAL_TOP_K
-from app.engine.features import extract
+from app.config import DATA_DIR, EMBEDDING_PROVIDER, EVAL_PATH, LLM_MODEL, RETRIEVAL_TOP_K
+from app.engine.features import extract, heuristic_extract, llm_extract
 from app.engine.pipeline import run_build
 from app.rag.retriever import SEARCH_FILTER, retrieve_candidates
 from app.rag.store import get_collection, search
@@ -33,6 +40,7 @@ from app.rag.store import get_collection, search
 HELDOUT_PATH = DATA_DIR / "eval" / "heldout_cases.json"
 HELDOUT_V2_PATH = DATA_DIR / "eval" / "heldout_v2_cases.json"
 SNAPSHOT_PATH = DATA_DIR.parent / "docs" / "eval_snapshot.json"
+LLM_REPORT_PATH = DATA_DIR.parent / "docs" / "eval_llm.json"
 MOK = "ARTICLE_2_4_"
 K = 3
 
@@ -59,9 +67,32 @@ def _checks(gold: dict, view: dict) -> list[dict]:
     return out
 
 
-def evaluate_case(case: dict) -> dict:
+class LLMExtractor:
+    """평가용 LLM 특성 추출 — heuristic 대체 없이, 호출 간격·재시도를 둔다"""
+
+    def __init__(self, interval: float = 2.5, retries: int = 5, backoff: float = 60.0):
+        self.interval, self.retries, self.backoff = interval, retries, backoff
+        self.calls, self._last = 0, 0.0
+
+    def __call__(self, spec: str):
+        error = None
+        for attempt in range(self.retries + 1):
+            time.sleep(max(0.0, self._last + self.interval - time.monotonic()))
+            self._last = time.monotonic()
+            self.calls += 1
+            try:
+                return llm_extract(spec), "llm"
+            except Exception as e:   # 429·네트워크 오류 → 잠시 쉬고 다시
+                error = e
+                if attempt < self.retries:
+                    time.sleep(self.backoff)
+        raise RuntimeError(f"LLM 특성 추출 실패 (heuristic으로 대체하지 않음): {spec[:40]} — {error}")
+
+
+def evaluate_case(case: dict, extractor=extract) -> dict:
     spec, gold = case["spec"], case["gold"]
-    features, _ = extract(spec)
+    extracted = extractor(spec)
+    features = extracted[0]
 
     # ① 검색
     naive_ids = [h["id"] for h in search(spec, k=K, where=SEARCH_FILTER)]
@@ -78,8 +109,8 @@ def evaluate_case(case: dict) -> dict:
     }
 
     # ② 규칙만 / ③ RAG → 규칙
-    rules_only = _build_view(run_build(spec, use_rag=False))
-    final = _build_view(run_build(spec))
+    rules_only = _build_view(run_build(spec, use_rag=False, extracted=extracted))
+    final = _build_view(run_build(spec, extracted=extracted))
     rule_checks, final_checks = _checks(gold, rules_only), _checks(gold, final)
     for rc, fc in zip(rule_checks, final_checks):
         fc["cause"] = None if fc["ok"] else ("검색" if rc["ok"] else "특성·규칙")
@@ -87,6 +118,7 @@ def evaluate_case(case: dict) -> dict:
     naive_domain = next((i for i in naive_ids if i.startswith(MOK)), None)
     return {
         "id": case["id"], "name": case["name"], "spec": spec,
+        "extractor": extracted[1], "features": features.model_dump(exclude={"evidence"}),
         "retrieval": retrieval,
         "domain": {"gold": gold["domain"], "naive": naive_domain, "final": final["domain"]},
         "rule_checks": rule_checks,
@@ -118,10 +150,10 @@ def summarize(rows: list[dict]) -> dict:
     }
 
 
-def run(split_paths: dict) -> dict:
+def run(split_paths: dict, extractor=extract) -> dict:
     out = {}
     for split, path in split_paths.items():
-        rows = [evaluate_case(c) for c in json.loads(path.read_text(encoding="utf-8"))]
+        rows = [evaluate_case(c, extractor) for c in json.loads(path.read_text(encoding="utf-8"))]
         out[split] = {"summary": summarize(rows), "rows": rows}
     return out
 
@@ -150,26 +182,87 @@ def print_report(results: dict) -> None:
         print(f"  틀린 점검의 원인  {s['errors_by_cause']}")
 
 
+SPLITS = {"dev": EVAL_PATH, "heldout": HELDOUT_PATH, "heldout_v2": HELDOUT_V2_PATH}
+SUMMARY_KEYS = ["retrieval_hit@3_enriched", "candidate_recall", "rule_accuracy", "final_accuracy", "final_case_exact"]
+
+
+def _failed(res: dict) -> dict:
+    return {row["id"]: [c["check"] for c in row["final_checks"] if not c["ok"]] for row in res["rows"]}
+
+
+def _feature_diff(llm_rows: list[dict]) -> dict:
+    """케이스별로 LLM 특성이 heuristic과 다른 필드 {필드: [heuristic, llm]}"""
+    out = {}
+    for row in llm_rows:
+        base = heuristic_extract(row["spec"]).model_dump(exclude={"evidence"})
+        diff = {k: [base[k], v] for k, v in row["features"].items() if base[k] != v}
+        if diff:
+            out[row["id"]] = diff
+    return out
+
+
+def run_llm(runs: int, meta: dict) -> dict:
+    """LLM 추출기로 runs번 평가해 heuristic과 나란히 기록 (스냅샷과 별도)"""
+    llm = LLMExtractor()
+    heuristic = run(SPLITS, extractor=lambda spec: (heuristic_extract(spec), "heuristic"))
+    all_runs = []
+    for n in range(runs):
+        started = time.monotonic()
+        res = run(SPLITS, extractor=llm)
+        print(f"\n[LLM run {n + 1}/{runs}] {time.monotonic() - started:.0f}s · 누적 호출 {llm.calls}회")
+        print_report(res)
+        all_runs.append(res)
+
+    report = {"meta": {**meta, "feature_extractor": "llm", "llm_model": LLM_MODEL, "runs": runs,
+                       "llm_calls": llm.calls},
+              "splits": {}}
+    for split in SPLITS:
+        per_run = [r[split]["summary"] for r in all_runs]
+        report["splits"][split] = {
+            "heuristic": {k: heuristic[split]["summary"][k] for k in SUMMARY_KEYS},
+            "llm_mean": {k: round(statistics.mean(s[k] for s in per_run), 3) for k in SUMMARY_KEYS},
+            "llm_range": {k: [min(s[k] for s in per_run), max(s[k] for s in per_run)] for k in SUMMARY_KEYS},
+            "llm_runs": per_run,
+            "failed_heuristic": _failed(heuristic[split]),
+            "failed_llm_runs": [_failed(r[split]) for r in all_runs],
+            "feature_diff_run1": _feature_diff(all_runs[0][split]["rows"]),
+        }
+    return report
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--snapshot", action="store_true", help="docs/eval_snapshot.json 갱신")
+    ap.add_argument("--snapshot", action="store_true", help="docs/eval_snapshot.json 갱신 (heuristic 기준)")
+    ap.add_argument("--extractor", choices=["auto", "heuristic", "llm"], default="auto",
+                    help="auto: 설정(FEATURE_EXTRACTOR)대로 · llm: 대체 없이 LLM만 쓰고 docs/eval_llm.json에 기록")
+    ap.add_argument("--runs", type=int, default=1, help="--extractor llm 반복 횟수 (흔들림 확인)")
     args = ap.parse_args()
     col = get_collection()
     if col is None:
         raise SystemExit("Chroma가 비어 있습니다. 먼저 `python -m scripts.ingest`를 실행하세요.")
-
-    results = run({"dev": EVAL_PATH, "heldout": HELDOUT_PATH, "heldout_v2": HELDOUT_V2_PATH})
-    print_report(results)
+    if args.snapshot and args.extractor == "llm":
+        raise SystemExit("스냅샷은 heuristic 추출기 기준입니다. --extractor llm 과 같이 쓸 수 없습니다.")
 
     meta = {"date": date.today().isoformat(), "embedding": EMBEDDING_PROVIDER, "top_k": RETRIEVAL_TOP_K,
-            "hit_k": K, "chunks": col.count(), "feature_extractor": run_build("AI", use_rag=False)["mode"]["feature_extractor"]}
+            "hit_k": K, "chunks": col.count()}
+    if args.extractor == "llm":
+        report = run_llm(args.runs, meta)
+        LLM_REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"\nLLM 평가 기록 → docs/{LLM_REPORT_PATH.name}")
+        return
+
+    extractor = (lambda spec: (heuristic_extract(spec), "heuristic")) if args.extractor == "heuristic" else extract
+    results = run(SPLITS, extractor=extractor)
+    print_report(results)
+
+    meta["feature_extractor"] = results["dev"]["rows"][0]["extractor"]
     out = DATA_DIR / "eval" / "results.json"
     out.write_text(json.dumps({"meta": meta, **results}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\n상세 결과 → data/eval/{out.name}")
     if args.snapshot:
-        snap = {"meta": meta, **{split: {"summary": r["summary"],
-                                         "cases": {row["id"]: [c["check"] for c in row["final_checks"] if not c["ok"]]
-                                                   for row in r["rows"]}}
+        if any(row["extractor"] != "heuristic" for r in results.values() for row in r["rows"]):
+            raise SystemExit("스냅샷은 heuristic 추출기 기준입니다. FEATURE_EXTRACTOR=heuristic 또는 --extractor heuristic으로 실행하세요.")
+        snap = {"meta": meta, **{split: {"summary": r["summary"], "cases": _failed(r)}
                                  for split, r in results.items()}}
         SNAPSHOT_PATH.parent.mkdir(exist_ok=True)
         SNAPSHOT_PATH.write_text(json.dumps(snap, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
