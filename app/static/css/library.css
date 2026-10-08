@@ -1,0 +1,123 @@
+/* 조문.py — 법령 라이브러리 (조문 관계도) · studio.css의 흰 컨테이너 · 남색 강조를 따른다 */
+.board[hidden], .library[hidden] { display: none; }
+
+.lib-shell {
+  display: flex; flex-direction: column;
+  border: 1px solid #e1e8ef; border-radius: 20px; background: #fff;
+  box-shadow: var(--shadow-panel); overflow: hidden;
+}
+.lib-head { padding: 22px 24px 18px; border-bottom: 1px solid #e7edf3; align-items: center; gap: 12px; }
+.lib-head > div { flex: 1; min-width: 0; }
+.lib-head h2 { font-size: 22px; }
+.lib-stats { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.lib-stats span { padding: 6px 10px; border-radius: 8px; background: #f1f4f7; color: #6b7c8f; font-size: 12px; white-space: nowrap; }
+.lib-stats b { margin-left: 5px; color: #173958; font-weight: 700; }
+
+.lib-grid {
+  display: grid; grid-template-columns: 236px minmax(0, 1fr) 372px;
+  height: calc(100vh - 196px); min-height: 600px;
+}
+.lib-side, .lib-detail { min-height: 0; overflow-y: auto; }
+
+/* 왼쪽 필터 */
+.lib-side { display: flex; flex-direction: column; gap: 22px; padding: 20px 16px; border-right: 1px solid #e7edf3; background: #fbfcfd; }
+.lib-side h3 { margin-bottom: 8px; color: #4b5e72; font-size: 12px; font-weight: 700; }
+.lib-toggle {
+  display: grid; grid-template-columns: 15px minmax(0, 1fr) auto; align-items: center; gap: 8px;
+  padding: 5px 4px; border-radius: 7px; color: #314559; font-size: 13px; cursor: pointer;
+}
+.lib-toggle:hover { background: #f1f5f9; }
+.lib-toggle input { margin: 0; accent-color: #173958; }
+.lib-toggle > span:nth-child(2) { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.lib-toggle .n { color: #8b99a8; font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.lib-sw { width: 22px; height: 8px; stroke: none; fill: none; flex: none; }
+.lib-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: none; margin-right: 6px; vertical-align: 0; }
+.lib-toggle .lib-dot { margin-right: 0; }
+.lib-hint { margin-top: 6px; color: #8b99a8; font-size: 11.5px; line-height: 1.5; }
+.lib-presets { display: flex; flex-direction: column; gap: 6px; }
+.lib-presets button {
+  display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; text-align: left;
+  border: 1px solid #e3eaf1; border-radius: 9px; background: #fff;
+}
+.lib-presets button:hover { border-color: #b9cad9; }
+.lib-presets button[aria-pressed="true"] { border-color: #173958; background: #edf4fa; }
+.lib-presets b { color: #1d3348; font-size: 13px; }
+.lib-presets small { color: #7e8da0; font-size: 11.5px; }
+.lib-search input {
+  width: 100%; height: 36px; padding: 0 11px; border: 1px solid #dbe4ec; border-radius: 9px;
+  background: #fff; color: var(--ink); font: inherit; font-size: 13px; outline: none;
+}
+.lib-search input:focus { border-color: #7798b6; box-shadow: 0 0 0 3px rgba(52, 105, 151, .11); }
+.lib-results { margin-top: 6px; }
+.lib-results li { padding: 5px 2px; border-bottom: 1px solid #edf1f5; }
+.lib-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; color: #4b5e72; font-size: 12px; }
+.lib-legend span { display: flex; align-items: center; gap: 6px; }
+.lib-pill { width: 16px; height: 9px; border: 1.5px solid; border-radius: 5px; background: #fff; flex: none; }
+
+/* 가운데 관계도 */
+.lib-canvas { position: relative; min-width: 0; overflow: hidden; background: #fff; }
+#lib-graph { display: block; width: 100%; height: 100%; fill: none; stroke: none; stroke-width: 1; cursor: grab; }
+#lib-graph:active { cursor: grabbing; }
+#lib-graph .e { stroke-width: 1.2; opacity: .7; }
+#lib-graph .e.dim { opacity: .06; }
+#lib-graph .e.hot { stroke-width: 2.1; opacity: 1; }
+#lib-graph .n { cursor: pointer; }
+#lib-graph .n.dim { opacity: .14; }
+#lib-graph .n circle { stroke: #fff; stroke-width: 1.5; }
+#lib-graph .n.sel circle { stroke: #12283e; stroke-width: 2.6; }
+#lib-graph .n.ent rect { fill: #fff; stroke-width: 1.4; }
+#lib-graph .n.ent.sel rect { stroke-width: 2.6; }
+#lib-graph .n text {
+  fill: #23384d; font-size: 11px; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none;
+}
+#lib-graph .n.ent text { stroke: none; font-size: 11px; font-weight: 600; }
+#lib-graph .n:not(.ent) .lbl { display: none; }
+#lib-graph.labels .n .lbl, #lib-graph.zoomed .n .lbl,
+#lib-graph .n.major .lbl, #lib-graph .n.sel .lbl, #lib-graph .n.nb .lbl { display: block; }
+#lib-graph .n.sel text { font-weight: 700; }
+.lib-tools { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; }
+.lib-tools button {
+  padding: 6px 10px; border: 1px solid #dce5ee; border-radius: 8px; background: #fff; color: #486179; font-size: 12px; font-weight: 700;
+}
+.lib-tools button:hover { background: #f4f8fb; }
+.lib-tools button[aria-pressed="true"] { border-color: #173958; color: #173958; background: #edf4fa; }
+.lib-note {
+  position: absolute; left: 12px; bottom: 10px; padding: 3px 8px; border-radius: 6px;
+  background: rgba(255, 255, 255, .9); color: #8b99a8; font-size: 11.5px;
+}
+
+/* 오른쪽 상세 */
+.lib-detail { padding: 22px 22px 26px; border-left: 1px solid #e7edf3; }
+.lib-detail .art-head { margin-bottom: 14px; }
+.lib-detail .art-head h3 { font-size: 19px; line-height: 1.35; }
+.lib-detail .art-head .art-title { font-size: 13px; }
+.lib-detail .eyebrow { display: inline-flex; align-items: center; }
+.lib-detail .law-text { font-size: 13.5px; line-height: 1.7; }
+.lib-detail .sources li p { font-size: 12.5px; }
+.lib-detail .sources b { display: inline-flex; align-items: center; font-size: 14px; }
+.lib-rel { margin-top: 14px; }
+.lib-rel h4 { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; color: #2b4157; font-size: 12.5px; }
+.lib-rel h4 i { width: 14px; height: 3px; border-radius: 2px; flex: none; }
+.lib-rel h4 span { color: #8b99a8; font-weight: 500; }
+.lib-rel h4 em { margin-left: auto; color: #a5b0bd; font-size: 11px; font-style: normal; font-weight: 500; }
+.lib-rel li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid #edf1f5; }
+.lib-link { min-width: 0; color: #1f4f78; font-size: 13px; font-weight: 600; text-align: left; overflow-wrap: anywhere; }
+.lib-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.lib-link small { display: block; margin-top: 1px; color: #7e8da0; font-size: 12px; font-weight: 400; }
+.lib-rel .via { flex: none; color: #a5b0bd; font-size: 10.5px; white-space: nowrap; }
+
+@media (max-width: 1280px) {
+  .lib-grid { grid-template-columns: 210px minmax(0, 1fr) 320px; }
+}
+@media (max-width: 1050px) {
+  .lib-grid { grid-template-columns: 200px minmax(0, 1fr); height: auto; }
+  .lib-canvas { height: 620px; }
+  .lib-detail { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #e7edf3; }
+}
+@media (max-width: 820px) {
+  .lib-head { flex-wrap: wrap; }
+  .lib-stats { justify-content: flex-start; }
+  .lib-grid { grid-template-columns: 1fr; }
+  .lib-canvas { order: -1; height: 64vh; min-height: 420px; }
+  .lib-side { border-right: 0; border-top: 1px solid #e7edf3; }
+}

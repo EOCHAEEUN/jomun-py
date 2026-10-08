@@ -103,8 +103,29 @@ def count() -> int:
     return client().count(QDRANT_COLLECTION, exact=True).count if ready() else 0
 
 
+def enable_sparse_idf() -> bool:
+    """Enable query-time IDF on an existing index without re-embedding documents."""
+    if not ready():
+        raise RuntimeError("QA Qdrant 인덱스가 없습니다.")
+    db = client()
+    params = db.get_collection(QDRANT_COLLECTION).config.params.sparse_vectors[SPARSE]
+    if params.modifier == models.Modifier.IDF:
+        return False
+    db.update_collection(
+        QDRANT_COLLECTION,
+        sparse_vectors_config={SPARSE: params.model_copy(update={"modifier": models.Modifier.IDF})},
+    )
+    return True
+
+
 def point_id(chunk_id: str) -> str:
     return str(uuid.uuid5(uuid.NAMESPACE_URL, "jomun-py/qa/" + chunk_id))
+
+
+def dense_text(chunk: dict) -> str:
+    """Embed the source clause with its parent context; keep the cited text intact."""
+    return " ".join(part for part in (chunk["doc_short"], chunk["ref_label"], chunk["title"],
+                                      chunk.get("lead", ""), chunk["text"]) if part)
 
 
 def index_chunks(chunks: list[dict], batch_size: int = 64) -> int:
@@ -116,15 +137,15 @@ def index_chunks(chunks: list[dict], batch_size: int = 64) -> int:
     prepared = []
     for start in range(0, len(selected), batch_size):
         batch = selected[start:start + batch_size]
-        texts = [f"{c['doc_short']} {c['ref_label']} {c['title']} {c['text']}" for c in batch]
-        dense = dense_vectors(texts)
+        dense = dense_vectors([dense_text(c) for c in batch])
         points = []
-        for c, search_text, vector in zip(batch, texts, dense):
+        for c, vector in zip(batch, dense):
+            lexical_text = f"{c['doc_short']} {c['ref_label']} {c['title']} {c['text']}"
             payload = {k: c.get(k) for k in ("id", "doc", "doc_short", "kind", "ref_label", "text",
                                               "title", "article", "article_sub", "paragraph", "page", "source_file",
                                               "source_sha256", "chapter", "lead")}
             points.append(models.PointStruct(id=point_id(c["id"]), vector={DENSE: vector,
-                                                                            SPARSE: lexical_vector(search_text)},
+                                                                            SPARSE: lexical_vector(lexical_text)},
                                              payload=payload))
         prepared.append(points)
     db = client()
@@ -134,7 +155,7 @@ def index_chunks(chunks: list[dict], batch_size: int = 64) -> int:
         collection_name=QDRANT_COLLECTION,
         vectors_config={DENSE: models.VectorParams(size=len(prepared[0][0].vector[DENSE]),
                                                    distance=models.Distance.COSINE)},
-        sparse_vectors_config={SPARSE: models.SparseVectorParams()},
+        sparse_vectors_config={SPARSE: models.SparseVectorParams(modifier=models.Modifier.IDF)},
     )
     for points in prepared:
         db.upsert(collection_name=QDRANT_COLLECTION, points=points, wait=True)
@@ -150,6 +171,14 @@ def search_dense(query: str, limit: int = 10) -> list[dict]:
         return []
     result = client().query_points(collection_name=QDRANT_COLLECTION, query=dense_query(query),
                                    using=DENSE, limit=limit, with_payload=True)
+    return _hits(result.points)
+
+
+def search_sparse(query: str, limit: int = 10) -> list[dict]:
+    if not ready():
+        return []
+    result = client().query_points(collection_name=QDRANT_COLLECTION, query=lexical_vector(query),
+                                   using=SPARSE, limit=limit, with_payload=True)
     return _hits(result.points)
 
 

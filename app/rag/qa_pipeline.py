@@ -15,6 +15,10 @@ log = logging.getLogger(__name__)
 _SERVICE_CUE = re.compile(
     r"(?:우리|저희|제|내)(?:가|는|의)?\s*(?:회사|팀|서비스|앱|플랫폼|AI|인공지능|시스템|만드는|개발하는).{0,30}"
 )
+_SERVICE_NARRATIVE = re.compile(
+    r"(?:내가|나는|제가|저는|우리는|저희는).{0,120}?(?:서비스|앱|플랫폼|AI|인공지능|시스템).{0,80}?(?:준비|개발|만들|기획|운영|출시|제공)"
+)
+_DEFINITION_CUE = re.compile(r"(?:뭔가요|뭔지|뭐야|무엇|정의|뜻|의미)")
 _VALID_STATUSES = {"MATCH", "REQUIRED", "REVIEW", "CONDITIONAL", "SHOULD"}
 
 
@@ -24,6 +28,7 @@ def _display_ref(ref: str) -> str:
 SYSTEM = """당신은 인공지능기본법 QA 도우미다. 제공된 원문 근거와 서비스 점검 결과만 사용한다.
 법률 문구를 개발자가 이해할 수 있는 담백한 한국어로 설명한다. 코드를 꾸며내지 않는다.
 답변은 '조문의 의미'와 '개발 시 확인할 조건 또는 작업'을 짧게 구분한다.
+법 개념과 자신의 서비스 적용 여부를 함께 물으면 두 질문 모두 답한다. 먼저 개념을 설명하고, 이어서 서비스의 확인된 사실과 아직 확인할 조건을 설명한다.
 일반 질문에는 구체적인 서비스 사실이 없으므로 어떤 서비스의 의무가 확정됐다고 말하지 않는다.
 서비스 설명이 있어도 REVIEW·CONDITIONAL을 확정 의무로 바꾸지 않는다.
 근거가 없는 내용은 추측하지 말고 확인할 수 없다고 말한다.
@@ -37,7 +42,23 @@ def _service_text(req: AskRequest) -> str | None:
     if req.service_description and req.service_description.strip():
         return req.service_description.strip()
     # RFP의 question 단일 필드로 우리 서비스를 설명한 경우에도 서비스 모드로 처리한다.
-    return req.question if _SERVICE_CUE.search(req.question) else None
+    matches = [match for pattern in (_SERVICE_CUE, _SERVICE_NARRATIVE)
+               if (match := pattern.search(req.question))]
+    return req.question[min(match.start() for match in matches):].strip() if matches else None
+
+
+def _definition_ids(question: str) -> list[str]:
+    """복합 질문에서 정의를 요구한 조문을 적용성 근거와 함께 제공한다."""
+    if "고영향" in question and _DEFINITION_CUE.search(question):
+        return ["ARTICLE_2_4"]
+    return []
+
+
+def _legal_question_before_service(question: str, service: str | None) -> str:
+    """한 입력창에서 서비스 설명 앞에 적힌 별도 법률 질문을 분리한다."""
+    if not service or service not in question:
+        return ""
+    return question.split(service, 1)[0].strip(" \t\n.,?!:;。？")
 
 
 def _rule_context(spec: str, answers: dict[str, str]) -> tuple[list[dict], list[str], ServiceFeatures]:
@@ -96,15 +117,19 @@ def answer(req: AskRequest) -> AskResponse:
     service = _service_text(req)
     facts, rule_ids, features = _rule_context(service, req.answers) if service else ([], [], None)
     question = req.question.strip()
-    hits = retrieve(question + (" " + service if service and service != question else ""),
+    search_text = question if not service or service in question else f"{question} {service}"
+    hits = retrieve(search_text,
                     features=features, limit=QA_TOP_K)
-    if rule_ids:
+    legal_question = _legal_question_before_service(question, service)
+    legal_ids = [hit["id"] for hit in qdrant_store.search_sparse(legal_question, limit=2)] if legal_question else []
+    context_ids = _definition_ids(question) + legal_ids + rule_ids
+    if context_ids:
         present = {h["id"] for h in hits}
-        for chunk in qdrant_store.get_chunks(rule_ids):
+        for chunk in qdrant_store.get_chunks(context_ids):
             if chunk["id"] not in present:
                 hits.append(chunk)
                 present.add(chunk["id"])
-            if len(hits) >= QA_TOP_K + 4:
+            if len(hits) >= QA_TOP_K + 6:
                 break
     if not hits:
         return AskResponse(answer="검색된 인공지능기본법 근거가 없어 답변할 수 없습니다.", sources=[],

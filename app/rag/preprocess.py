@@ -115,7 +115,7 @@ def _ko_body_lines(path, title: str) -> list[tuple[int, str]]:
     """제1장부터 부칙 전까지, 머리말·개정 표시를 뺀 본문 줄"""
     lines, started, in_note = [], False, False
     for page, line in _pdf_lines(path):
-        if (RE_HEADER.match(line) or line in ("법제처", "국가법령정보센터", title)
+        if (RE_HEADER.match(line) or line in ("법제처", "국가법령정보센터", "국가법령정보센", "터", title)
                 or line.isdigit() or RE_BRACKET_NOTE.match(line)):
             continue
         if in_note:                       # 두 줄에 걸친 <개정 …, … > 의 뒷부분
@@ -243,7 +243,7 @@ def build_ko_chunks(articles: list[dict], src: dict) -> list[dict]:
                     add(iid, ilabel, item["text"], art, pnum, item["page"], para["text"])
                     for mok in item["moks"]:
                         add(f"{iid}_{MOK_CODE[mok['ko']]}", f"{plabel}{item['num']}호{mok['ko']}목",
-                            mok["text"], art, pnum, mok["page"], para["text"])
+                            mok["text"], art, pnum, mok["page"], f"{para['text']} {item['text']}")
                 else:
                     add(iid, ilabel, rendered, art, pnum, item["page"], para["text"])
     return chunks

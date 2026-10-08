@@ -361,7 +361,7 @@
         "ARTICLE_31_2"
       ],
       "penalty": null,
-      "source_page": 1
+      "source_page": 2
     },
     {
       "id": "ARTICLE_2_7",
@@ -386,7 +386,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 1
+      "source_page": 2
     },
     {
       "id": "ARTICLE_2_7_GA",
@@ -527,7 +527,7 @@
         "ARTICLE_16_3_B"
       ],
       "penalty": null,
-      "source_page": 7
+      "source_page": 8
     },
     {
       "id": "ARTICLE_16_3_B",
@@ -556,7 +556,7 @@
         "ARTICLE_16_3_A"
       ],
       "penalty": null,
-      "source_page": 7
+      "source_page": 8
     },
     {
       "id": "ARTICLE_17_3",
@@ -586,7 +586,7 @@
         "ARTICLE_35_1"
       ],
       "penalty": null,
-      "source_page": 7
+      "source_page": 9
     },
     {
       "id": "ARTICLE_30_3",
@@ -620,7 +620,7 @@
         "path": [],
         "max_amount_krw": null
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_30_4",
@@ -649,7 +649,7 @@
         "ARTICLE_30_3"
       ],
       "penalty": null,
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_31_1",
@@ -692,7 +692,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_31_2",
@@ -735,7 +735,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_31_3_A",
@@ -779,7 +779,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_31_3_B",
@@ -810,7 +810,7 @@
         "ARTICLE_31_3_A"
       ],
       "penalty": null,
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_31_4",
@@ -839,7 +839,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_32_1",
@@ -883,7 +883,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_32_1_1",
@@ -921,7 +921,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_32_1_2",
@@ -959,7 +959,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 15
     },
     {
       "id": "ARTICLE_32_2",
@@ -998,7 +998,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_32_3",
@@ -1026,7 +1026,7 @@
       },
       "refs": [],
       "penalty": null,
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_33_1_A",
@@ -1062,7 +1062,7 @@
         "path": [],
         "max_amount_krw": null
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_33_1_B",
@@ -1092,7 +1092,7 @@
         "ARTICLE_33_4"
       ],
       "penalty": null,
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_33_2",
@@ -1117,7 +1117,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_33_3",
@@ -1145,7 +1145,7 @@
       },
       "refs": [],
       "penalty": null,
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_33_4",
@@ -1174,7 +1174,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1",
@@ -1219,7 +1219,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1_1",
@@ -1257,7 +1257,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1_2",
@@ -1295,7 +1295,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1_3",
@@ -1333,7 +1333,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1_4",
@@ -1371,7 +1371,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1_5",
@@ -1409,7 +1409,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 12
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_1_6",
@@ -1451,7 +1451,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 13
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_2",
@@ -1479,7 +1479,7 @@
       },
       "refs": [],
       "penalty": null,
-      "source_page": 13
+      "source_page": 16
     },
     {
       "id": "ARTICLE_34_3",
@@ -1512,7 +1512,7 @@
         "ARTICLE_34_1"
       ],
       "penalty": null,
-      "source_page": 13
+      "source_page": 16
     },
     {
       "id": "ARTICLE_35_1",
@@ -1524,8 +1524,8 @@
       "clause": null,
       "ref_label": "제35조①",
       "title": "고영향 인공지능 영향평가",
-      "text": "인공지능사업자가 고영향 인공지능을 이용한 제품 또는 서비스를 제공하는 경우 사전에 사람의 기본권에 미치는 영향을 평가(이하 “영향평가”라 한다)하기 위하여 노력하여야 한다.",
-      "summary": "기본권 영향평가 노력",
+      "text": "인공지능사업자가 고영향 인공지능을 이용한 제품 또는 서비스를 제공하는 경우 사전에 사람의 기본권에 미치는 영향을 평가(이하 “영향평가”라 한다)하기 위하여 노력하여야 한다. 이 경우 영향평가에는 고영향 인공지능을 이용한 제품 또는 서비스의 성격을 고려하여 인공지능취약계층의 특성이 반영될 수 있도록 하여야 한다.",
+      "summary": "기본권 영향평가 노력, 실시 시 인공지능취약계층 특성 반영",
       "addressee": "AI_BUSINESS",
       "condition": [
         "IF_HIGH_IMPACT_AI"
@@ -1548,7 +1548,7 @@
         "path": [],
         "max_amount_krw": null
       },
-      "source_page": 13
+      "source_page": 16
     },
     {
       "id": "ARTICLE_35_2",
@@ -1577,7 +1577,7 @@
         "ARTICLE_35_1"
       ],
       "penalty": null,
-      "source_page": 13
+      "source_page": 16
     },
     {
       "id": "ARTICLE_35_3",
@@ -1606,7 +1606,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 13
+      "source_page": 16
     },
     {
       "id": "ARTICLE_36_1",
@@ -1650,7 +1650,7 @@
         ],
         "max_amount_krw": 30000000
       },
-      "source_page": 13
+      "source_page": 17
     },
     {
       "id": "ARTICLE_36_1_1",
@@ -1677,7 +1677,7 @@
         "ARTICLE_36_1"
       ],
       "penalty": null,
-      "source_page": 13
+      "source_page": 17
     },
     {
       "id": "ARTICLE_36_1_2",
@@ -1704,7 +1704,7 @@
         "ARTICLE_36_1"
       ],
       "penalty": null,
-      "source_page": 13
+      "source_page": 17
     },
     {
       "id": "ARTICLE_36_1_3",
@@ -1731,7 +1731,7 @@
         "ARTICLE_36_1"
       ],
       "penalty": null,
-      "source_page": 13
+      "source_page": 17
     },
     {
       "id": "ARTICLE_36_2",
@@ -1756,7 +1756,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 13
+      "source_page": 17
     },
     {
       "id": "ARTICLE_36_3",
@@ -1785,7 +1785,7 @@
         "ARTICLE_36_1"
       ],
       "penalty": null,
-      "source_page": 13
+      "source_page": 17
     },
     {
       "id": "ARTICLE_40_1",
@@ -1812,7 +1812,7 @@
         "ARTICLE_40_3"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_40_1_1",
@@ -1843,7 +1843,7 @@
         "ARTICLE_34_1"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_40_1_2",
@@ -1874,7 +1874,7 @@
         "ARTICLE_34_1"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_40_2",
@@ -1899,7 +1899,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_40_3",
@@ -1926,7 +1926,7 @@
         "ARTICLE_43_1_3"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_43_1",
@@ -1951,7 +1951,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_43_1_1",
@@ -1979,7 +1979,7 @@
         "ARTICLE_31_1"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 18
     },
     {
       "id": "ARTICLE_43_1_2",
@@ -2007,7 +2007,7 @@
         "ARTICLE_36_1"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 19
     },
     {
       "id": "ARTICLE_43_1_3",
@@ -2035,7 +2035,7 @@
         "ARTICLE_40_3"
       ],
       "penalty": null,
-      "source_page": 14
+      "source_page": 19
     },
     {
       "id": "ARTICLE_43_2",
@@ -2064,7 +2064,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 14
+      "source_page": 19
     },
     {
       "id": "DECREE_2",
@@ -2076,7 +2076,7 @@
       "clause": null,
       "ref_label": "제2조",
       "title": "법의 적용 제외 인공지능",
-      "text": "「인공지능 발전과 신뢰 기반 조성 등에 관한 기본법」(이하 “법”이라 한다) 제4조제2항에서 “대통령령으로 정하는 인공지능”이란 다음 각 호에 해당하는 업무만을 수행하기 위하여 개발ㆍ이용되는 인공지능을 말한다.",
+      "text": "법 제4조제2항에서 “대통령령으로 정하는 인공지능”이란 다음 각 호에 해당하는 업무만을 수행하기 위하여 개발ㆍ이용되는 인공지능을 말한다.",
       "summary": "적용 제외: 국방부장관·국가정보원장·경찰청장이 지정한 업무'만' 수행하는 AI",
       "addressee": "OTHER",
       "condition": [],
@@ -2122,7 +2122,7 @@
         "ARTICLE_31_1"
       ],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_1_1",
@@ -2147,7 +2147,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_1_2",
@@ -2172,7 +2172,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_1_3",
@@ -2197,7 +2197,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_1_4",
@@ -2222,7 +2222,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_2",
@@ -2251,7 +2251,7 @@
         "ARTICLE_31_2"
       ],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_2_1",
@@ -2276,7 +2276,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_2_2",
@@ -2301,7 +2301,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 13
     },
     {
       "id": "DECREE_23_3",
@@ -2330,7 +2330,7 @@
         "ARTICLE_31_3_A"
       ],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_23_3_1",
@@ -2355,7 +2355,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_23_3_2",
@@ -2380,7 +2380,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_23_4",
@@ -2415,7 +2415,7 @@
         "ARTICLE_31_3_A"
       ],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_23_4_1",
@@ -2440,7 +2440,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_23_4_2",
@@ -2465,7 +2465,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_23_4_3",
@@ -2490,7 +2490,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_24_1",
@@ -2517,7 +2517,7 @@
         "ARTICLE_32_1"
       ],
       "penalty": null,
-      "source_page": 9
+      "source_page": 14
     },
     {
       "id": "DECREE_24_1_1",
@@ -2542,7 +2542,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_24_1_2",
@@ -2567,7 +2567,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_24_1_3",
@@ -2592,7 +2592,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_24_2",
@@ -2621,7 +2621,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_1",
@@ -2650,7 +2650,7 @@
         "ARTICLE_33_1_B"
       ],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_1_1",
@@ -2675,7 +2675,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_1_2",
@@ -2700,7 +2700,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_1_3",
@@ -2725,7 +2725,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_1_4",
@@ -2750,7 +2750,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_2",
@@ -2777,7 +2777,7 @@
         "ARTICLE_33_2"
       ],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_2_1",
@@ -2802,7 +2802,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_2_2",
@@ -2827,7 +2827,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_2_3",
@@ -2852,7 +2852,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_2_4",
@@ -2877,7 +2877,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_2_5",
@@ -2902,7 +2902,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 14
     },
     {
       "id": "DECREE_25_3",
@@ -2927,7 +2927,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 15
     },
     {
       "id": "DECREE_25_4",
@@ -2952,7 +2952,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 15
     },
     {
       "id": "DECREE_25_4_1",
@@ -2977,7 +2977,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 15
     },
     {
       "id": "DECREE_25_4_2",
@@ -3002,7 +3002,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 10
+      "source_page": 15
     },
     {
       "id": "DECREE_27_1",
@@ -3031,7 +3031,7 @@
         "ARTICLE_34_1"
       ],
       "penalty": null,
-      "source_page": 11
+      "source_page": 15
     },
     {
       "id": "DECREE_27_1_1",
@@ -3056,7 +3056,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 15
     },
     {
       "id": "DECREE_27_1_2",
@@ -3081,7 +3081,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 15
     },
     {
       "id": "DECREE_27_1_3",
@@ -3106,7 +3106,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 15
     },
     {
       "id": "DECREE_27_1_4",
@@ -3131,7 +3131,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 15
     },
     {
       "id": "DECREE_27_2",
@@ -3160,7 +3160,7 @@
         "ARTICLE_34_1_5"
       ],
       "penalty": null,
-      "source_page": 11
+      "source_page": 15
     },
     {
       "id": "DECREE_27_3",
@@ -3190,7 +3190,7 @@
         "ARTICLE_34_3"
       ],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_27_4",
@@ -3215,7 +3215,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1",
@@ -3245,7 +3245,7 @@
         "ARTICLE_35_1"
       ],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_1",
@@ -3270,7 +3270,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_2",
@@ -3295,7 +3295,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_3",
@@ -3320,7 +3320,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_4",
@@ -3345,7 +3345,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_5",
@@ -3370,7 +3370,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_6",
@@ -3395,7 +3395,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_1_7",
@@ -3420,7 +3420,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_28_2",
@@ -3445,7 +3445,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_29_1",
@@ -3472,7 +3472,7 @@
         "ARTICLE_36_1"
       ],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_29_1_1",
@@ -3497,7 +3497,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_29_1_2",
@@ -3522,7 +3522,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_29_1_3",
@@ -3547,7 +3547,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_29_1_4",
@@ -3572,7 +3572,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "DECREE_29_2",
@@ -3597,7 +3597,7 @@
       "external_effect": null,
       "refs": [],
       "penalty": null,
-      "source_page": 11
+      "source_page": 16
     },
     {
       "id": "PIPA_23_1",

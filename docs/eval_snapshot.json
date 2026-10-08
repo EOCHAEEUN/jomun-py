@@ -4,7 +4,7 @@
     "embedding": "local",
     "top_k": 5,
     "hit_k": 3,
-    "chunks": 1736,
+    "chunks": 1769,
     "feature_extractor": "heuristic"
   },
   "dev": {
@@ -13,7 +13,7 @@
       "retrieval_hit@3_naive": 0.28,
       "retrieval_hit@3_enriched": 0.83,
       "candidate_recall": 0.89,
-      "avg_candidates": 26.8,
+      "avg_candidates": 26.5,
       "rule_accuracy": 1.0,
       "final_accuracy": 1.0,
       "final_case_exact": 1.0,

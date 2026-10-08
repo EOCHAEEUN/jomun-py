@@ -11,7 +11,7 @@ from app.config import (EMBEDDING_PROVIDER, EVAL_PATH, QA_EMBEDDING_MODEL,
                         QA_EMBEDDING_PROVIDER, STATIC_DIR, use_llm)
 from app.engine.law import get_lawbook
 from app.engine.pipeline import run_build
-from app.schemas import BuildRequest
+from app.schemas import AskRequest, AskResponse, BuildRequest
 from app.routers.ask import router as ask_router
 
 app = FastAPI(title="조문.py — AI Legal Build Checker", version="0.1.0")
@@ -58,6 +58,20 @@ def build(req: BuildRequest):
     if not spec:
         raise HTTPException(status_code=422, detail="서비스 설명을 입력해 주세요.")
     return run_build(spec, req.answers)
+
+
+@app.get("/api/graph")
+def graph():
+    """법령 라이브러리 관계도 — 태깅 레코드에서 만든 조문 관계 (노드·엣지)"""
+    from app.engine.graph import build_graph
+    return build_graph()
+
+
+@app.post("/api/law-search", response_model=AskResponse)
+def law_search(req: AskRequest):
+    """QA 인덱스가 없을 때 태깅된 조문 원문에서 관련 근거를 찾는다."""
+    from app.engine.law_search import search_law
+    return search_law(req.question.strip())
 
 
 @app.get("/api/articles")

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "ai_basic_law",
+    "law_id": "014820",
+    "mst": "282791",
+    "number": "21311",
+    "effective": "20260721",
+    "api_json": "data/reference/law_api/ai_basic_law.json",
+    "pdf": "data/raw/ai_basic_act_20260721.pdf",
+    "pdf_sha256": "33f9c1d291dec0109b45115db45eb2593b2b97cfefc86872283fa66755e7443e"
+  },
+  {
+    "name": "ai_basic_law_decree",
+    "law_id": "015032",
+    "mst": "288781",
+    "number": "36580",
+    "effective": "20260820",
+    "api_json": "data/reference/law_api/ai_basic_law_decree.json",
+    "pdf": "data/raw/ai_basic_act_decree_20260820.pdf",
+    "pdf_sha256": "6131b6c1e76d2e855807e86f9bb61825c84322b6446206063f75daab0b37e856"
+  }
+]

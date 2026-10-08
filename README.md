@@ -5,7 +5,8 @@
 
 ![조문.py 화면](docs/screenshot.png)
 
-- 기획·역할 문서: [기획안](docs/plan.md) · [역할 명세](docs/roles.md)
+- 기획·역할 문서: [최종 기획안 PDF](docs/handout/조문py_최종기획안_20261008.pdf) · [편집용 원본](docs/plan_final_20261008.md) · [3인 QA 작업명세](docs/roles_qa_3.md) · [기존 4인 기획안](docs/plan.md) · [기존 4인 역할 명세](docs/roles.md)
+- 발표 참고: [개발일지](docs/presentation/개발일지_20261008.md) · [발표용 기획안](docs/presentation/발표용_기획안_20261008.md)
 
 ## AI 기본법 QA 백엔드 (`POST /ask`)
 
@@ -34,11 +35,16 @@ curl -s http://127.0.0.1:8003/ask -H 'Content-Type: application/json' \
 
 curl -s http://127.0.0.1:8003/ask -H 'Content-Type: application/json' \
   -d '{"question":"출시 전에 무엇을 확인해야 하나요?","service_description":"면접 영상을 분석해 채용 점수를 추천하는 AI"}'
+
+curl -s http://127.0.0.1:8003/ask -H 'Content-Type: application/json' \
+  -d '{"question":"고영향 AI란 무엇인가요? 내가 면접 영상을 분석해 채용 점수를 추천하는 AI 서비스를 준비하는데 해당하나요?"}'
 ```
 
-응답은 `answer`, `sources`, `mode`를 포함합니다. 각 출처에는 답변의 `[S1]` 같은 표식과 연결되는 `source_id`, 조문 번호(`article`), 원문(`content`), 문서·페이지·PDF 파일명이 있습니다. 단일 `question` 안에 "우리 서비스는 ..."처럼 서비스 설명을 적어도 서비스 모드로 처리합니다.
+응답은 `answer`, `sources`, `mode`를 포함합니다. 각 출처에는 답변의 `[S1]` 같은 표식과 연결되는 `source_id`, 조문 번호(`article`), 원문(`content`), 문서·페이지·PDF 파일명이 있습니다. 단일 `question`에서 법 개념과 내 서비스의 적용 가능성을 함께 물어도 서비스 모드로 처리하며, 개념 정의와 서비스 검토 근거를 함께 제공합니다. 서비스 설명을 별도 `service_description` 필드로 보내도 됩니다.
 
-QA 골든 질문 12개는 `data/eval/qa_golden.jsonl`에 있습니다. `python -m scripts.evaluate_qa`는 dense 기준선과 hybrid·재정렬의 Hit@3/5, MRR을 비교하며, `--answers`를 붙이면 LLM 답변과 인용 조문을 저장해 정답성·관련성·근거 충실성·환각 여부를 사람이 검토할 수 있습니다. 현재 12문항의 검색 결과는 dense Hit@3 **0.833**, Hit@5 **0.833**, MRR **0.694**; hybrid·재정렬 Hit@3 **1.000**, Hit@5 **1.000**, MRR **0.917**입니다. 12개 답변 모두 골든 조문을 인용했습니다. 이 작은 개발용 셋은 일반화 성능이나 답변 정답률을 증명하지 않습니다.
+QA 개발 질문 12개는 `data/eval/qa_golden.jsonl`에 있습니다. `python -m scripts.evaluate_qa`는 같은 질문에서 dense → sparse → hybrid(RRF) → 다중 질의 → 규칙 재정렬의 Hit@3/5, MRR을 따로 기록합니다. `--stages sparse --output docs/sparse_check.json`처럼 일부 단계만 실행할 수 있고, `--answers`를 붙이면 LLM 답변과 인용 조문을 저장해 사람이 검토할 수 있습니다. IDF 적용 전 개정판 395개 청크의 개발용 결과는 dense Hit@3 **0.833**, MRR **0.653**; hybrid·재정렬 Hit@3 **1.000**, MRR **0.917**입니다. 기존 벡터에 IDF만 적용한 sparse 검색은 같은 12문항에서 Hit@3 **0.750→1.000**, MRR **0.618→0.667**이었습니다(`docs/qa_sparse_before_20261008.json`, `docs/qa_sparse_after_idf_20261008.json`). 이 질문들은 재정렬 개발에 사용됐으므로 독립 성능으로 해석하지 않습니다. 맥락을 붙인 새 dense 임베딩과 전체 단계별 점수는 재적재 후 다시 측정해야 합니다.
+
+새 적재는 IDF를 자동 적용합니다. 기존 QA 컬렉션은 API 서버를 멈춘 상태에서 `python -m scripts.enable_qa_idf`로 벡터 재생성 없이 IDF만 켤 수 있습니다. 목(目) 청크의 상위 호 문장을 dense 임베딩에 반영하려면 `python -m scripts.ingest_qa`로 전체 QA 컬렉션을 재적재해야 합니다. 원격 임베딩 API 상태는 `python -m scripts.check_qa_embedding`으로 먼저 확인할 수 있습니다.
 
 - **법률 자문이 아닙니다.** 아래 데이터 6종 안에서만 판정하는 사전 점검 도구입니다.
 
@@ -48,14 +54,25 @@ QA 골든 질문 12개는 `data/eval/qa_golden.jsonl`에 있습니다. `python -
 
 | 문서 | 근거 | 조문.py에서 하는 일 |
 | --- | --- | --- |
-| 인공지능기본법 | 법률 제20676호, 2026.1.22. 시행 (2026.1.20. 개정 반영) | 핵심. 조문 태깅·판정 기준 |
-| 인공지능기본법 시행령 | 대통령령 제36053호, 2026.1.22. 시행 | 법률이 "대통령령으로 정한다"고 비워 둔 기준을 채움 (국내대리인 기준, 10²⁶ FLOPs, 고지·표시 방법, 5년 보관 등) |
+| 인공지능기본법 | 법률 제21311호, 2026.7.21. 시행 | 핵심. 조문 태깅·판정 기준 |
+| 인공지능기본법 시행령 | 대통령령 제36580호, 2026.8.20. 시행 | 법률이 "대통령령으로 정한다"고 비워 둔 기준을 채움 (국내대리인 기준, 10²⁶ FLOPs, 고지·표시 방법, 5년 보관 등) |
 | 고영향 AI 판단 가이드라인 해설 | 법무법인 태평양 뉴스레터, 2025.9.29. (2차 자료) | PDF 원문을 Docling으로 청킹·임베딩해 별도 검색 가능하게 하고, 판정 후보에는 검수한 요약 9개를 사용. 화면의 요약은 "요약 · 원문 아님"으로 표시 |
 | 개인정보 보호법 | 법률 제21445호, 2026.9.11. 시행 | 제37조의2 자동화된 결정, 제23조 민감정보 |
 | 신용정보법 | 법률 제21445호(타법개정), 2026.9.11. 시행 | 제2조제14호 자동화평가, 제36조의2 설명·이의제기 |
 | 인공지능기본법 영문본 | 국가법령정보센터 영문 번역 (참고용) | INSPECT 원문 탭에 English 병기 |
 
-목록은 `data/sources.json`, 원본 PDF 6개는 `data/raw/`에 있습니다. 이 6종 밖의 규정(장관 고시, 정부가 발표한 고영향 AI 판단 가이드라인 원문 — 위 BKL 해설과는 별개 —, 개인정보 보호법 시행령 등)이 필요한 판단은 `◈ EXTERNAL`로 표시하고 판정하지 않습니다.
+사용 중인 문서 목록은 `data/sources.json`입니다. 현재 국문 기본법은 **제21311호**, 시행령은 **제36580호**이고, `data/raw/`의 `ai_basic_act_20260721.pdf`와 `ai_basic_act_decree_20260820.pdf`를 Docling 입력으로 사용합니다. 이전 PDF 두 개도 비교용으로 남아 있지만 적재 대상은 아닙니다. 시행일 기준 법제처 API JSON은 `data/reference/law_api/`에 버전 대조용으로 보관하며 임베딩하지 않습니다. 이 6종 밖의 규정(장관 고시, 정부가 발표한 고영향 AI 판단 가이드라인 원문 — 위 BKL 해설과는 별개 —, 개인정보 보호법 시행령 등)이 필요한 판단은 `◈ EXTERNAL`로 표시하고 판정하지 않습니다.
+
+법령 원본을 다시 받으려면 WSL에서 `LAW_GO_KR_OC`를 설정한 뒤 아래 순서로 실행합니다. API 동기화 스크립트는 예상 법령번호와 시행일이 다르면 저장을 중단합니다. Qdrant 로컬 모드에서는 서버를 멈춘 상태에서 재적재·평가합니다.
+
+```bash
+export LAW_GO_KR_OC=your_oc
+python -m scripts.fetch_law_sources
+python -m scripts.sync_tagged_pages
+python -m scripts.ingest_qa
+python -m scripts.ingest
+python -m scripts.evaluate_qa
+```
 
 **같은 질문, 법마다 다른 답.** "사람이 실질적으로 개입하는가"는 세 법의 판단에 모두 영향을 주지만, 작동 방식이 다릅니다.
 

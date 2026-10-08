@@ -1,141 +1,52 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>조문.py — 법령 사전 점검</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232f3540'/><text x='16' y='22' font-size='15' text-anchor='middle' fill='white' font-family='monospace'>§</text></svg>" />
-  <link rel="stylesheet" href="/static/css/style.css" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>조문.py — AI Legal Build Checker</title>
+  <link rel="stylesheet" href="/static/css/reference.css?v=20261008-1">
+  <link rel="stylesheet" href="/static/css/library.css?v=20261008-graph2">
 </head>
 <body>
-  <!-- 아이콘 스프라이트 -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
-    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/><rect x="3" y="4" width="18" height="16" rx="2" opacity="0"/></symbol>
-    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M8.5 12.5h7M8.5 16h7"/></symbol>
-    <symbol id="i-help" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1.9-1.1 1.6v.4M12 16.8h.01"/></symbol>
-    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
-    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8.5-3 8.5h18S18 15 18 8M13.7 20a2 2 0 0 1-3.4 0"/></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4 20.5c1.2-3.8 4.3-5.5 8-5.5s6.8 1.7 8 5.5"/></symbol>
-    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/></symbol>
-    <symbol id="i-inspect" viewBox="0 0 24 24"><path d="M13 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21H11"/><path d="M13 3l5 5v3M13 3v5h5M8.5 12.5h4M8.5 16h2.5"/><circle cx="16.5" cy="16.5" r="3"/><path d="m18.7 18.7 2.3 2.3"/></symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></symbol>
-    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
-    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M12 11v6M12 7.5h.01" stroke="#fff" stroke-width="2.2"/></symbol>
-    <symbol id="i-bars" viewBox="0 0 24 24"><path d="M5 20v-6M12 20V9M19 20V4" stroke-width="3.2" stroke-linecap="butt"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" stroke-width="2.6"/></symbol>
+  <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-7-7 7 7-7 7"/></symbol>
+    <symbol id="icon-clip" viewBox="0 0 24 24"><path d="m20 12-8.6 8.6a5 5 0 0 1-7.1-7.1L13 4.8a3.5 3.5 0 0 1 5 5l-8.7 8.7a2 2 0 0 1-2.8-2.8L15 7.2"/></symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8.5-3 8.5h18S18 15 18 8M13.7 20a2 2 0 0 1-3.4 0"/></symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4 4-6 8-6s6.8 2 8 6"/></symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="icon-link" viewBox="0 0 24 24"><path d="M13 5h6v6m-8 2 8-8M19 14v5H5V5h5"/></symbol>
+    <symbol id="icon-network" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m11 6-5 11m7-11 5 11M7 19h10"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></symbol>
   </svg>
-
-  <div class="app">
-    <!-- ── 사이드바 ── -->
-    <aside class="sidebar">
-      <nav class="nav">
-        <a class="nav-item active" data-view="home"><svg><use href="#i-home"/></svg><span>홈</span></a>
-        <a class="nav-item" data-view="projects"><svg><use href="#i-list"/></svg><span>프로젝트</span></a>
-        <a class="nav-item" data-view="library"><svg><use href="#i-doc"/></svg><span>법령 라이브러리</span></a>
-        <a class="nav-item" data-view="guide"><svg><use href="#i-help"/></svg><span>가이드</span></a>
-        <a class="nav-item" data-view="settings"><svg><use href="#i-gear"/></svg><span>설정</span></a>
-      </nav>
-      <div class="brand-mark">
-        <img src="/static/img/abo-logo.png" alt="made by ABO" />
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" id="go-home" type="button" aria-label="조문.py 홈"><strong>조문.py</strong><span></span><small>AI Legal Build Checker</small></button>
+      <div class="top-actions"><button class="top-icon" id="bell" type="button" aria-label="알림"><svg><use href="#icon-bell"/></svg></button><button class="avatar" id="profile" type="button" aria-label="서비스 안내"><svg><use href="#icon-user"/></svg></button></div>
+    </header>
+    <main id="home-view" class="home-view">
+      <div class="soft-wave wave-one"></div><div class="soft-wave wave-two"></div>
+      <div class="home-center">
+        <h1><strong>무엇을</strong> 확인할까요?</h1>
+        <p>AI 서비스와 관련된 법령을 미리 점검해보세요.<br>서비스 설명이나 궁금한 내용을 입력하면, 관련 법령과 적용 가능성을 검토해드립니다.</p>
+        <form class="prompt-bar hero-prompt" id="home-form"><svg class="prompt-doc"><use href="#icon-doc"/></svg><input id="home-input" name="query" type="text" maxlength="1000" autocomplete="off" aria-label="법령 질문 또는 서비스 설명" placeholder="예: 우리 서비스가 고영향 AI에 해당하는지 어떻게 확인하나요?"><button class="attach-button" type="button" data-attach aria-label="텍스트 파일 첨부" title="텍스트 파일 첨부"><svg><use href="#icon-clip"/></svg></button><button class="submit-button" type="submit" aria-label="분석 시작"><svg><use href="#icon-arrow"/></svg></button></form><div class="attachment-pill" hidden></div>
+        <div class="suggestions"><button type="button" data-suggestion="채용 AI가 고영향 AI인지 확인해줘" data-mode="build"><svg><use href="#icon-doc"/></svg>채용 AI가 고영향 AI인지 확인해줘</button><button type="button" data-suggestion="생성형 AI 고지 의무가 궁금해요" data-mode="ask"><span class="scales">⚖</span>생성형 AI 고지 의무가 궁금해요</button><button type="button" data-suggestion="해외 서비스의 국내대리인 필요 여부를 보고 싶어요" data-mode="build"><span class="globe">◎</span>해외 서비스의 국내대리인 필요 여부를 보고 싶어요</button></div>
       </div>
-    </aside>
-
-    <div class="main">
-      <!-- ── 헤더 ── -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="logo">조문.py</h1>
-          <span class="divider"></span>
-          <span class="product">법령 사전 점검</span>
-          <span class="dash">—</span>
-          <span class="tagline">서비스 출시 전, 관련 법령을 미리 점검하세요.</span>
-        </div>
-        <div class="topbar-right">
-          <button class="icon-btn" id="bell" aria-label="알림"><svg><use href="#i-bell"/></svg></button>
-          <span class="avatar"><svg><use href="#i-user"/></svg></span>
-        </div>
-      </header>
-
-      <main class="board">
-        <!-- ── 01 SPEC ── -->
-        <section class="panel spec">
-          <div class="panel-head">
-            <svg class="panel-icon"><use href="#i-doc"/></svg>
-            <div>
-              <h2><span class="step">01</span> 서비스 설명</h2>
-              <p>서비스 내용을 입력하면 관련 법령을 확인합니다.</p>
-            </div>
-          </div>
-
-          <div class="card spec-card">
-            <div class="card-title-row">
-              <h3>서비스 설명</h3>
-              <button class="link-btn" id="load-example">예시 불러오기</button>
-            </div>
-            <div class="textarea-wrap">
-              <textarea id="spec" maxlength="500" placeholder="개발할 AI 서비스를 한두 문장으로 설명해 주세요.&#10;예: 얼굴 인식으로 면접 영상을 분석해서 지원자의 채용 점수를 추천하는 AI"></textarea>
-              <span class="counter" id="counter">0/500</span>
-            </div>
-            <button class="run-btn" id="run"><svg><use href="#i-play"/></svg><span>법령 점검</span></button>
-            <p class="disclaimer"><svg><use href="#i-info"/></svg><span>법률 자문 아님 / AI기본법·시행령 등 6종 기반 점검<br /><span id="ai-notice">자동화된 법령 분석 도구예요</span></span></p>
-          </div>
-
-          <div class="scope-note">
-            <h3>점검 범위</h3>
-            <p>AI기본법·시행령과 연결 법률 등 6종 문서를 기준으로 확인합니다. 서비스의 구체적인 운영 방식에 따라 추가 검토가 필요할 수 있습니다.</p>
-          </div>
-        </section>
-
-        <!-- ── 02 BUILD ── -->
-        <section class="panel build">
-          <div class="panel-head">
-            <svg class="panel-icon"><use href="#i-gear"/></svg>
-            <div>
-              <h2><span class="step">02</span> 점검 결과</h2>
-              <p>관련 조문과 확인할 사항을 살펴보세요.</p>
-            </div>
-            <div class="status-pill idle" id="status"><i></i><b>대기 중</b><span></span></div>
-          </div>
-
-          <div class="card log-card">
-            <div class="log-heading"><h3 class="log-title">관련 조문</h3><button class="question-link" id="ask-link" hidden>확인할 사항 보기</button></div>
-            <ul class="log" id="log">
-              <li class="log-empty">법 빌드 실행을 누르면 관련 조문이 여기에 표시됩니다.</li>
-            </ul>
-          </div>
-
-        </section>
-
-        <!-- ── 03 INSPECT ── -->
-        <section class="panel inspect">
-          <div class="panel-head">
-            <svg class="panel-icon"><use href="#i-inspect"/></svg>
-            <div>
-              <h2><span class="step">03</span> 적용 가이드</h2>
-              <p>서비스에 반영할 작업과 근거 조문을 확인하세요.</p>
-            </div>
-          </div>
-
-          <div class="tabs" role="tablist">
-            <button class="tab active" data-tab="original" role="tab">적용과 근거<i class="tab-dot" hidden></i></button>
-            <button class="tab" data-tab="checklist" role="tab">작업 체크리스트</button>
-          </div>
-
-          <div class="card tab-card" id="tab-content">
-            <p class="muted">빌드 로그에서 항목을 선택하면 근거가 여기에 표시돼요.</p>
-          </div>
-
-          <div class="card todo-card">
-            <h3>적용 사항 체크리스트</h3>
-            <ul class="todo" id="todo"></ul>
-          </div>
-        </section>
-      </main>
-    </div>
+      <div class="home-mascots"><img src="/static/img/capybara-judge-cutout.png" alt="법령을 살펴보는 카피바라 판사"><img src="/static/img/robot-cutout.png" alt="노트북을 사용하는 로봇"><p>기술이 더 나은 세상을<br>만들 수 있도록,<br>법을 함께 살펴봐요.</p></div>
+      <p class="disclaimer"><svg><use href="#icon-info"/></svg>조문.py는 법령 사전 점검을 돕는 도구로, 법률 자문이 아닙니다. 정확한 해석이 필요한 경우 전문가의 자문을 받으시기 바랍니다.</p>
+    </main>
+    <main id="results-view" class="results-view" hidden>
+      <div class="result-top"><form class="prompt-bar result-prompt" id="result-form"><svg class="prompt-doc"><use href="#icon-doc"/></svg><input id="result-input" name="query" type="text" maxlength="1000" aria-label="질문 수정" autocomplete="off"><button class="attach-button" type="button" data-attach aria-label="텍스트 파일 첨부" title="텍스트 파일 첨부"><svg><use href="#icon-clip"/></svg></button><button class="submit-button" type="submit" aria-label="다시 분석"><svg><use href="#icon-arrow"/></svg></button></form><div class="result-mascots"><img src="/static/img/capybara-judge-cutout.png" alt=""><img src="/static/img/robot-cutout.png" alt=""><p>입력하신 내용을 바탕으로<br>관련 법령과 적용 가이드를<br>분석했어요.</p></div></div><div class="attachment-pill" hidden></div>
+      <div class="results-grid">
+        <section class="evidence-panel"><div class="section-heading"><span class="section-number">02</span><h2>관련 근거</h2><p id="evidence-count">관련 법령을 확인하고 있습니다.</p><button class="soft-button sort-button" id="sort-button" type="button">관련도순⌄</button></div><div class="evidence-list" id="evidence-list"></div><button class="more-button" id="more-button" type="button" hidden>다른 근거 더 보기</button></section>
+        <section class="guide-panel"><div class="section-heading"><span class="section-number">03</span><h2>적용 가이드</h2><p>선택한 근거를 바탕으로 적용 방안을 안내합니다.</p><div class="segmented" role="tablist" aria-label="가이드 보기"><button type="button" class="active" role="tab" data-guide-tab="guide" aria-selected="true">가이드</button><button type="button" role="tab" data-guide-tab="graph" aria-selected="false">법령 관계도</button></div></div><div id="guide-content"></div><div id="graph-content" hidden></div></section>
+      </div>
+    </main>
+    <section id="library" class="library" hidden><div class="lib-intro"><div><h1><svg><use href="#icon-doc"/></svg>법령 라이브러리</h1><p>조문 사이의 위임·참조·제재 관계를 한눈에 탐색할 수 있습니다. 법령, 조문, 적용 조건, 관련 근거의 연결 구조를 시각적으로 확인해보세요.</p></div><div class="segmented"><button type="button" id="library-list-tab">조문 보기</button><button type="button" class="active" id="library-graph-tab">관계도 보기</button></div><div class="library-mascots"><img src="/static/img/capybara-judge-cutout.png" alt=""><img src="/static/img/robot-cutout.png" alt=""></div></div><div id="library-graph-view" class="lib-shell"><div class="lib-grid"><aside class="lib-side" id="lib-side"></aside><div class="lib-canvas"><svg id="lib-graph" role="img" aria-label="조문 관계도"></svg><div class="lib-tools"><button type="button" id="lib-fit">전체 보기</button><button type="button" id="lib-labels" aria-pressed="false">라벨 모두</button></div><p class="lib-note">드래그로 이동 · 휠로 확대 · 조문을 누르면 연결 근거가 표시됩니다.</p><div class="lib-stats" id="lib-stats"></div></div><article class="lib-detail" id="lib-detail" aria-live="polite"></article></div></div><div id="library-list-view" hidden></div></section>
   </div>
-
-  <div class="toast" id="toast" role="status"></div>
-  <script src="/static/js/app.js"></script>
+  <input id="text-file" type="file" accept=".txt,.md,text/plain,text/markdown" hidden>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/static/js/vendor/d3.min.js"></script><script src="/static/js/library.js?v=20261008-graph2"></script><script src="/static/js/app.js?v=20261008-reference1"></script>
 </body>
 </html>

@@ -47,7 +47,9 @@ def rerank(question: str, hits: list[dict], limit: int = QA_TOP_K) -> list[dict]
     return sorted(hits, key=lambda h: (-h["rerank_score"], h["id"]))[:limit]
 
 
-def retrieve(question: str, features: ServiceFeatures | None = None, limit: int = QA_TOP_K) -> list[dict]:
+def retrieve_multi(question: str, features: ServiceFeatures | None = None,
+                   limit: int = QA_TOP_K) -> list[dict]:
+    """Fuse Qdrant hybrid results from each query before the final reranker."""
     queries = [question]
     # 일반 질문에서도 법률 용어로 확장해 영역 조문의 검색 누락을 줄인다.
     query_features = features or heuristic_extract(question)
@@ -63,4 +65,8 @@ def retrieve(question: str, features: ServiceFeatures | None = None, limit: int 
             if cid not in by_id:
                 by_id[cid] = {**hit, "fusion_score": 0.0}
             by_id[cid]["fusion_score"] += 1.0 / (60 + rank)
-    return rerank(question, list(by_id.values()), limit=limit)
+    return sorted(by_id.values(), key=lambda h: (-h["fusion_score"], h["id"]))
+
+
+def retrieve(question: str, features: ServiceFeatures | None = None, limit: int = QA_TOP_K) -> list[dict]:
+    return rerank(question, retrieve_multi(question, features, limit=limit), limit=limit)

@@ -46,6 +46,21 @@ def test_revision_notes_and_deleted_items_are_removed(chunks):
     assert not any(re.fullmatch(r"\s*삭제\s*", t) for t in texts)
 
 
+def test_current_act_and_decree_have_amended_clauses_without_pdf_headers(chunks):
+    c = by_id(chunks)
+    assert "인공지능취약계층" in c["ARTICLE_35_1"]["text"]
+    assert "비용" in c["ARTICLE_17-2_1"]["text"]
+    assert c["DECREE_1-2"]["title"] == "인공지능취약계층의 범위"
+    assert all("국가법령정보센" not in x["text"] for x in chunks["chunks"]
+               if x["doc"] in {"AIACT", "DECREE"})
+
+
+def test_high_impact_domain_leaf_keeps_its_parent_definition(chunks):
+    leaf = by_id(chunks)["ARTICLE_2_4_SA"]
+    assert "고영향 인공지능" in leaf["lead"]
+    assert "채용" in leaf["text"]
+
+
 def test_linked_laws_keep_the_human_involvement_articles(chunks):
     c = by_id(chunks)
     assert "완전히 자동화된 시스템" in c["PIPA_37-2_1"]["text"]

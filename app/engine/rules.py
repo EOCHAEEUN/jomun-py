@@ -440,16 +440,17 @@ def _evaluate(f: ServiceFeatures, answers: dict, candidates: set[str] | None) ->
         ))
         items.append(RuleItem(
             key="art35_1", status="SHOULD" if hi else "CONDITIONAL", label="제35조①", obligation="SHOULD",
-            condition=None if hi else IF_HIGH_IMPACT, summary="기본권 영향평가 노력",
+            condition=None if hi else IF_HIGH_IMPACT, summary="기본권 영향평가 노력 · 실시 시 취약계층 특성 반영",
             records=["ARTICLE_35_1", "DECREE_28_1"],
-            notes=["노력의무(SHOULD) — 직접 제재 없음", "실시하면 공공기관 도입 시 우선 고려 (제35조②)",
+            notes=["평가 실시 자체는 노력의무. 실시하는 영향평가에는 인공지능취약계층 특성을 반영할 수 있도록 해야 함 (제35조① 후단)",
+                   "실시하면 공공기관 도입 시 우선 고려 (제35조②)",
                    "직접 또는 제3자에 의뢰해 실시 가능 (시행령 제28조②)"],
             externals=["영향평가 세부 사항 (장관 고시 — KB 밖)"], decompiled="art35_1.py",
             penalty_from="ARTICLE_35_1",
-            checklist=["영향받을 수 있는 개인·집단 식별", "영향받는 기본권 유형 식별",
+            checklist=["영향평가 실시 시 인공지능취약계층 특성 반영", "영향받을 수 있는 개인·집단 식별", "영향받는 기본권 유형 식별",
                        "사회적·경제적 영향의 내용·범위", "사용 행태", "평가지표와 결과산출 방식",
                        "위험 예방·완화·손실 복구 방안", "개선이 필요하면 이행계획"],
-            todo={"title": "영향평가 필요성 검토", "desc": "제35조·시행령 제28조 7개 항목 기준으로 실시 여부 검토"},
+            todo={"title": "영향평가 필요성 검토", "desc": "실시 여부와 취약계층 특성 반영 방법을 제35조·시행령 제28조 기준으로 검토"},
         ))
         items.append(RuleItem(
             key="art30_3", status="SHOULD" if hi else "CONDITIONAL", label="제30조③", obligation="SHOULD",
